@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Maths Adventure with Sprinkle</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink:#f472b6;--pink-dark:#be185d;--pink-pale:#fdf2f8;--pink-mid:#fbcfe8;
+  --purple:#7c3aed;--purple-pale:#f3e8ff;--purple-light:#c084fc;
+  --green:#16a34a;--red:#dc2626;--gold:#f59e0b;
+  --bg:#fff7fd;--card:#fff;--text:#1e1b4b;--muted:#6b7280;
+  --radius:20px;--shadow:0 4px 24px rgba(244,114,182,0.13);
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px 40px;color:var(--text);}
+body::before{content:'';position:fixed;top:-100px;left:-100px;width:350px;height:350px;border-radius:50%;background:rgba(244,114,182,0.10);z-index:0;pointer-events:none;}
+body::after{content:'';position:fixed;bottom:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(124,58,237,0.07);z-index:0;pointer-events:none;}
+#app{position:relative;z-index:1;width:100%;max-width:520px;}
+header{text-align:center;margin-bottom:16px;}
+header h1{font-size:24px;font-weight:900;color:var(--pink-dark);letter-spacing:-0.5px;}
+header .subtitle{font-size:12px;font-weight:700;color:var(--purple-light);letter-spacing:1.5px;text-transform:uppercase;}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px;}
+
+/* HAMSTER */
+.hamster-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+#hammy-wrap{flex-shrink:0;}
+#speech-bubble{background:var(--pink-pale);border:2px solid var(--pink);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:700;color:var(--pink-dark);line-height:1.4;flex:1;position:relative;}
+#speech-bubble::before{content:'';position:absolute;left:-12px;top:16px;border:6px solid transparent;border-right-color:var(--pink);}
+
+/* TOPIC GRID */
+.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.topic-btn{padding:14px 10px;border-radius:16px;border:2.5px solid transparent;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s;position:relative;}
+.topic-btn:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,0.12);}
+.topic-btn.done{opacity:0.6;cursor:default;}
+.topic-btn .tick{position:absolute;top:6px;right:8px;font-size:16px;}
+.t-add{background:#fef9c3;color:#78350f;border-color:#fde68a;}
+.t-sub{background:#fee2e2;color:#7f1d1d;border-color:#fca5a5;}
+.t-mul{background:#e0f2fe;color:#0c4a6e;border-color:#7dd3fc;}
+.t-div{background:#dcfce7;color:#14532d;border-color:#86efac;}
+.t-dbl{background:#ede9fe;color:#4c1d95;border-color:#c4b5fd;}
+.t-frc{background:#fff7ed;color:#7c2d12;border-color:#fdba74;}
+.t-plc{background:#f0fdf4;color:#14532d;border-color:#6ee7b7;}
+.t-cmp{background:#fdf4ff;color:#701a75;border-color:#e879f9;}
+
+/* QUESTION AREA */
+#question-text{font-size:34px;font-weight:900;color:var(--purple);text-align:center;margin:12px 0;}
+#answer-input{font-family:'Nunito',sans-serif;font-size:28px;font-weight:800;width:120px;text-align:center;border:2.5px solid var(--pink);border-radius:14px;padding:6px 10px;outline:none;color:var(--purple);background:#fff;display:block;margin:0 auto 12px;}
+#answer-input:focus{border-color:var(--purple);}
+.btn-check{display:block;width:100%;background:var(--pink-dark);color:#fff;border:none;border-radius:14px;padding:13px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;transition:background .15s,transform .1s;margin-bottom:10px;}
+.btn-check:hover{background:#9d174d;}
+.btn-check:active{transform:scale(0.97);}
+.btn-hint{display:block;width:100%;background:#fff;color:var(--purple);border:2px solid var(--purple-light);border-radius:14px;padding:10px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:background .15s;}
+.btn-hint:hover{background:var(--purple-pale);}
+#feedback{text-align:center;font-size:19px;font-weight:800;min-height:28px;margin:8px 0;}
+#progress-info{text-align:center;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.progress-wrap{height:10px;background:#fce7f3;border-radius:8px;overflow:hidden;margin-bottom:14px;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--pink-dark),var(--pink));border-radius:8px;width:0%;transition:width .4s;}
+
+/* HINT PANEL */
+#hint-panel{display:none;background:var(--purple-pale);border:2px solid var(--purple-light);border-radius:16px;padding:16px;margin-top:10px;}
+#hint-panel h3{font-size:15px;font-weight:800;color:var(--purple);margin-bottom:8px;}
+#hint-text{font-size:14px;font-weight:600;color:var(--text);line-height:1.6;margin-bottom:10px;}
+#hint-visual{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:8px;}
+#hint-steps{font-size:13px;font-weight:700;color:var(--purple);line-height:1.8;}
+
+/* DOLL SECTION */
+#doll-section{text-align:center;}
+#doll-section h3{font-size:16px;font-weight:800;color:var(--pink-dark);margin-bottom:10px;}
+#doll-wrap{position:relative;display:inline-block;}
+#doll-svg{width:160px;}
+.unlock-flash{animation:flash .6s ease;}
+@keyframes flash{0%{filter:brightness(1);}50%{filter:brightness(1.8) saturate(2);}100%{filter:brightness(1);}}
+#outfit-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;}
+.outfit-item{font-size:22px;opacity:0.2;filter:grayscale(1);transition:all .5s;cursor:default;}
+.outfit-item.unlocked{opacity:1;filter:none;transform:scale(1.2);}
+
+/* VICTORY */
+#victory-overlay{display:none;position:fixed;inset:0;background:rgba(190,24,93,0.5);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+#victory-box{background:#fff;border-radius:28px;padding:32px 28px;text-align:center;max-width:340px;width:90%;box-shadow:0 8px 40px rgba(244,114,182,0.3);}
+#victory-box h2{font-size:24px;font-weight:900;color:var(--pink-dark);margin-bottom:8px;}
+#victory-box p{font-size:14px;font-weight:600;color:#555;margin-bottom:18px;line-height:1.6;}
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:998;}
+.btn-primary{display:block;width:100%;background:var(--pink-dark);color:#fff;border:none;border-radius:14px;padding:13px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;}
+
+/* MUTE */
+.mute-btn{background:none;border:2px solid var(--pink);border-radius:20px;padding:4px 12px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--pink-dark);}
+footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-align:center;}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div id="victory-overlay">
+  <div id="victory-box">
+    <div id="dance-hammy" style="font-size:64px;">🐹</div>
+    <h2 id="victory-title">Amazing Elisa!</h2>
+    <p id="victory-msg"></p>
+    <button class="btn-primary" onclick="closeVictory()">Keep playing!</button>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;">
+      <span style="font-size:32px;">🐹</span>
+      <h1>Maths Adventure with Sprinkle</h1>
+      <span style="font-size:32px;">✨</span>
+    </div>
+    <div class="subtitle">Year 2 Maths · For Elisa</div>
+  </header>
+
+  <!-- START -->
+  <div id="start-screen">
+    <div class="card">
+      <div class="hamster-row">
+        <div id="hammy-wrap">
+          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" id="hammy-svg-start">
+            <g id="hammy-g-start">
+              <!-- ears -->
+              <circle cx="22" cy="22" r="13" fill="#f0d0b0"/>
+              <circle cx="58" cy="22" r="13" fill="#f0d0b0"/>
+              <circle cx="22" cy="22" r="8" fill="#f9a8c9"/>
+              <circle cx="58" cy="22" r="8" fill="#f9a8c9"/>
+              <!-- head -->
+              <ellipse cx="40" cy="44" rx="28" ry="26" fill="#f5e6d3"/>
+              <!-- chubby cheeks -->
+              <ellipse cx="18" cy="50" rx="10" ry="8" fill="#fde8d8"/>
+              <ellipse cx="62" cy="50" rx="10" ry="8" fill="#fde8d8"/>
+              <!-- eyes -->
+              <circle cx="31" cy="40" r="5" fill="#fff"/>
+              <circle cx="49" cy="40" r="5" fill="#fff"/>
+              <circle cx="32" cy="40" r="3" fill="#1a0a00"/>
+              <circle cx="50" cy="40" r="3" fill="#1a0a00"/>
+              <circle cx="33" cy="39" r="1" fill="#fff"/>
+              <circle cx="51" cy="39" r="1" fill="#fff"/>
+              <!-- nose -->
+              <ellipse cx="40" cy="50" rx="4" ry="3" fill="#f9a8c9"/>
+              <!-- mouth -->
+              <path id="hammy-mouth-start" d="M34 55 Q40 61 46 55" fill="none" stroke="#c2853a" stroke-width="2" stroke-linecap="round"/>
+              <!-- whiskers -->
+              <line x1="10" y1="48" x2="28" y2="51" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <line x1="10" y1="53" x2="28" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <line x1="52" y1="51" x2="70" y2="48" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <line x1="52" y1="53" x2="70" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <!-- body -->
+              <ellipse cx="40" cy="72" rx="22" ry="14" fill="#f5e6d3"/>
+              <!-- tiny paws -->
+              <ellipse cx="24" cy="76" rx="6" ry="4" fill="#fde8d8"/>
+              <ellipse cx="56" cy="76" rx="6" ry="4" fill="#fde8d8"/>
+            </g>
+          </svg>
+        </div>
+        <div id="speech-bubble">Hello Elisa! 🐹 I'm Sprinkle! Let's do some maths together and dress up your doll! Pick a topic to start!</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+        <button class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊 Sound on</button>
+      </div>
+      <div class="topic-grid" id="topic-grid"></div>
+    </div>
+
+    <!-- DOLL -->
+    <div class="card" id="doll-section">
+      <h3>👗 Elisa's Fashion Doll</h3>
+      <div id="doll-wrap">
+        <svg id="doll-svg" viewBox="0 0 160 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- skin -->
+          <ellipse cx="80" cy="42" rx="28" ry="32" fill="#FDDBB4"/>
+          <!-- hair base -->
+          <ellipse cx="80" cy="24" rx="28" ry="18" fill="#8B4513"/>
+          <ellipse cx="57" cy="38" rx="8" ry="20" fill="#8B4513"/>
+          <ellipse cx="103" cy="38" rx="8" ry="20" fill="#8B4513"/>
+          <!-- face -->
+          <circle cx="70" cy="42" r="4" fill="#fff"/>
+          <circle cx="90" cy="42" r="4" fill="#fff"/>
+          <circle cx="71" cy="42" r="2.5" fill="#4a3728"/>
+          <circle cx="91" cy="42" r="2.5" fill="#4a3728"/>
+          <ellipse cx="80" cy="52" rx="3" ry="2" fill="#f9a8c9"/>
+          <path d="M73 57 Q80 63 87 57" fill="none" stroke="#e05a8a" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- neck -->
+          <rect x="73" y="70" width="14" height="14" rx="4" fill="#FDDBB4"/>
+          <!-- underwear body (always visible) -->
+          <ellipse cx="80" cy="110" rx="24" ry="34" fill="#FDDBB4"/>
+          <!-- bra -->
+          <path d="M60 90 Q80 102 100 90 Q100 106 80 108 Q60 106 60 90Z" fill="#f9a8c9" opacity=".9"/>
+          <path d="M60 90 Q80 102 100 90" fill="none" stroke="#e879f9" stroke-width="1.5"/>
+          <!-- underwear pants -->
+          <path d="M58 122 Q60 145 80 146 Q100 145 102 122 Q90 130 80 130 Q70 130 58 122Z" fill="#f9a8c9" opacity=".9"/>
+          <path d="M58 122 Q90 136 102 122" fill="none" stroke="#e879f9" stroke-width="1.5"/>
+          <!-- arms -->
+          <ellipse cx="50" cy="108" rx="8" ry="26" fill="#FDDBB4" transform="rotate(-8,50,108)"/>
+          <ellipse cx="110" cy="108" rx="8" ry="26" fill="#FDDBB4" transform="rotate(8,110,108)"/>
+          <!-- hands -->
+          <ellipse cx="45" cy="133" rx="7" ry="6" fill="#FDDBB4"/>
+          <ellipse cx="115" cy="133" rx="7" ry="6" fill="#FDDBB4"/>
+          <!-- legs -->
+          <ellipse cx="68" cy="185" rx="12" ry="42" fill="#FDDBB4"/>
+          <ellipse cx="92" cy="185" rx="12" ry="42" fill="#FDDBB4"/>
+          <!-- feet -->
+          <ellipse cx="66" cy="226" rx="10" ry="7" fill="#FDDBB4"/>
+          <ellipse cx="94" cy="226" rx="10" ry="7" fill="#FDDBB4"/>
+
+          <!-- OUTFIT LAYERS (hidden by default) -->
+          <!-- 1: dress -->
+          <g id="outfit-dress" display="none">
+            <path d="M56 84 Q80 96 104 84 L112 160 Q80 172 48 160Z" fill="#f472b6" opacity=".95"/>
+            <path d="M56 84 Q80 96 104 84" fill="none" stroke="#be185d" stroke-width="1.5"/>
+            <path d="M48 160 Q80 175 112 160 L108 230 Q80 240 52 230Z" fill="#f9a8c9" opacity=".9"/>
+          </g>
+          <!-- 2: shoes -->
+          <g id="outfit-shoes" display="none">
+            <ellipse cx="66" cy="228" rx="12" ry="8" fill="#be185d"/>
+            <ellipse cx="94" cy="228" rx="12" ry="8" fill="#be185d"/>
+            <rect x="60" y="218" width="12" height="10" rx="3" fill="#be185d"/>
+            <rect x="88" y="218" width="12" height="10" rx="3" fill="#be185d"/>
+            <line x1="66" y1="218" x2="66" y2="210" stroke="#be185d" stroke-width="2"/>
+            <line x1="94" y1="218" x2="94" y2="210" stroke="#be185d" stroke-width="2"/>
+          </g>
+          <!-- 3: handbag -->
+          <g id="outfit-bag" display="none">
+            <rect x="28" y="128" width="22" height="18" rx="5" fill="#a855f7"/>
+            <path d="M33 128 Q39 120 45 128" fill="none" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="39" cy="137" r="2" fill="#fff" opacity=".7"/>
+          </g>
+          <!-- 4: necklace -->
+          <g id="outfit-necklace" display="none">
+            <path d="M67 78 Q80 90 93 78" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="80" cy="88" r="4" fill="#f59e0b"/>
+            <circle cx="80" cy="88" r="2" fill="#fff"/>
+          </g>
+          <!-- 5: scarf -->
+          <g id="outfit-scarf" display="none">
+            <path d="M62 76 Q80 86 98 76 Q100 84 80 88 Q60 84 62 76Z" fill="#34d399" opacity=".95"/>
+            <path d="M75 88 Q73 105 68 110" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+          </g>
+          <!-- 6: hat -->
+          <g id="outfit-hat" display="none">
+            <ellipse cx="80" cy="14" rx="34" ry="8" fill="#f472b6"/>
+            <rect x="62" y="2" width="36" height="14" rx="10" fill="#ec4899"/>
+            <ellipse cx="80" cy="14" rx="34" ry="8" fill="#f472b6" opacity=".5"/>
+            <circle cx="80" cy="8" r="4" fill="#fef9c3"/>
+          </g>
+          <!-- 7: pet puppy -->
+          <g id="outfit-pet" display="none">
+            <!-- puppy body -->
+            <ellipse cx="30" cy="255" rx="14" ry="10" fill="#c2853a"/>
+            <!-- puppy head -->
+            <circle cx="30" cy="241" r="10" fill="#e9a94a"/>
+            <!-- puppy ears -->
+            <ellipse cx="22" cy="237" rx="5" ry="7" fill="#c2853a" transform="rotate(-15,22,237)"/>
+            <ellipse cx="38" cy="237" rx="5" ry="7" fill="#c2853a" transform="rotate(15,38,237)"/>
+            <!-- puppy eyes -->
+            <circle cx="27" cy="240" r="2" fill="#2d1b00"/>
+            <circle cx="33" cy="240" r="2" fill="#2d1b00"/>
+            <!-- puppy nose -->
+            <ellipse cx="30" cy="244" rx="2" ry="1.5" fill="#2d1b00"/>
+            <!-- puppy tail -->
+            <path d="M44 253 Q52 246 50 240" fill="none" stroke="#c2853a" stroke-width="4" stroke-linecap="round"/>
+            <!-- puppy legs -->
+            <ellipse cx="20" cy="264" rx="4" ry="6" fill="#c2853a"/>
+            <ellipse cx="40" cy="264" rx="4" ry="6" fill="#c2853a"/>
+            <!-- lead -->
+            <path d="M44 248 Q60 240 68 245" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,2"/>
+          </g>
+          <!-- 8: hair accessory -->
+          <g id="outfit-hair" display="none">
+            <circle cx="58" cy="20" r="8" fill="#f472b6"/>
+            <circle cx="58" cy="20" r="4" fill="#fef9c3"/>
+            <circle cx="104" cy="16" r="6" fill="#a855f7"/>
+            <circle cx="104" cy="16" r="3" fill="#fef9c3"/>
+          </g>
+        </svg>
+      </div>
+      <div id="outfit-list"></div>
+    </div>
+    <div style="display:flex;justify-content:center;"><button class="mute-btn" onclick="toggleMute()" id="mute-btn2" style="margin-top:4px;">🔊</button></div>
+    <footer>Made with ❤️ for Elisa · Maths Adventure with Sprinkle</footer>
+  </div>
+
+  <!-- PLAY SCREEN -->
+  <div id="play-screen" style="display:none;">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div id="topic-label" style="font-size:15px;font-weight:800;color:var(--pink-dark);"></div>
+        <button class="mute-btn" onclick="toggleMute()" id="mute-btn3">🔊</button>
+      </div>
+      <div class="hamster-row">
+        <div id="hammy-wrap2">
+          <svg width="70" height="70" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" id="hammy-svg">
+            <g id="hammy-g">
+              <circle cx="22" cy="22" r="13" fill="#f0d0b0"/>
+              <circle cx="58" cy="22" r="13" fill="#f0d0b0"/>
+              <circle cx="22" cy="22" r="8" fill="#f9a8c9"/>
+              <circle cx="58" cy="22" r="8" fill="#f9a8c9"/>
+              <ellipse cx="40" cy="44" rx="28" ry="26" fill="#f5e6d3"/>
+              <ellipse cx="18" cy="50" rx="10" ry="8" fill="#fde8d8"/>
+              <ellipse cx="62" cy="50" rx="10" ry="8" fill="#fde8d8"/>
+              <circle cx="31" cy="40" r="5" fill="#fff"/>
+              <circle cx="49" cy="40" r="5" fill="#fff"/>
+              <circle cx="32" cy="40" r="3" fill="#1a0a00"/>
+              <circle cx="50" cy="40" r="3" fill="#1a0a00"/>
+              <circle cx="33" cy="39" r="1" fill="#fff"/>
+              <circle cx="51" cy="39" r="1" fill="#fff"/>
+              <ellipse cx="40" cy="50" rx="4" ry="3" fill="#f9a8c9"/>
+              <path id="hammy-mouth" d="M34 55 Q40 61 46 55" fill="none" stroke="#c2853a" stroke-width="2" stroke-linecap="round"/>
+              <line x1="10" y1="48" x2="28" y2="51" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <line x1="10" y1="53" x2="28" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <line x1="52" y1="51" x2="70" y2="48" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <line x1="52" y1="53" x2="70" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+              <ellipse cx="40" cy="72" rx="22" ry="14" fill="#f5e6d3"/>
+              <ellipse cx="24" cy="76" rx="6" ry="4" fill="#fde8d8"/>
+              <ellipse cx="56" cy="76" rx="6" ry="4" fill="#fde8d8"/>
+            </g>
+          </svg>
+        </div>
+        <div id="speech-bubble2" style="background:var(--pink-pale);border:2px solid var(--pink);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:700;color:var(--pink-dark);line-height:1.4;flex:1;position:relative;">You can do it Elisa! 🐹</div>
+      </div>
+      <div id="progress-info">Question <span id="q-num">1</span> of 5</div>
+      <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+      <div id="question-text">? + ? = ?</div>
+      <input id="answer-input" type="number" placeholder="?" autocomplete="off"/>
+      <button class="btn-check" onclick="checkAnswer()">Check my answer! ✓</button>
+      <button class="btn-hint" onclick="toggleHint()">💡 Get help from Hammy!</button>
+      <div id="feedback"></div>
+      <div id="hint-panel">
+        <h3 id="hint-title">💡 Hammy's hint</h3>
+        <div id="hint-text"></div>
+        <div id="hint-visual"></div>
+        <div id="hint-steps"></div>
+      </div>
+    </div>
+    <button onclick="resetToStart()" style="background:none;border:2px solid var(--pink);border-radius:14px;padding:8px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--pink-dark);cursor:pointer;display:block;margin:0 auto;">← Back to topics</button>
+  </div>
+</div>
+
+<script>
+const TOPICS=[
+  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',outfit:'outfit-dress',outfitName:'Dress',outfitEmoji:'👗',
+   desc:'Adding two numbers together',
+   gen:()=>{const a=ri(1,50),b=ri(1,50-a);return{q:`${a} + ${b}`,ans:a+b,a,b,op:'add'};}},
+  {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',outfit:'outfit-shoes',outfitName:'Shoes',outfitEmoji:'👠',
+   desc:'Taking one number away from another',
+   gen:()=>{const a=ri(10,99),b=ri(1,a);return{q:`${a} − ${b}`,ans:a-b,a,b,op:'sub'};}},
+  {id:'mul',label:'✖️ Multiplication',cls:'t-mul',emoji:'✖️',outfit:'outfit-bag',outfitName:'Handbag',outfitEmoji:'👜',
+   desc:'Multiplying using ×2, ×5 and ×10 tables',
+   gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t} × ${n}`,ans:t*n,a:t,b:n,op:'mul'};}},
+  {id:'div',label:'➗ Division',cls:'t-div',emoji:'➗',outfit:'outfit-necklace',outfitName:'Necklace',outfitEmoji:'💍',
+   desc:'Sharing equally using ÷2, ÷5 and ÷10',
+   gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t*n} ÷ ${t}`,ans:n,a:t*n,b:t,op:'div'};}},
+  {id:'dbl',label:'⚡ Doubles & Halves',cls:'t-dbl',emoji:'⚡',outfit:'outfit-scarf',outfitName:'Scarf',outfitEmoji:'🧣',
+   desc:'Doubling and halving numbers',
+   gen:()=>{const type=pick(['double','half']);if(type==='double'){const n=ri(1,50);return{q:`Double ${n}`,ans:n*2,a:n,b:n,op:'double'};}else{const n=ri(1,50)*2;return{q:`Half of ${n}`,ans:n/2,a:n,b:2,op:'half'};}}},
+  {id:'frc',label:'🍕 Fractions',cls:'t-frc',emoji:'🍕',outfit:'outfit-hat',outfitName:'Hat',outfitEmoji:'👒',
+   desc:'Finding halves and quarters of numbers',
+   gen:()=>{const type=pick(['half','quarter']);if(type==='half'){const n=ri(1,20)*2;return{q:`½ of ${n}`,ans:n/2,a:n,b:2,op:'half'};}else{const n=ri(1,10)*4;return{q:`¼ of ${n}`,ans:n/4,a:n,b:4,op:'quarter'};}}},
+  {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',outfit:'outfit-pet',outfitName:'Pet Puppy',outfitEmoji:'🐶',
+   desc:'Understanding tens and units',
+   gen:()=>{const tens=ri(1,9),units=ri(0,9);const type=pick(['tens','units','total']);if(type==='tens')return{q:`${tens*10+units} — how many tens?`,ans:tens,a:tens,b:units,op:'tens'};if(type==='units')return{q:`${tens*10+units} — how many units?`,ans:units,a:tens,b:units,op:'units'};return{q:`${tens} tens and ${units} units = ?`,ans:tens*10+units,a:tens,b:units,op:'makenum'};}},
+  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',outfit:'outfit-hair',outfitName:'Hair clip',outfitEmoji:'🎀',
+   desc:'Comparing numbers — bigger or smaller',
+   gen:()=>{const a=ri(1,99),b=ri(1,99);const type=pick(['bigger','smaller','diff']);if(type==='bigger')return{q:`Which is bigger?\n${a} or ${b}`,ans:Math.max(a,b),a,b,op:'bigger'};if(type==='smaller')return{q:`Which is smaller?\n${a} or ${b}`,ans:Math.min(a,b),a,b,op:'smaller'};return{q:`${Math.max(a,b)} − ${Math.min(a,b)} = ?`,ans:Math.abs(a-b),a,b,op:'diff'};}}
+];
+
+const SPOKEN_CORRECT=["Great job Elisa!","Well done, superstar!","You are absolutely brilliant!","Fantastic work Elisa!","Yes! You nailed it!","Incredible! Keep going!","You are a maths superstar!","Sprinkle thinks you're amazing!","Sprinkle is so proud of you!","Outstanding! You rock!","That was perfect Elisa!","Brilliant! You are on fire!"];
+const SPOKEN_WRONG=["Don't worry Elisa, try again!","You can do it, Sprinkle believes in you!","Almost there Elisa!","Keep trying, you are doing great!"];
+
+let completed={};let outfitsUnlocked=[];
+try{completed=JSON.parse(localStorage.getItem('elisa_hammy_completed')||'{}');}catch(e){}
+try{outfitsUnlocked=JSON.parse(localStorage.getItem('elisa_hammy_outfits')||'[]');}catch(e){}
+
+let muted=false,speechVoice=null,audioCtx=null;
+let state={topic:null,q:null,qNum:0,correct:0,hintOpen:false};
+let lastSpokenIdx=-1;
+
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(a){return a[ri(0,a.length-1)];}
+
+function ac(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function tone(f,t,d,v,dl){try{if(muted)return;const c=ac(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t;o.frequency.setValueAtTime(f,c.currentTime+(dl||0));g.gain.setValueAtTime(v||.25,c.currentTime+(dl||0));g.gain.exponentialRampToValueAtTime(.001,c.currentTime+(dl||0)+d);o.start(c.currentTime+(dl||0));o.stop(c.currentTime+(dl||0)+d);}catch(e){}}
+function playCorrect(){tone(523,'sine',.1,.25,0);tone(659,'sine',.1,.25,.1);tone(784,'sine',.18,.25,.2);}
+function playWrong(){tone(300,'sawtooth',.12,.18,0);tone(240,'sawtooth',.18,.18,.13);}
+function playVictory(){[523,587,659,784,880,1047].forEach((n,i)=>tone(n,'sine',.18,.22,i*.1));}
+function toggleMute(){
+  muted=!muted;
+  ['mute-btn','mute-btn2','mute-btn3'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent=muted?'🔇 Muted':'🔊 Sound on';});
+}
+
+function loadVoice(){
+  const voices=window.speechSynthesis.getVoices();
+  if(!voices.length)return;
+  const preferred=['Google UK English Female','Microsoft Hazel','Microsoft Susan'];
+  let v=voices.find(v=>preferred.some(p=>v.name.includes(p))&&v.lang.startsWith('en-GB'));
+  if(!v)v=voices.find(v=>v.lang.startsWith('en-GB'));
+  if(!v)v=voices.find(v=>v.lang.startsWith('en'));
+  if(v)speechVoice=v;
+}
+function speak(text,delay){
+  if(muted||!window.speechSynthesis)return;
+  setTimeout(()=>{
+    const msg=new SpeechSynthesisUtterance(text);
+    msg.lang='en-GB';msg.pitch=1.9;msg.rate=1.05;
+    if(speechVoice)msg.voice=speechVoice;
+    window.speechSynthesis.speak(msg);
+  },delay||300);
+}
+function speakCorrect(){
+  let idx;do{idx=Math.floor(Math.random()*SPOKEN_CORRECT.length);}while(idx===lastSpokenIdx);
+  lastSpokenIdx=idx;speak(SPOKEN_CORRECT[idx],200);
+}
+function speakWrong(){speak(pick(SPOKEN_WRONG),200);}
+
+loadVoice();
+window.speechSynthesis.onvoiceschanged=()=>loadVoice();
+let greetingDone=false;
+function tryGreeting(){if(greetingDone)return;greetingDone=true;loadVoice();speak("Hello Elisa! I am Sprinkle! Let's do some maths together and dress up your doll!");}
+document.addEventListener('click',tryGreeting,{once:true});
+document.addEventListener('keydown',tryGreeting,{once:true});
+document.addEventListener('touchstart',tryGreeting,{once:true});
+
+function renderStart(){
+  const grid=document.getElementById('topic-grid');
+  grid.innerHTML='';
+  TOPICS.forEach(t=>{
+    const done=completed[t.id];
+    const btn=document.createElement('button');
+    btn.className='topic-btn '+t.cls+(done?' done':'');
+    btn.innerHTML=`${t.label}<br/><span style="font-size:12px;font-weight:600;opacity:.8;">${t.desc}</span>${done?'<span class="tick">✅</span>':''}`;
+    if(!done)btn.onclick=()=>startTopic(t);
+    grid.appendChild(btn);
+  });
+  renderOutfitList();
+  renderDoll();
+  startHammyWiggle('hammy-g-start');
+}
+
+function renderOutfitList(){
+  const ol=document.getElementById('outfit-list');
+  ol.innerHTML='';
+  TOPICS.forEach(t=>{
+    const span=document.createElement('span');
+    span.className='outfit-item'+(outfitsUnlocked.includes(t.id)?' unlocked':'');
+    span.title=t.outfitName;
+    span.textContent=t.outfitEmoji;
+    ol.appendChild(span);
+  });
+}
+
+function renderDoll(){
+  TOPICS.forEach(t=>{
+    const el=document.getElementById(t.outfit);
+    if(el)el.setAttribute('display',outfitsUnlocked.includes(t.id)?'block':'none');
+  });
+}
+
+function startTopic(t){
+  state={topic:t,q:null,qNum:0,correct:0,hintOpen:false};
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('play-screen').style.display='block';
+  document.getElementById('topic-label').textContent=t.label;
+      setSpeech2("Let's go Elisa! "+t.desc+" — you've got this! 🐹");
+
+  nextQuestion();
+  startHammyWiggle('hammy-g');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextQuestion(){
+  state.qNum++;
+  state.q=state.topic.gen();
+  document.getElementById('question-text').textContent=state.q.q+' = ?';
+  document.getElementById('answer-input').value='';
+  document.getElementById('feedback').textContent='';
+  document.getElementById('hint-panel').style.display='none';
+  document.getElementById('answer-input').focus();
+  state.hintOpen=false;
+  const pct=(state.qNum-1)/5*100;
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('q-num').textContent=state.qNum;
+}
+
+function checkAnswer(){
+  const v=parseInt(document.getElementById('answer-input').value);
+  if(isNaN(v))return;
+  const fb=document.getElementById('feedback');
+  if(v===state.q.ans){
+    fb.style.color='var(--green)';fb.textContent='✔ Correct! Well done!';
+    playCorrect();speakCorrect();hammyHappy();
+    setSpeech2(pick(["Woohoo! Correct! 🎉","Yes yes yes! 🐹","You're amazing Elisa! ⭐","Sprinkle is so happy! 🐹"]));
+    state.correct++;
+    if(state.correct>=5){setTimeout(topicComplete,1000);return;}
+    setTimeout(nextQuestion,1200);
+  }else{
+    fb.style.color='var(--red)';fb.textContent='✘ Not quite — the answer was '+state.q.ans+'. Try the next one!';
+    playWrong();speakWrong();hammySad();
+    setSpeech2(pick(["Don't worry Elisa! You can do it! 💪","Almost! Click get help if you need! 🐹","Keep going, Sprinkle believes in you! ⭐"]));
+    setTimeout(nextQuestion,2000);
+  }
+}
+
+document.getElementById('answer-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer();});
+
+function topicComplete(){
+  const t=state.topic;
+  playVictory();
+  // Unlock outfit
+  if(!outfitsUnlocked.includes(t.id)){
+    outfitsUnlocked.push(t.id);
+    try{localStorage.setItem('elisa_hammy_outfits',JSON.stringify(outfitsUnlocked));}catch(e){}
+  }
+  completed[t.id]=true;
+  try{localStorage.setItem('elisa_hammy_completed',JSON.stringify(completed));}catch(e){}
+  launchConfetti();
+  const dd=document.getElementById('dance-hammy');
+  const frames=['🐹','🕺','💃','🎉','✨','🌟','🎀','🐹','💖','🥳'];
+  let di=0;const dint=setInterval(()=>{dd.textContent=frames[di%frames.length];di++;},200);
+  setTimeout(()=>clearInterval(dint),6000);
+  document.getElementById('victory-title').textContent='Amazing Elisa! '+t.outfitEmoji;
+  document.getElementById('victory-msg').textContent=`You completed ${t.label}! Hammy is doing a happy dance! Your doll just got her ${t.outfitName}! Keep going to unlock more outfits! 🎀`;
+  speak(`Amazing Elisa! You finished ${t.label}! Sprinkle is so proud of you! Your doll just got her new ${t.outfitName}!`,400);
+  document.getElementById('victory-overlay').style.display='flex';
+}
+
+function closeVictory(){
+  document.getElementById('victory-overlay').style.display='none';
+  stopConfetti();resetToStart();
+}
+
+function resetToStart(){
+  document.getElementById('play-screen').style.display='none';
+  document.getElementById('start-screen').style.display='block';
+  renderStart();
+}
+
+function toggleHint(){
+  const panel=document.getElementById('hint-panel');
+  state.hintOpen=!state.hintOpen;
+  if(state.hintOpen){panel.style.display='block';buildHint();}
+  else panel.style.display='none';
+}
+
+function buildHint(){
+  const q=state.q;const op=q.op;
+  let title='',text='',steps='',visual='';
+
+  if(op==='add'){
+    title='➕ How to add!';
+    text=`Adding means counting on. Start at ${q.a} and count on ${q.b} more steps.`;
+    steps=`Step 1: Start at ${q.a}\nStep 2: Count on ${q.b}\nStep 3: ${q.a} + ${q.b} = ${q.ans}`;
+    visual=numberLineHTML(q.a,q.ans,'#f472b6');
+  }else if(op==='sub'){
+    title='➖ How to subtract!';
+    text=`Subtracting means counting back. Start at ${q.a} and count back ${q.b} steps.`;
+    steps=`Step 1: Start at ${q.a}\nStep 2: Count back ${q.b}\nStep 3: ${q.a} − ${q.b} = ${q.ans}`;
+    visual=numberLineHTML(q.ans,q.a,'#f87171',true);
+  }else if(op==='mul'){
+    title='✖️ How to multiply!';
+    text=`${q.a} × ${q.b} means ${q.b} groups of ${q.a}. Count the dots!`;
+    steps=`${q.b} groups of ${q.a} = ${q.ans}`;
+    visual=dotsHTML(q.a,q.b,'#60a5fa');
+  }else if(op==='div'){
+    title='➗ How to divide!';
+    text=`${q.a} ÷ ${q.b} means share ${q.a} equally into ${q.b} groups. How many in each group?`;
+    steps=`${q.a} shared into ${q.b} groups = ${q.ans} in each group`;
+    visual=dotsHTML(q.ans,q.b,'#34d399');
+  }else if(op==='double'){
+    title='⚡ How to double!';
+    text=`Doubling means adding a number to itself. ${q.a} + ${q.a} = ${q.ans}`;
+    steps=`${q.a} + ${q.a} = ${q.ans}`;
+    visual=dotsHTML(q.a,2,'#a78bfa');
+  }else if(op==='half'){
+    title='⚡ How to halve!';
+    text=`Halving means splitting into 2 equal groups. ${q.a} split into 2 = ${q.ans} each.`;
+    steps=`${q.a} ÷ 2 = ${q.ans}`;
+    visual=dotsHTML(q.ans,2,'#a78bfa');
+  }else if(op==='quarter'){
+    title='🍕 How to find a quarter!';
+    text=`A quarter means splitting into 4 equal groups. ${q.a} ÷ 4 = ${q.ans}`;
+    steps=`${q.a} ÷ 4 = ${q.ans} in each part`;
+    visual=fractionHTML(4,q.ans,q.a);
+  }else if(op==='tens'||op==='units'||op==='makenum'){
+    title='🔢 Place Value!';
+    text=`Every number has tens and units. ${q.a*10+q.b||q.a} = ${q.a} tens and ${q.b} units.`;
+    steps=`Tens: ${q.a} × 10 = ${q.a*10}\nUnits: ${q.b}\nTotal: ${q.a*10+q.b}`;
+    visual=placeValueHTML(q.a,q.b);
+  }else if(op==='bigger'||op==='smaller'||op==='diff'){
+    title='⚖️ Comparing numbers!';
+    const big=Math.max(q.a,q.b),small=Math.min(q.a,q.b);
+    text=`To compare, look at the tens first. ${big} is bigger than ${small}.`;
+    steps=`${big} > ${small}\n${small} < ${big}\nDifference: ${big} − ${small} = ${big-small}`;
+    visual=compareHTML(q.a,q.b);
+  }
+
+  document.getElementById('hint-title').textContent=title;
+  document.getElementById('hint-text').textContent=text;
+  document.getElementById('hint-visual').innerHTML=visual;
+  document.getElementById('hint-steps').innerHTML=steps.split('\n').map(s=>`<div>👉 ${s}</div>`).join('');
+}
+
+function numberLineHTML(start,end,color,reverse){
+  const range=end-start;const steps=Math.min(range,10);
+  let html=`<div style="display:flex;align-items:center;gap:2px;padding:8px;overflow-x:auto;width:100%;">`;
+  for(let i=start;i<=end;i++){
+    const isEnd=i===end,isStart=i===start;
+    html+=`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+      <div style="width:${isEnd||isStart?28:22}px;height:${isEnd||isStart?28:22}px;border-radius:50%;background:${isEnd?color:isStart?'#fde68a':'#e5e7eb'};display:flex;align-items:center;justify-content:center;font-size:${isEnd||isStart?12:10}px;font-weight:800;color:${isEnd||isStart?'#fff':'#374151'};">${i}</div>
+      ${i<end?`<div style="font-size:16px;">→</div>`:''}
+    </div>`;
+  }
+  html+='</div>';
+  return html;
+}
+
+function dotsHTML(groupSize,groups,color){
+  let html=`<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">`;
+  for(let g=0;g<groups;g++){
+    html+=`<div style="background:#f3f4f6;border-radius:10px;padding:6px;display:flex;flex-wrap:wrap;gap:4px;max-width:${groupSize*22}px;">`;
+    for(let d=0;d<groupSize;d++){
+      html+=`<div style="width:18px;height:18px;border-radius:50%;background:${color};"></div>`;
+    }
+    html+=`</div>`;
+  }
+  html+='</div>';
+  return html;
+}
+
+function fractionHTML(parts,each,total){
+  let html=`<div style="display:flex;gap:4px;justify-content:center;">`;
+  for(let i=0;i<parts;i++){
+    html+=`<div style="width:44px;height:44px;background:${i===0?'#f472b6':'#fce7f3'};border:2px solid #f472b6;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#be185d;">${each}</div>`;
+  }
+  html+='</div>';
+  html+=`<div style="text-align:center;font-size:12px;font-weight:700;color:#be185d;margin-top:4px;">${parts} equal parts of ${total} = ${each} each</div>`;
+  return html;
+}
+
+function placeValueHTML(tens,units){
+  let html=`<div style="display:flex;gap:12px;justify-content:center;align-items:flex-end;">`;
+  html+=`<div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:4px;">TENS</div><div style="display:flex;gap:3px;flex-wrap:wrap;max-width:${tens*22}px;">`;
+  for(let i=0;i<tens;i++)html+=`<div style="width:18px;height:36px;background:#818cf8;border-radius:4px;"></div>`;
+  html+=`</div><div style="font-size:16px;font-weight:900;color:#7c3aed;">${tens}</div></div>`;
+  html+=`<div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:#f472b6;margin-bottom:4px;">UNITS</div><div style="display:flex;gap:3px;flex-wrap:wrap;max-width:${units*22}px;">`;
+  for(let i=0;i<units;i++)html+=`<div style="width:18px;height:18px;background:#f9a8d4;border-radius:50%;"></div>`;
+  html+=`</div><div style="font-size:16px;font-weight:900;color:#f472b6;">${units}</div></div>`;
+  html+='</div>';
+  return html;
+}
+
+function compareHTML(a,b){
+  const big=Math.max(a,b),small=Math.min(a,b);
+  return `<div style="display:flex;gap:12px;justify-content:center;align-items:center;">
+    <div style="text-align:center;background:${a===big?'#bbf7d0':'#fce7f3'};border-radius:12px;padding:10px 16px;">
+      <div style="font-size:28px;font-weight:900;color:${a===big?'#14532d':'#be185d'};">${a}</div>
+    </div>
+    <div style="font-size:24px;font-weight:900;color:#7c3aed;">${a>b?'>':'<'}</div>
+    <div style="text-align:center;background:${b===big?'#bbf7d0':'#fce7f3'};border-radius:12px;padding:10px 16px;">
+      <div style="font-size:28px;font-weight:900;color:${b===big?'#14532d':'#be185d'};">${b}</div>
+    </div>
+  </div>`;
+}
+
+function setSpeech2(msg){
+  const sb=document.getElementById('speech-bubble2');
+  if(sb)sb.textContent=msg;
+}
+
+let hammyIv=null;
+function startHammyWiggle(id){
+  clearInterval(hammyIv);let a=0;
+  hammyIv=setInterval(()=>{
+    a+=0.07;const g=document.getElementById(id);
+    if(g)g.setAttribute('transform',`translate(${Math.sin(a)*2},${Math.sin(a*1.3)*1.5})`);
+  },30);
+}
+function hammyHappy(){
+  const g=document.getElementById('hammy-g');if(!g)return;
+  setHammyMouth(true);
+  let t=0;const bi=setInterval(()=>{t++;g.setAttribute('transform',`translate(${Math.sin(t*.4)*4},${Math.sin(t*.5)*-5})`);if(t>18){clearInterval(bi);g.setAttribute('transform','');}},30);
+}
+function hammySad(){const m=document.getElementById('hammy-mouth');if(m)m.setAttribute('d','M34 59 Q40 54 46 59');setTimeout(()=>{if(m)m.setAttribute('d','M34 55 Q40 61 46 55');},2000);}
+function setHammyMouth(happy){const m=document.getElementById('hammy-mouth');if(m)m.setAttribute('d',happy?'M32 53 Q40 62 48 53':'M34 55 Q40 61 46 55');}
+
+let cAF=null,cStop=false;
+function launchConfetti(){
+  cStop=false;const cv=document.getElementById('confetti-canvas'),ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ps=Array.from({length:150},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height,r:ri(5,13),c:`hsl(${ri(0,360)},90%,65%)`,vx:(Math.random()-.5)*3,vy:ri(2,5)+Math.random()*3,rot:Math.random()*360,rv:(Math.random()-.5)*8}));
+  function draw(){
+    if(cStop){ctx.clearRect(0,0,cv.width,cv.height);return;}
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;if(p.y>cv.height){p.y=-20;p.x=Math.random()*cv.width;}});
+    cAF=requestAnimationFrame(draw);
+  }draw();
+}
+function stopConfetti(){cStop=true;cancelAnimationFrame(cAF);}
+
+renderStart();
+</script>
+</body>
+</html>
