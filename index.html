@@ -91,24 +91,28 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
-<!-- DOLL MODAL -->
+<!-- DOLL MODAL — Dressing Room -->
 <div id="doll-modal" style="display:none;position:fixed;inset:0;background:rgba(76,29,149,0.6);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(6px);" onclick="closeDollModal()">
-  <div style="background:#fff;border-radius:28px;padding:20px;text-align:center;max-width:360px;width:90%;box-shadow:0 8px 40px rgba(244,114,182,0.3);position:relative;" onclick="event.stopPropagation()">
-    <div style="font-size:18px;font-weight:900;color:var(--pink-dark);margin-bottom:12px;">✨ Elisa's Fashion Doll ✨</div>
-    <div style="position:relative;display:inline-block;width:280px;">
-      <object data="doll.svg" type="image/svg+xml" style="width:280px;height:500px;display:block;pointer-events:none;"></object>
-      <!-- LARGE ACCESSORY OVERLAYS -->
-      <div id="acc-tiara-lg" style="display:none;position:absolute;top:-8%;left:50%;transform:translateX(-50%);font-size:52px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">👑</div>
-      <div id="acc-necklace-lg" style="display:none;position:absolute;top:28%;left:50%;transform:translateX(-50%);font-size:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">📿</div>
-      <div id="acc-bag-lg" style="display:none;position:absolute;top:45%;left:-10%;font-size:44px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">👜</div>
-      <div id="acc-hat-lg" style="display:none;position:absolute;top:-12%;left:50%;transform:translateX(-50%);font-size:58px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">🎩</div>
-      <div id="acc-scarf-lg" style="display:none;position:absolute;top:32%;left:50%;transform:translateX(-50%);font-size:38px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">🧣</div>
-      <div id="acc-sunglasses-lg" style="display:none;position:absolute;top:7%;left:50%;transform:translateX(-50%);font-size:42px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">🕶️</div>
-      <div id="acc-pet-lg" style="display:none;position:absolute;bottom:0%;right:-12%;font-size:52px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));">🐶</div>
-      <div id="acc-wings-lg" style="display:none;position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:70px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));z-index:-1;">🦋</div>
+  <div style="background:#fff;border-radius:28px;padding:20px;text-align:center;max-width:400px;width:95%;box-shadow:0 8px 40px rgba(244,114,182,0.3);position:relative;" onclick="event.stopPropagation()">
+    <div style="font-size:16px;font-weight:900;color:var(--pink-dark);margin-bottom:4px;">✨ Elisa's Dressing Room ✨</div>
+    <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:12px;">Drag accessories onto your doll!</div>
+
+    <!-- DOLL STAGE — drop zone -->
+    <div id="doll-stage" style="position:relative;display:inline-block;width:260px;height:460px;background:linear-gradient(180deg,#fdf2f8,#f3e8ff);border-radius:20px;border:2px dashed #c084fc;overflow:visible;">
+      <object data="doll.svg" type="image/svg+xml" style="width:260px;height:460px;display:block;pointer-events:none;border-radius:18px;"></object>
+      <!-- placed accessories land here as absolutely positioned draggable divs -->
     </div>
-    <div id="outfit-list-modal" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px;"></div>
-    <button onclick="closeDollModal()" style="margin-top:14px;background:var(--pink-dark);color:#fff;border:none;border-radius:14px;padding:10px 28px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;">Close</button>
+
+    <!-- TRAY — unlocked items to drag -->
+    <div style="margin-top:14px;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;">Your unlocked accessories:</div>
+      <div id="acc-tray" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:50px;background:#fdf2f8;border-radius:14px;padding:10px;border:2px dashed #f9a8c9;"></div>
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
+      <button onclick="clearDollPlacements()" style="background:#fff;color:var(--pink-dark);border:2px solid var(--pink-dark);border-radius:12px;padding:8px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">🔄 Reset</button>
+      <button onclick="closeDollModal()" style="background:var(--pink-dark);color:#fff;border:none;border-radius:12px;padding:8px 24px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">Done!</button>
+    </div>
   </div>
 </div>
 
@@ -183,18 +187,9 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
     <!-- DOLL -->
     <div class="card" id="doll-section">
       <h3>✨ Elisa's Fashion Doll</h3>
-      <p style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px;cursor:pointer;" onclick="openDollModal()">👆 Tap doll to see full size!</p>
+      <p style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px;">👆 Tap doll to dress her up!</p>
       <div id="doll-wrap" style="position:relative;display:inline-block;width:180px;cursor:pointer;" onclick="openDollModal()">
         <object data="doll.svg" type="image/svg+xml" style="width:180px;height:320px;display:block;pointer-events:none;"></object>
-        <!-- ACCESSORY OVERLAYS -->
-        <div id="acc-tiara" style="display:none;position:absolute;top:-8%;left:50%;transform:translateX(-50%);font-size:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">👑</div>
-        <div id="acc-necklace" style="display:none;position:absolute;top:28%;left:50%;transform:translateX(-50%);font-size:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">📿</div>
-        <div id="acc-bag" style="display:none;position:absolute;top:45%;left:-8%;font-size:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">👜</div>
-        <div id="acc-hat" style="display:none;position:absolute;top:-12%;left:50%;transform:translateX(-50%);font-size:36px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🎩</div>
-        <div id="acc-scarf" style="display:none;position:absolute;top:32%;left:50%;transform:translateX(-50%);font-size:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🧣</div>
-        <div id="acc-sunglasses" style="display:none;position:absolute;top:7%;left:50%;transform:translateX(-50%);font-size:26px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🕶️</div>
-        <div id="acc-pet" style="display:none;position:absolute;bottom:0%;right:-10%;font-size:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🐶</div>
-        <div id="acc-wings" style="display:none;position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:44px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));z-index:-1;">🦋</div>
         <svg id="doll-svg" viewBox="0 0 1 1" style="display:none;">
           <defs>
             <radialGradient id="skinGrad" cx="50%" cy="40%" r="60%">
@@ -607,31 +602,217 @@ function renderDoll(){
   });
 }
 
+// ── DRAG & DROP DRESSING ROOM ──
+let dollPlacements={};
+try{dollPlacements=JSON.parse(localStorage.getItem('elisa_doll_placements')||'{}');}catch(e){}
+
 function openDollModal(){
-  const modal=document.getElementById('doll-modal');
-  modal.style.display='flex';
-  // sync accessories to large view
-  TOPICS.forEach(t=>{
-    const lg=document.getElementById(t.accId+'-lg');
-    if(lg) lg.style.display=outfitsUnlocked.includes(t.id)?'block':'none';
-  });
-  // outfit list in modal
-  const ol=document.getElementById('outfit-list-modal');
-  ol.innerHTML='';
-  TOPICS.forEach(t=>{
-    const span=document.createElement('span');
-    span.style.fontSize='24px';
-    span.style.opacity=outfitsUnlocked.includes(t.id)?'1':'0.2';
-    span.style.filter=outfitsUnlocked.includes(t.id)?'none':'grayscale(1)';
-    span.title=t.outfitName;
-    span.textContent=t.outfitEmoji;
-    ol.appendChild(span);
-  });
+  document.getElementById('doll-modal').style.display='flex';
+  buildTray();
+  restorePlacements();
 }
 function closeDollModal(){
   document.getElementById('doll-modal').style.display='none';
 }
 
+function buildTray(){
+  const tray=document.getElementById('acc-tray');
+  tray.innerHTML='';
+  TOPICS.forEach(t=>{
+    if(!outfitsUnlocked.includes(t.id)) return;
+    // if already placed on doll, show faded in tray
+    const placed=dollPlacements[t.id];
+    const div=document.createElement('div');
+    div.id='tray-'+t.id;
+    div.textContent=t.outfitEmoji;
+    div.title=t.outfitName;
+    div.style.cssText=`font-size:36px;cursor:grab;user-select:none;opacity:${placed?'0.3':'1'};transition:opacity .3s;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));`;
+    div.draggable=true;
+    div.addEventListener('dragstart',e=>{
+      e.dataTransfer.setData('text/plain',t.id);
+      div.style.opacity='0.4';
+    });
+    div.addEventListener('dragend',()=>{ div.style.cursor='grab'; });
+    // touch support
+    div.addEventListener('touchstart',onTouchStart,{passive:false});
+    tray.appendChild(div);
+  });
+}
+
+function restorePlacements(){
+  const stage=document.getElementById('doll-stage');
+  // remove old placed items
+  stage.querySelectorAll('.placed-acc').forEach(el=>el.remove());
+  Object.entries(dollPlacements).forEach(([id,pos])=>{
+    const t=TOPICS.find(t=>t.id===id);
+    if(!t) return;
+    addToDoll(t,pos.x,pos.y,false);
+  });
+}
+
+// Drop on doll stage
+const stage=document.getElementById('doll-stage');
+stage.addEventListener('dragover',e=>{e.preventDefault();stage.style.borderColor='#E91E8C';});
+stage.addEventListener('dragleave',()=>{stage.style.borderColor='#c084fc';});
+stage.addEventListener('drop',e=>{
+  e.preventDefault();
+  stage.style.borderColor='#c084fc';
+  const id=e.dataTransfer.getData('text/plain');
+  const t=TOPICS.find(t=>t.id===id);
+  if(!t) return;
+  const rect=stage.getBoundingClientRect();
+  const x=e.clientX-rect.left-20;
+  const y=e.clientY-rect.top-20;
+  addToDoll(t,x,y,true);
+});
+
+function addToDoll(t,x,y,save){
+  const stage=document.getElementById('doll-stage');
+  // remove existing placement of same item
+  const existing=stage.querySelector('.placed-acc[data-id="'+t.id+'"]');
+  if(existing) existing.remove();
+
+  const el=document.createElement('div');
+  el.className='placed-acc';
+  el.dataset.id=t.id;
+  el.textContent=t.outfitEmoji;
+  el.style.cssText=`position:absolute;left:${x}px;top:${y}px;font-size:44px;cursor:move;user-select:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));z-index:10;transition:transform .15s;`;
+  el.title='Drag to move · Double-tap to remove';
+
+  // make it draggable within the stage
+  makeDraggableOnStage(el,t.id);
+  stage.appendChild(el);
+
+  // sparkle pop
+  el.style.transform='scale(1.4)';
+  setTimeout(()=>el.style.transform='scale(1)',200);
+
+  // fade tray item
+  const trayItem=document.getElementById('tray-'+t.id);
+  if(trayItem) trayItem.style.opacity='0.3';
+
+  if(save){
+    dollPlacements[t.id]={x,y};
+    try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}
+  }
+}
+
+function makeDraggableOnStage(el,id){
+  let startX,startY,startLeft,startTop;
+
+  // mouse
+  el.addEventListener('mousedown',e=>{
+    e.preventDefault();
+    startX=e.clientX; startY=e.clientY;
+    const st=el.style;
+    startLeft=parseInt(st.left)||0; startTop=parseInt(st.top)||0;
+    function onMove(e){
+      const dx=e.clientX-startX, dy=e.clientY-startY;
+      el.style.left=(startLeft+dx)+'px';
+      el.style.top=(startTop+dy)+'px';
+    }
+    function onUp(){
+      document.removeEventListener('mousemove',onMove);
+      document.removeEventListener('mouseup',onUp);
+      savePlacement(id,parseInt(el.style.left),parseInt(el.style.top));
+    }
+    document.addEventListener('mousemove',onMove);
+    document.addEventListener('mouseup',onUp);
+  });
+
+  // touch
+  el.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    const touch=e.touches[0];
+    startX=touch.clientX; startY=touch.clientY;
+    startLeft=parseInt(el.style.left)||0; startTop=parseInt(el.style.top)||0;
+  },{passive:false});
+  el.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    const touch=e.touches[0];
+    const dx=touch.clientX-startX, dy=touch.clientY-startY;
+    el.style.left=(startLeft+dx)+'px';
+    el.style.top=(startTop+dy)+'px';
+  },{passive:false});
+  el.addEventListener('touchend',()=>{
+    savePlacement(id,parseInt(el.style.left),parseInt(el.style.top));
+  });
+
+  // double click / double tap to remove
+  let lastTap=0;
+  el.addEventListener('click',()=>{
+    const now=Date.now();
+    if(now-lastTap<400){
+      el.remove();
+      delete dollPlacements[id];
+      try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}
+      const trayItem=document.getElementById('tray-'+id);
+      if(trayItem) trayItem.style.opacity='1';
+    }
+    lastTap=now;
+  });
+}
+
+function savePlacement(id,x,y){
+  dollPlacements[id]={x,y};
+  try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}
+}
+
+function clearDollPlacements(){
+  dollPlacements={};
+  try{localStorage.setItem('elisa_doll_placements','{}');}catch(e){}
+  document.getElementById('doll-stage').querySelectorAll('.placed-acc').forEach(el=>el.remove());
+  buildTray();
+}
+
+// touch drag from tray
+let touchDragItem=null,touchDragClone=null;
+function onTouchStart(e){
+  e.preventDefault();
+  const div=e.currentTarget;
+  const id=div.id.replace('tray-','');
+  touchDragItem=id;
+  const touch=e.touches[0];
+  touchDragClone=document.createElement('div');
+  touchDragClone.textContent=div.textContent;
+  touchDragClone.style.cssText=`position:fixed;font-size:44px;pointer-events:none;z-index:99999;left:${touch.clientX-22}px;top:${touch.clientY-22}px;opacity:.85;`;
+  document.body.appendChild(touchDragClone);
+  document.addEventListener('touchmove',onTouchMove,{passive:false});
+  document.addEventListener('touchend',onTouchEnd);
+}
+function onTouchMove(e){
+  e.preventDefault();
+  const touch=e.touches[0];
+  if(touchDragClone){
+    touchDragClone.style.left=(touch.clientX-22)+'px';
+    touchDragClone.style.top=(touch.clientY-22)+'px';
+  }
+}
+function onTouchEnd(e){
+  document.removeEventListener('touchmove',onTouchMove);
+  document.removeEventListener('touchend',onTouchEnd);
+  if(touchDragClone){ touchDragClone.remove(); touchDragClone=null; }
+  if(!touchDragItem) return;
+  const touch=e.changedTouches[0];
+  const stage=document.getElementById('doll-stage');
+  const rect=stage.getBoundingClientRect();
+  const x=touch.clientX-rect.left-22;
+  const y=touch.clientY-rect.top-22;
+  if(x>-40&&x<rect.width+40&&y>-40&&y<rect.height+40){
+    const t=TOPICS.find(t=>t.id===touchDragItem);
+    if(t) addToDoll(t,Math.max(0,x),Math.max(0,y),true);
+  }
+  touchDragItem=null;
+}
+
+function openDollModal(){
+  document.getElementById('doll-modal').style.display='flex';
+  buildTray();
+  restorePlacements();
+}
+function closeDollModal(){
+  document.getElementById('doll-modal').style.display='none';
+}
 function flashAccessory(accId){
   const el=document.getElementById(accId);
   if(!el) return;
