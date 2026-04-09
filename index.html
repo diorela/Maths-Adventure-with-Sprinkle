@@ -163,111 +163,234 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
     <div class="card" id="doll-section">
       <h3>👗 Elisa's Fashion Doll</h3>
       <div id="doll-wrap">
-        <svg id="doll-svg" viewBox="0 0 160 320" xmlns="http://www.w3.org/2000/svg">
-          <!-- skin -->
-          <ellipse cx="80" cy="42" rx="28" ry="32" fill="#FDDBB4"/>
-          <!-- hair base -->
-          <ellipse cx="80" cy="24" rx="28" ry="18" fill="#8B4513"/>
-          <ellipse cx="57" cy="38" rx="8" ry="20" fill="#8B4513"/>
-          <ellipse cx="103" cy="38" rx="8" ry="20" fill="#8B4513"/>
-          <!-- face -->
-          <circle cx="70" cy="42" r="4" fill="#fff"/>
-          <circle cx="90" cy="42" r="4" fill="#fff"/>
-          <circle cx="71" cy="42" r="2.5" fill="#4a3728"/>
-          <circle cx="91" cy="42" r="2.5" fill="#4a3728"/>
-          <ellipse cx="80" cy="52" rx="3" ry="2" fill="#f9a8c9"/>
-          <path d="M73 57 Q80 63 87 57" fill="none" stroke="#e05a8a" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- neck -->
-          <rect x="73" y="70" width="14" height="14" rx="4" fill="#FDDBB4"/>
-          <!-- underwear body (always visible) -->
-          <ellipse cx="80" cy="110" rx="24" ry="34" fill="#FDDBB4"/>
-          <!-- bra -->
-          <path d="M60 90 Q80 102 100 90 Q100 106 80 108 Q60 106 60 90Z" fill="#f9a8c9" opacity=".9"/>
-          <path d="M60 90 Q80 102 100 90" fill="none" stroke="#e879f9" stroke-width="1.5"/>
-          <!-- underwear pants -->
-          <path d="M58 122 Q60 145 80 146 Q100 145 102 122 Q90 130 80 130 Q70 130 58 122Z" fill="#f9a8c9" opacity=".9"/>
-          <path d="M58 122 Q90 136 102 122" fill="none" stroke="#e879f9" stroke-width="1.5"/>
-          <!-- arms -->
-          <ellipse cx="50" cy="108" rx="8" ry="26" fill="#FDDBB4" transform="rotate(-8,50,108)"/>
-          <ellipse cx="110" cy="108" rx="8" ry="26" fill="#FDDBB4" transform="rotate(8,110,108)"/>
-          <!-- hands -->
-          <ellipse cx="45" cy="133" rx="7" ry="6" fill="#FDDBB4"/>
-          <ellipse cx="115" cy="133" rx="7" ry="6" fill="#FDDBB4"/>
-          <!-- legs -->
-          <ellipse cx="68" cy="185" rx="12" ry="42" fill="#FDDBB4"/>
-          <ellipse cx="92" cy="185" rx="12" ry="42" fill="#FDDBB4"/>
-          <!-- feet -->
-          <ellipse cx="66" cy="226" rx="10" ry="7" fill="#FDDBB4"/>
-          <ellipse cx="94" cy="226" rx="10" ry="7" fill="#FDDBB4"/>
+        <svg id="doll-svg" viewBox="0 0 160 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="skinGrad" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#FDEBD0"/>
+              <stop offset="100%" stop-color="#F5CBA7"/>
+            </radialGradient>
+            <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FADADD" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#FADADD" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
 
-          <!-- OUTFIT LAYERS (hidden by default) -->
+          <!-- LONG WAVY BLONDE HAIR BACK -->
+          <path d="M52 28 Q30 60 28 120 Q26 170 32 210" fill="none" stroke="#F4D03F" stroke-width="14" stroke-linecap="round" opacity=".85"/>
+          <path d="M108 28 Q130 60 132 120 Q134 170 128 210" fill="none" stroke="#F4D03F" stroke-width="14" stroke-linecap="round" opacity=".85"/>
+          <path d="M60 22 Q40 80 38 160 Q36 200 40 230" fill="none" stroke="#F9E04B" stroke-width="10" stroke-linecap="round" opacity=".7"/>
+          <path d="M100 22 Q120 80 122 160 Q124 200 120 230" fill="none" stroke="#F9E04B" stroke-width="10" stroke-linecap="round" opacity=".7"/>
+
+          <!-- NECK -->
+          <rect x="72" y="72" width="16" height="18" rx="6" fill="url(#skinGrad)"/>
+
+          <!-- BODY / TORSO -->
+          <!-- waist nip -->
+          <path d="M55 90 Q58 115 55 135 Q60 148 80 150 Q100 148 105 135 Q102 115 105 90 Q92 100 80 100 Q68 100 55 90Z" fill="url(#skinGrad)"/>
+
+          <!-- BRA (underwear — always visible) -->
+          <path d="M57 90 Q80 104 103 90 Q103 108 80 110 Q57 108 57 90Z" fill="#F1948A" opacity=".9"/>
+          <path d="M57 90 Q80 104 103 90" fill="none" stroke="#E74C8B" stroke-width="1.5"/>
+          <!-- bra straps -->
+          <path d="M68 90 Q66 82 70 76" fill="none" stroke="#E74C8B" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M92 90 Q94 82 90 76" fill="none" stroke="#E74C8B" stroke-width="1.5" stroke-linecap="round"/>
+
+          <!-- UNDERWEAR PANTS -->
+          <path d="M57 132 Q57 152 80 154 Q103 152 103 132 Q92 140 80 140 Q68 140 57 132Z" fill="#F1948A" opacity=".9"/>
+          <path d="M57 132 Q80 144 103 132" fill="none" stroke="#E74C8B" stroke-width="1.5"/>
+
+          <!-- ARMS — slender -->
+          <path d="M57 92 Q44 108 40 130 Q38 145 42 155" fill="none" stroke="#F5CBA7" stroke-width="11" stroke-linecap="round"/>
+          <path d="M103 92 Q116 108 120 130 Q122 145 118 155" fill="none" stroke="#F5CBA7" stroke-width="11" stroke-linecap="round"/>
+          <!-- forearms -->
+          <path d="M42 155 Q40 168 42 178" fill="none" stroke="#FDEBD0" stroke-width="9" stroke-linecap="round"/>
+          <path d="M118 155 Q120 168 118 178" fill="none" stroke="#FDEBD0" stroke-width="9" stroke-linecap="round"/>
+          <!-- hands -->
+          <ellipse cx="42" cy="182" rx="7" ry="5" fill="#FDEBD0"/>
+          <ellipse cx="118" cy="182" rx="7" ry="5" fill="#FDEBD0"/>
+
+          <!-- LEGS — long slender -->
+          <path d="M68 150 Q64 200 64 250 Q64 270 66 288" fill="none" stroke="#F5CBA7" stroke-width="16" stroke-linecap="round"/>
+          <path d="M92 150 Q96 200 96 250 Q96 270 94 288" fill="none" stroke="#F5CBA7" stroke-width="16" stroke-linecap="round"/>
+
+          <!-- FEET with elegant pointed shape -->
+          <ellipse cx="66" cy="291" rx="11" ry="6" fill="#F5CBA7" transform="rotate(-10,66,291)"/>
+          <ellipse cx="94" cy="291" rx="11" ry="6" fill="#F5CBA7" transform="rotate(10,94,291)"/>
+
+          <!-- HEAD -->
+          <ellipse cx="80" cy="46" rx="26" ry="30" fill="url(#skinGrad)"/>
+
+          <!-- HAIR FRONT -->
+          <ellipse cx="80" cy="22" rx="27" ry="16" fill="#F4D03F"/>
+          <path d="M54 28 Q50 42 53 55" fill="none" stroke="#F4D03F" stroke-width="10" stroke-linecap="round"/>
+          <path d="M106 28 Q110 42 107 55" fill="none" stroke="#F4D03F" stroke-width="10" stroke-linecap="round"/>
+          <!-- parting highlight -->
+          <path d="M68 16 Q80 12 92 16" fill="none" stroke="#F9E87F" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+
+          <!-- FACE -->
+          <!-- eyebrows -->
+          <path d="M67 36 Q72 33 77 35" fill="none" stroke="#8B6914" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M83 35 Q88 33 93 36" fill="none" stroke="#8B6914" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- eyes whites -->
+          <ellipse cx="71" cy="43" rx="6" ry="5" fill="#fff"/>
+          <ellipse cx="89" cy="43" rx="6" ry="5" fill="#fff"/>
+          <!-- iris -->
+          <circle cx="71" cy="43" r="3.5" fill="#5B8DD9"/>
+          <circle cx="89" cy="43" r="3.5" fill="#5B8DD9"/>
+          <!-- pupil -->
+          <circle cx="71" cy="43" r="2" fill="#1a1a2e"/>
+          <circle cx="89" cy="43" r="2" fill="#1a1a2e"/>
+          <!-- eye shine -->
+          <circle cx="72" cy="42" r="1" fill="#fff"/>
+          <circle cx="90" cy="42" r="1" fill="#fff"/>
+          <!-- lashes top -->
+          <path d="M65 40 Q68 37 71 38" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
+          <path d="M71 38 Q74 36 77 38" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
+          <path d="M83 38 Q86 36 89 38" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
+          <path d="M89 38 Q92 37 95 40" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
+          <!-- nose -->
+          <path d="M78 52 Q80 55 82 52" fill="none" stroke="#E8A87C" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- cheeks blush -->
+          <ellipse cx="62" cy="52" rx="7" ry="5" fill="url(#cheekGrad)"/>
+          <ellipse cx="98" cy="52" rx="7" ry="5" fill="url(#cheekGrad)"/>
+          <!-- lips -->
+          <path d="M72 59 Q76 57 80 58 Q84 57 88 59" fill="none" stroke="#E74C8B" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M72 59 Q80 64 88 59" fill="none" stroke="#E74C8B" stroke-width="2" stroke-linecap="round"/>
+          <path d="M74 59 Q80 62 86 59" fill="#F1948A" opacity=".6"/>
+
+          <!-- OUTFIT LAYERS -->
           <!-- 1: dress -->
           <g id="outfit-dress" display="none">
-            <path d="M56 84 Q80 96 104 84 L112 160 Q80 172 48 160Z" fill="#f472b6" opacity=".95"/>
-            <path d="M56 84 Q80 96 104 84" fill="none" stroke="#be185d" stroke-width="1.5"/>
-            <path d="M48 160 Q80 175 112 160 L108 230 Q80 240 52 230Z" fill="#f9a8c9" opacity=".9"/>
+            <!-- bodice -->
+            <path d="M55 88 Q80 102 105 88 L108 145 Q80 155 52 145Z" fill="#f472b6"/>
+            <!-- sparkle detail -->
+            <path d="M55 88 Q80 102 105 88" fill="none" stroke="#fce7f3" stroke-width="1.5"/>
+            <circle cx="80" cy="98" r="2" fill="#fff" opacity=".8"/>
+            <circle cx="68" cy="94" r="1.5" fill="#fff" opacity=".6"/>
+            <circle cx="92" cy="94" r="1.5" fill="#fff" opacity=".6"/>
+            <!-- skirt flare -->
+            <path d="M52 145 Q40 175 38 220 Q60 235 80 236 Q100 235 122 220 Q120 175 108 145 Q80 158 52 145Z" fill="#f9a8c9"/>
+            <!-- skirt layers -->
+            <path d="M44 185 Q80 198 116 185" fill="none" stroke="#fce7f3" stroke-width="1.5" opacity=".8"/>
+            <path d="M40 205 Q80 220 120 205" fill="none" stroke="#fce7f3" stroke-width="1.5" opacity=".6"/>
           </g>
-          <!-- 2: shoes -->
+
+          <!-- 2: heels -->
           <g id="outfit-shoes" display="none">
-            <ellipse cx="66" cy="228" rx="12" ry="8" fill="#be185d"/>
-            <ellipse cx="94" cy="228" rx="12" ry="8" fill="#be185d"/>
-            <rect x="60" y="218" width="12" height="10" rx="3" fill="#be185d"/>
-            <rect x="88" y="218" width="12" height="10" rx="3" fill="#be185d"/>
-            <line x1="66" y1="218" x2="66" y2="210" stroke="#be185d" stroke-width="2"/>
-            <line x1="94" y1="218" x2="94" y2="210" stroke="#be185d" stroke-width="2"/>
+            <!-- left heel -->
+            <path d="M58 286 Q55 295 58 300 Q64 304 72 300 Q76 295 74 286Z" fill="#be185d"/>
+            <rect x="62" y="270" width="10" height="18" rx="3" fill="#be185d"/>
+            <line x1="64" y1="270" x2="62" y2="258" stroke="#be185d" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- right heel -->
+            <path d="M86 286 Q83 295 86 300 Q92 304 100 300 Q104 295 102 286Z" fill="#be185d"/>
+            <rect x="90" y="270" width="10" height="18" rx="3" fill="#be185d"/>
+            <line x1="96" y1="270" x2="98" y2="258" stroke="#be185d" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- ankle straps -->
+            <path d="M58 274 Q66 270 74 274" fill="none" stroke="#be185d" stroke-width="1.5"/>
+            <path d="M86 274 Q94 270 102 274" fill="none" stroke="#be185d" stroke-width="1.5"/>
           </g>
+
           <!-- 3: handbag -->
           <g id="outfit-bag" display="none">
-            <rect x="28" y="128" width="22" height="18" rx="5" fill="#a855f7"/>
-            <path d="M33 128 Q39 120 45 128" fill="none" stroke="#a855f7" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="39" cy="137" r="2" fill="#fff" opacity=".7"/>
+            <rect x="114" y="158" width="28" height="22" rx="6" fill="#a855f7"/>
+            <!-- clasp -->
+            <rect x="125" y="155" width="6" height="5" rx="2" fill="#c084fc"/>
+            <!-- chain strap -->
+            <path d="M114 163 Q108 155 112 148 Q116 142 120 148" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="3,2"/>
+            <!-- monogram -->
+            <text x="128" y="173" text-anchor="middle" font-size="10" fill="#fff" font-family="Georgia,serif" font-weight="bold" opacity=".9">E</text>
+            <!-- shine -->
+            <ellipse cx="120" cy="162" rx="3" ry="2" fill="#fff" opacity=".3"/>
           </g>
+
           <!-- 4: necklace -->
           <g id="outfit-necklace" display="none">
-            <path d="M67 78 Q80 90 93 78" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="80" cy="88" r="4" fill="#f59e0b"/>
-            <circle cx="80" cy="88" r="2" fill="#fff"/>
+            <path d="M65 76 Q80 88 95 76" fill="none" stroke="#F4D03F" stroke-width="2" stroke-linecap="round"/>
+            <!-- pendant drop -->
+            <line x1="80" y1="86" x2="80" y2="93" stroke="#F4D03F" stroke-width="1.5"/>
+            <circle cx="80" cy="96" r="5" fill="#F4D03F"/>
+            <circle cx="80" cy="96" r="3" fill="#fff" opacity=".7"/>
+            <!-- chain gems -->
+            <circle cx="68" cy="79" r="2" fill="#F4D03F"/>
+            <circle cx="92" cy="79" r="2" fill="#F4D03F"/>
+            <circle cx="74" cy="84" r="1.5" fill="#F4D03F"/>
+            <circle cx="86" cy="84" r="1.5" fill="#F4D03F"/>
           </g>
-          <!-- 5: scarf -->
+
+          <!-- 5: scarf / pashmina -->
           <g id="outfit-scarf" display="none">
-            <path d="M62 76 Q80 86 98 76 Q100 84 80 88 Q60 84 62 76Z" fill="#34d399" opacity=".95"/>
-            <path d="M75 88 Q73 105 68 110" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+            <path d="M54 78 Q80 92 106 78 Q110 90 80 96 Q50 90 54 78Z" fill="#34d399" opacity=".9"/>
+            <!-- drape -->
+            <path d="M58 92 Q52 115 48 140 Q46 150 50 155" fill="none" stroke="#34d399" stroke-width="8" stroke-linecap="round" opacity=".85"/>
+            <!-- fringe -->
+            <line x1="46" y1="153" x2="44" y2="162" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="50" y1="155" x2="48" y2="164" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="54" y1="156" x2="52" y2="165" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
           </g>
-          <!-- 6: hat -->
+
+          <!-- 6: elegant hat -->
           <g id="outfit-hat" display="none">
-            <ellipse cx="80" cy="14" rx="34" ry="8" fill="#f472b6"/>
-            <rect x="62" y="2" width="36" height="14" rx="10" fill="#ec4899"/>
-            <ellipse cx="80" cy="14" rx="34" ry="8" fill="#f472b6" opacity=".5"/>
-            <circle cx="80" cy="8" r="4" fill="#fef9c3"/>
+            <!-- wide brim -->
+            <ellipse cx="80" cy="12" rx="40" ry="9" fill="#ec4899"/>
+            <!-- crown -->
+            <path d="M52 12 Q54 -4 80 -6 Q106 -4 108 12Z" fill="#db2777"/>
+            <!-- ribbon band -->
+            <rect x="52" y="8" width="56" height="6" rx="2" fill="#f9a8c9" opacity=".9"/>
+            <!-- flower detail -->
+            <circle cx="98" cy="10" r="5" fill="#fff" opacity=".9"/>
+            <circle cx="98" cy="10" r="3" fill="#fbbf24"/>
+            <circle cx="93" cy="8" r="3" fill="#fff" opacity=".8"/>
+            <circle cx="103" cy="8" r="3" fill="#fff" opacity=".8"/>
           </g>
+
           <!-- 7: pet puppy -->
           <g id="outfit-pet" display="none">
             <!-- puppy body -->
-            <ellipse cx="30" cy="255" rx="14" ry="10" fill="#c2853a"/>
+            <ellipse cx="28" cy="262" rx="15" ry="11" fill="#e9c97e"/>
             <!-- puppy head -->
-            <circle cx="30" cy="241" r="10" fill="#e9a94a"/>
-            <!-- puppy ears -->
-            <ellipse cx="22" cy="237" rx="5" ry="7" fill="#c2853a" transform="rotate(-15,22,237)"/>
-            <ellipse cx="38" cy="237" rx="5" ry="7" fill="#c2853a" transform="rotate(15,38,237)"/>
-            <!-- puppy eyes -->
-            <circle cx="27" cy="240" r="2" fill="#2d1b00"/>
-            <circle cx="33" cy="240" r="2" fill="#2d1b00"/>
-            <!-- puppy nose -->
-            <ellipse cx="30" cy="244" rx="2" ry="1.5" fill="#2d1b00"/>
-            <!-- puppy tail -->
-            <path d="M44 253 Q52 246 50 240" fill="none" stroke="#c2853a" stroke-width="4" stroke-linecap="round"/>
-            <!-- puppy legs -->
-            <ellipse cx="20" cy="264" rx="4" ry="6" fill="#c2853a"/>
-            <ellipse cx="40" cy="264" rx="4" ry="6" fill="#c2853a"/>
+            <circle cx="28" cy="246" r="12" fill="#f5e2a8"/>
+            <!-- ears floppy -->
+            <ellipse cx="18" cy="242" rx="6" ry="9" fill="#e9c97e" transform="rotate(-15,18,242)"/>
+            <ellipse cx="38" cy="242" rx="6" ry="9" fill="#e9c97e" transform="rotate(15,38,242)"/>
+            <!-- eyes -->
+            <circle cx="24" cy="244" r="3" fill="#2d1b00"/>
+            <circle cx="32" cy="244" r="3" fill="#2d1b00"/>
+            <circle cx="25" cy="243" r="1" fill="#fff"/>
+            <circle cx="33" cy="243" r="1" fill="#fff"/>
+            <!-- nose -->
+            <ellipse cx="28" cy="250" rx="3" ry="2" fill="#2d1b00"/>
+            <!-- mouth -->
+            <path d="M24 252 Q28 256 32 252" fill="none" stroke="#2d1b00" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- tail wagging -->
+            <path d="M43 260 Q52 252 50 244" fill="none" stroke="#e9c97e" stroke-width="5" stroke-linecap="round"/>
+            <!-- legs -->
+            <ellipse cx="18" cy="271" rx="5" ry="7" fill="#e9c97e"/>
+            <ellipse cx="38" cy="271" rx="5" ry="7" fill="#e9c97e"/>
+            <!-- paw pads -->
+            <ellipse cx="18" cy="277" rx="4" ry="3" fill="#f9c8a0"/>
+            <ellipse cx="38" cy="277" rx="4" ry="3" fill="#f9c8a0"/>
+            <!-- pink bow on puppy -->
+            <path d="M22 238 Q28 234 34 238" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/>
             <!-- lead -->
-            <path d="M44 248 Q60 240 68 245" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,2"/>
+            <path d="M40 250 Q55 244 66 250" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3,2"/>
           </g>
-          <!-- 8: hair accessory -->
+
+          <!-- 8: hair accessory — tiara + ribbons -->
           <g id="outfit-hair" display="none">
-            <circle cx="58" cy="20" r="8" fill="#f472b6"/>
-            <circle cx="58" cy="20" r="4" fill="#fef9c3"/>
-            <circle cx="104" cy="16" r="6" fill="#a855f7"/>
-            <circle cx="104" cy="16" r="3" fill="#fef9c3"/>
+            <!-- tiara band -->
+            <path d="M56 18 Q80 10 104 18" fill="none" stroke="#F4D03F" stroke-width="3" stroke-linecap="round"/>
+            <!-- tiara points -->
+            <line x1="70" y1="17" x2="68" y2="8" stroke="#F4D03F" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="80" y1="15" x2="80" y2="4" stroke="#F4D03F" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="90" y1="17" x2="92" y2="8" stroke="#F4D03F" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- gems on tiara -->
+            <circle cx="68" cy="8" r="3" fill="#60a5fa"/>
+            <circle cx="80" cy="4" r="4" fill="#f472b6"/>
+            <circle cx="92" cy="8" r="3" fill="#60a5fa"/>
+            <circle cx="74" cy="13" r="2" fill="#fbbf24"/>
+            <circle cx="86" cy="13" r="2" fill="#fbbf24"/>
+            <!-- ribbon in hair -->
+            <path d="M104 24 Q112 18 110 28 Q118 22 110 28" fill="#f472b6" opacity=".9"/>
           </g>
         </svg>
       </div>
