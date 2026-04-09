@@ -98,9 +98,8 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
     <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:12px;">Drag accessories onto your doll!</div>
 
     <!-- DOLL STAGE — drop zone -->
-    <div id="doll-stage" style="position:relative;display:inline-block;width:260px;height:460px;background:linear-gradient(180deg,#fdf2f8,#f3e8ff);border-radius:20px;border:2px dashed #c084fc;overflow:visible;">
-      <object data="doll.svg" type="image/svg+xml" style="width:260px;height:460px;display:block;pointer-events:none;border-radius:18px;"></object>
-      <!-- placed accessories land here as absolutely positioned draggable divs -->
+    <div id="doll-stage" style="position:relative;display:inline-block;width:300px;height:520px;background:linear-gradient(180deg,#fdf2f8,#f3e8ff);border-radius:20px;border:2px dashed #c084fc;overflow:visible;">
+      <object data="doll.svg" type="image/svg+xml" style="width:300px;height:520px;display:block;pointer-events:none;border-radius:18px;"></object>
     </div>
 
     <!-- TRAY — unlocked items to drag -->
@@ -485,7 +484,7 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
 
 <script>
 const TOPICS=[
-  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',accId:'acc-tiara',outfitName:'Golden Crown',outfitEmoji:'👑',
+  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',accId:'acc-sunglasses',outfitName:'Sunglasses',outfitEmoji:'🕶️',
    desc:'Adding two numbers together',
    gen:()=>{const a=ri(1,50),b=ri(1,50-a);return{q:`${a} + ${b}`,ans:a+b,a,b,op:'add'};}},
   {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',accId:'acc-sunglasses',outfitName:'Sunglasses',outfitEmoji:'🕶️',
@@ -506,7 +505,7 @@ const TOPICS=[
   {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',accId:'acc-pet',outfitName:'Pet Puppy',outfitEmoji:'🐶',
    desc:'Understanding tens and units',
    gen:()=>{const tens=ri(1,9),units=ri(0,9);const type=pick(['tens','units','total']);if(type==='tens')return{q:`${tens*10+units} — how many tens?`,ans:tens,a:tens,b:units,op:'tens'};if(type==='units')return{q:`${tens*10+units} — how many units?`,ans:units,a:tens,b:units,op:'units'};return{q:`${tens} tens and ${units} units = ?`,ans:tens*10+units,a:tens,b:units,op:'makenum'};}},
-  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',accId:'acc-wings',outfitName:'Fairy Wings',outfitEmoji:'🦋',
+  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',accId:'acc-pet',outfitName:'Pet Kitten',outfitEmoji:'🐱',
    desc:'Comparing numbers — bigger or smaller',
    gen:()=>{const a=ri(1,99),b=ri(1,99);const type=pick(['bigger','smaller','diff']);if(type==='bigger')return{q:`Which is bigger?\n${a} or ${b}`,ans:Math.max(a,b),a,b,op:'bigger'};if(type==='smaller')return{q:`Which is smaller?\n${a} or ${b}`,ans:Math.min(a,b),a,b,op:'smaller'};return{q:`${Math.max(a,b)} − ${Math.min(a,b)} = ?`,ans:Math.abs(a-b),a,b,op:'diff'};}}
 ];
@@ -663,84 +662,109 @@ stage.addEventListener('drop',e=>{
   const rect=stage.getBoundingClientRect();
   const x=e.clientX-rect.left-20;
   const y=e.clientY-rect.top-20;
-  addToDoll(t,x,y,true);
+  addToDoll(t,x,y,28,true);
 });
 
-function addToDoll(t,x,y,save){
+function addToDoll(t,x,y,size,save){
   const stage=document.getElementById('doll-stage');
-  // remove existing placement of same item
   const existing=stage.querySelector('.placed-acc[data-id="'+t.id+'"]');
   if(existing) existing.remove();
 
-  const el=document.createElement('div');
-  el.className='placed-acc';
-  el.dataset.id=t.id;
-  el.textContent=t.outfitEmoji;
-  el.style.cssText=`position:absolute;left:${x}px;top:${y}px;font-size:44px;cursor:move;user-select:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));z-index:10;transition:transform .15s;`;
-  el.title='Drag to move · Double-tap to remove';
+  const sz=size||28;
+  const wrapper=document.createElement('div');
+  wrapper.className='placed-acc';
+  wrapper.dataset.id=t.id;
+  wrapper.style.cssText=`position:absolute;left:${x}px;top:${y}px;z-index:10;cursor:move;user-select:none;`;
 
-  // make it draggable within the stage
-  makeDraggableOnStage(el,t.id);
-  stage.appendChild(el);
+  const emoji=document.createElement('div');
+  emoji.textContent=t.outfitEmoji;
+  emoji.style.cssText=`font-size:${sz}px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25));line-height:1;transition:font-size .1s;`;
 
-  // sparkle pop
-  el.style.transform='scale(1.4)';
-  setTimeout(()=>el.style.transform='scale(1)',200);
+  // size slider
+  const slider=document.createElement('input');
+  slider.type='range';
+  slider.min='16';slider.max='60';slider.value=sz;
+  slider.style.cssText=`width:60px;display:block;margin:2px auto 0;opacity:0;transition:opacity .2s;cursor:pointer;accent-color:#E91E8C;`;
+  slider.addEventListener('input',()=>{
+    emoji.style.fontSize=slider.value+'px';
+    savePlacement(t.id,parseInt(wrapper.style.left),parseInt(wrapper.style.top),parseInt(slider.value));
+  });
 
-  // fade tray item
+  // show slider on hover / tap
+  wrapper.addEventListener('mouseenter',()=>slider.style.opacity='1');
+  wrapper.addEventListener('mouseleave',()=>slider.style.opacity='0');
+  wrapper.addEventListener('touchstart',()=>{
+    slider.style.opacity=slider.style.opacity==='1'?'0':'1';
+  },{passive:true});
+
+  wrapper.appendChild(emoji);
+  wrapper.appendChild(slider);
+  makeDraggableOnStage(wrapper,t.id,slider);
+  stage.appendChild(wrapper);
+
+  emoji.style.transform='scale(1.5)';
+  setTimeout(()=>emoji.style.transform='scale(1)',200);
+
   const trayItem=document.getElementById('tray-'+t.id);
   if(trayItem) trayItem.style.opacity='0.3';
 
   if(save){
-    dollPlacements[t.id]={x,y};
-    try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}
+    savePlacement(t.id,x,y,sz);
   }
 }
 
-function makeDraggableOnStage(el,id){
+function makeDraggableOnStage(el,id,slider){
   let startX,startY,startLeft,startTop;
+  let isDragging=false;
 
-  // mouse
   el.addEventListener('mousedown',e=>{
+    if(e.target===slider) return;
     e.preventDefault();
+    isDragging=false;
     startX=e.clientX; startY=e.clientY;
-    const st=el.style;
-    startLeft=parseInt(st.left)||0; startTop=parseInt(st.top)||0;
+    startLeft=parseInt(el.style.left)||0;
+    startTop=parseInt(el.style.top)||0;
     function onMove(e){
-      const dx=e.clientX-startX, dy=e.clientY-startY;
+      isDragging=true;
+      const dx=e.clientX-startX,dy=e.clientY-startY;
       el.style.left=(startLeft+dx)+'px';
       el.style.top=(startTop+dy)+'px';
     }
     function onUp(){
       document.removeEventListener('mousemove',onMove);
       document.removeEventListener('mouseup',onUp);
-      savePlacement(id,parseInt(el.style.left),parseInt(el.style.top));
+      if(isDragging) savePlacement(id,parseInt(el.style.left),parseInt(el.style.top),parseInt(slider.value));
     }
     document.addEventListener('mousemove',onMove);
     document.addEventListener('mouseup',onUp);
   });
 
-  // touch
   el.addEventListener('touchstart',e=>{
+    if(e.target===slider) return;
     e.preventDefault();
     const touch=e.touches[0];
     startX=touch.clientX; startY=touch.clientY;
-    startLeft=parseInt(el.style.left)||0; startTop=parseInt(el.style.top)||0;
+    startLeft=parseInt(el.style.left)||0;
+    startTop=parseInt(el.style.top)||0;
   },{passive:false});
+
   el.addEventListener('touchmove',e=>{
+    if(e.target===slider) return;
     e.preventDefault();
     const touch=e.touches[0];
-    const dx=touch.clientX-startX, dy=touch.clientY-startY;
-    el.style.left=(startLeft+dx)+'px';
-    el.style.top=(startTop+dy)+'px';
+    el.style.left=(startLeft+(touch.clientX-startX))+'px';
+    el.style.top=(startTop+(touch.clientY-startY))+'px';
   },{passive:false});
-  el.addEventListener('touchend',()=>{
-    savePlacement(id,parseInt(el.style.left),parseInt(el.style.top));
+
+  el.addEventListener('touchend',e=>{
+    if(e.target===slider) return;
+    savePlacement(id,parseInt(el.style.left),parseInt(el.style.top),parseInt(slider.value));
   });
 
-  // double click / double tap to remove
+  // double click to remove
   let lastTap=0;
-  el.addEventListener('click',()=>{
+  el.addEventListener('click',e=>{
+    if(e.target===slider||isDragging) return;
     const now=Date.now();
     if(now-lastTap<400){
       el.remove();
@@ -800,7 +824,7 @@ function onTouchEnd(e){
   const y=touch.clientY-rect.top-22;
   if(x>-40&&x<rect.width+40&&y>-40&&y<rect.height+40){
     const t=TOPICS.find(t=>t.id===touchDragItem);
-    if(t) addToDoll(t,Math.max(0,x),Math.max(0,y),true);
+    if(t) addToDoll(t,Math.max(0,x),Math.max(0,y),28,true);
   }
   touchDragItem=null;
 }
