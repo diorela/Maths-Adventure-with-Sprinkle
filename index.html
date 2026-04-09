@@ -161,9 +161,19 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
 
     <!-- DOLL -->
     <div class="card" id="doll-section">
-      <h3>👗 Elisa's Fashion Doll</h3>
-      <div id="doll-wrap">
-        <svg id="doll-svg" viewBox="0 0 160 340" xmlns="http://www.w3.org/2000/svg">
+      <h3>✨ Elisa's Fashion Doll</h3>
+      <div id="doll-wrap" style="position:relative;display:inline-block;width:180px;">
+        <img src="doll.svg" alt="Fashion doll" style="width:180px;display:block;border-radius:12px;"/>
+        <!-- ACCESSORY OVERLAYS -->
+        <div id="acc-tiara" style="display:none;position:absolute;top:2%;left:50%;transform:translateX(-50%);font-size:36px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">👑</div>
+        <div id="acc-necklace" style="display:none;position:absolute;top:18%;left:50%;transform:translateX(-50%);font-size:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">📿</div>
+        <div id="acc-bag" style="display:none;position:absolute;top:38%;left:4%;font-size:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">👜</div>
+        <div id="acc-hat" style="display:none;position:absolute;top:-6%;left:50%;transform:translateX(-50%);font-size:40px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🎩</div>
+        <div id="acc-scarf" style="display:none;position:absolute;top:22%;left:50%;transform:translateX(-50%);font-size:30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🧣</div>
+        <div id="acc-sunglasses" style="display:none;position:absolute;top:10%;left:50%;transform:translateX(-50%);font-size:30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🕶️</div>
+        <div id="acc-pet" style="display:none;position:absolute;bottom:4%;right:2%;font-size:36px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🐶</div>
+        <div id="acc-wings" style="display:none;position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:48px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));z-index:-1;">🦋</div>
+        <svg id="doll-svg" viewBox="0 0 1 1" style="display:none;">
           <defs>
             <radialGradient id="skinGrad" cx="50%" cy="40%" r="60%">
               <stop offset="0%" stop-color="#FDEBD0"/>
@@ -458,28 +468,28 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
 
 <script>
 const TOPICS=[
-  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',outfit:'outfit-dress',outfitName:'Dress',outfitEmoji:'👗',
+  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',accId:'acc-tiara',outfitName:'Golden Crown',outfitEmoji:'👑',
    desc:'Adding two numbers together',
    gen:()=>{const a=ri(1,50),b=ri(1,50-a);return{q:`${a} + ${b}`,ans:a+b,a,b,op:'add'};}},
-  {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',outfit:'outfit-shoes',outfitName:'Shoes',outfitEmoji:'👠',
+  {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',accId:'acc-sunglasses',outfitName:'Sunglasses',outfitEmoji:'🕶️',
    desc:'Taking one number away from another',
    gen:()=>{const a=ri(10,99),b=ri(1,a);return{q:`${a} − ${b}`,ans:a-b,a,b,op:'sub'};}},
-  {id:'mul',label:'✖️ Multiplication',cls:'t-mul',emoji:'✖️',outfit:'outfit-bag',outfitName:'Handbag',outfitEmoji:'👜',
+  {id:'mul',label:'✖️ Multiplication',cls:'t-mul',emoji:'✖️',accId:'acc-bag',outfitName:'Designer Bag',outfitEmoji:'👜',
    desc:'Multiplying using ×2, ×5 and ×10 tables',
    gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t} × ${n}`,ans:t*n,a:t,b:n,op:'mul'};}},
-  {id:'div',label:'➗ Division',cls:'t-div',emoji:'➗',outfit:'outfit-necklace',outfitName:'Necklace',outfitEmoji:'💍',
+  {id:'div',label:'➗ Division',cls:'t-div',emoji:'➗',accId:'acc-necklace',outfitName:'Necklace',outfitEmoji:'📿',
    desc:'Sharing equally using ÷2, ÷5 and ÷10',
    gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t*n} ÷ ${t}`,ans:n,a:t*n,b:t,op:'div'};}},
-  {id:'dbl',label:'⚡ Doubles & Halves',cls:'t-dbl',emoji:'⚡',outfit:'outfit-scarf',outfitName:'Scarf',outfitEmoji:'🧣',
+  {id:'dbl',label:'⚡ Doubles & Halves',cls:'t-dbl',emoji:'⚡',accId:'acc-scarf',outfitName:'Silk Scarf',outfitEmoji:'🧣',
    desc:'Doubling and halving numbers',
    gen:()=>{const type=pick(['double','half']);if(type==='double'){const n=ri(1,50);return{q:`Double ${n}`,ans:n*2,a:n,b:n,op:'double'};}else{const n=ri(1,50)*2;return{q:`Half of ${n}`,ans:n/2,a:n,b:2,op:'half'};}}},
-  {id:'frc',label:'🍕 Fractions',cls:'t-frc',emoji:'🍕',outfit:'outfit-hat',outfitName:'Hat',outfitEmoji:'👒',
+  {id:'frc',label:'🍕 Fractions',cls:'t-frc',emoji:'🍕',accId:'acc-hat',outfitName:'Glamour Hat',outfitEmoji:'🎩',
    desc:'Finding halves and quarters of numbers',
    gen:()=>{const type=pick(['half','quarter']);if(type==='half'){const n=ri(1,20)*2;return{q:`½ of ${n}`,ans:n/2,a:n,b:2,op:'half'};}else{const n=ri(1,10)*4;return{q:`¼ of ${n}`,ans:n/4,a:n,b:4,op:'quarter'};}}},
-  {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',outfit:'outfit-pet',outfitName:'Pet Puppy',outfitEmoji:'🐶',
+  {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',accId:'acc-pet',outfitName:'Pet Puppy',outfitEmoji:'🐶',
    desc:'Understanding tens and units',
    gen:()=>{const tens=ri(1,9),units=ri(0,9);const type=pick(['tens','units','total']);if(type==='tens')return{q:`${tens*10+units} — how many tens?`,ans:tens,a:tens,b:units,op:'tens'};if(type==='units')return{q:`${tens*10+units} — how many units?`,ans:units,a:tens,b:units,op:'units'};return{q:`${tens} tens and ${units} units = ?`,ans:tens*10+units,a:tens,b:units,op:'makenum'};}},
-  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',outfit:'outfit-hair',outfitName:'Hair clip',outfitEmoji:'🎀',
+  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',accId:'acc-wings',outfitName:'Fairy Wings',outfitEmoji:'🦋',
    desc:'Comparing numbers — bigger or smaller',
    gen:()=>{const a=ri(1,99),b=ri(1,99);const type=pick(['bigger','smaller','diff']);if(type==='bigger')return{q:`Which is bigger?\n${a} or ${b}`,ans:Math.max(a,b),a,b,op:'bigger'};if(type==='smaller')return{q:`Which is smaller?\n${a} or ${b}`,ans:Math.min(a,b),a,b,op:'smaller'};return{q:`${Math.max(a,b)} − ${Math.min(a,b)} = ?`,ans:Math.abs(a-b),a,b,op:'diff'};}}
 ];
@@ -570,9 +580,20 @@ function renderOutfitList(){
 
 function renderDoll(){
   TOPICS.forEach(t=>{
-    const el=document.getElementById(t.outfit);
-    if(el)el.setAttribute('display',outfitsUnlocked.includes(t.id)?'block':'none');
+    const el=document.getElementById(t.accId);
+    if(el) el.style.display=outfitsUnlocked.includes(t.id)?'block':'none';
   });
+}
+
+function flashAccessory(accId){
+  const el=document.getElementById(accId);
+  if(!el) return;
+  el.style.display='block';
+  el.style.transform='translateX(-50%) scale(2)';
+  el.style.transition='transform 0.4s ease';
+  setTimeout(()=>{
+    el.style.transform=el.style.transform.includes('translateX')?'translateX(-50%) scale(1)':'scale(1)';
+  },400);
 }
 
 function startTopic(t){
@@ -638,8 +659,9 @@ function topicComplete(){
   let di=0;const dint=setInterval(()=>{dd.textContent=frames[di%frames.length];di++;},200);
   setTimeout(()=>clearInterval(dint),6000);
   document.getElementById('victory-title').textContent='Amazing Elisa! '+t.outfitEmoji;
-  document.getElementById('victory-msg').textContent=`You completed ${t.label}! Hammy is doing a happy dance! Your doll just got her ${t.outfitName}! Keep going to unlock more outfits! 🎀`;
-  speak(`Amazing Elisa! You finished ${t.label}! Sprinkle is so proud of you! Your doll just got her new ${t.outfitName}!`,400);
+  document.getElementById('victory-msg').textContent=`You completed ${t.label}! Sprinkle is doing a happy dance! Your doll just got her ${t.outfitName}! Keep going to unlock more! ✨`;
+  speak(`Amazing Elisa! You finished ${t.label}! Your doll just got her ${t.outfitName}!`,400);
+  flashAccessory(t.accId);
   document.getElementById('victory-overlay').style.display='flex';
 }
 
