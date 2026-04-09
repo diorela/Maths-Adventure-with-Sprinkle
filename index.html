@@ -99,7 +99,11 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
 
     <!-- DOLL STAGE — drop zone -->
     <div id="doll-stage" style="position:relative;display:inline-block;width:300px;height:520px;background:linear-gradient(180deg,#fdf2f8,#f3e8ff);border-radius:20px;border:2px dashed #c084fc;overflow:visible;">
-      <object data="doll.svg" type="image/svg+xml" style="width:300px;height:520px;display:block;pointer-events:none;border-radius:18px;"></object>
+      <img src="doll.png" alt="Fashion doll" style="width:300px;height:520px;display:block;pointer-events:none;border-radius:18px;object-fit:contain;" onerror="this.style.display='none';document.getElementById('doll-fallback').style.display='flex'"/>
+      <div id="doll-fallback" style="display:none;width:300px;height:520px;align-items:center;justify-content:center;flex-direction:column;gap:12px;border-radius:18px;background:#fdf2f8;">
+        <div style="font-size:80px;">👗</div>
+        <div style="font-size:14px;font-weight:700;color:#be185d;">Dress your doll!</div>
+      </div>
     </div>
 
     <!-- TRAY — unlocked items to drag -->
@@ -188,7 +192,7 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
       <h3>✨ Elisa's Fashion Doll</h3>
       <p style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px;">👆 Tap doll to dress her up!</p>
       <div id="doll-wrap" style="position:relative;display:inline-block;width:180px;cursor:pointer;" onclick="openDollModal()">
-        <object data="doll.svg" type="image/svg+xml" style="width:180px;height:320px;display:block;pointer-events:none;"></object>
+        <img src="doll.png" alt="Fashion doll" style="width:180px;height:320px;display:block;pointer-events:none;object-fit:contain;" onerror="this.style.display='none'"/>
         <svg id="doll-svg" viewBox="0 0 1 1" style="display:none;">
           <defs>
             <radialGradient id="skinGrad" cx="50%" cy="40%" r="60%">
