@@ -181,8 +181,9 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
         </div>
         <div id="speech-bubble">Hello Elisa! 🐹 I'm Sprinkle! Let's do some maths together and dress up your doll! Pick a topic to start!</div>
       </div>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <button class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊 Sound on</button>
+        <button onclick="confirmReset()" style="background:none;border:2px solid #fca5a5;border-radius:20px;padding:5px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:#dc2626;">🔄 Start over</button>
       </div>
       <div class="topic-grid" id="topic-grid"></div>
     </div>
@@ -570,7 +571,18 @@ document.addEventListener('click',tryGreeting,{once:true});
 document.addEventListener('keydown',tryGreeting,{once:true});
 document.addEventListener('touchstart',tryGreeting,{once:true});
 
-function renderStart(){
+function confirmReset(){
+  if(confirm('Are you sure you want to start over? All your progress and badges will be cleared!')){
+    try{
+      localStorage.removeItem('elisa_hammy_completed');
+      localStorage.removeItem('elisa_hammy_outfits');
+      localStorage.removeItem('elisa_doll_placements');
+    }catch(e){}
+    completed={};outfitsUnlocked=[];dollPlacements={};
+    renderStart();
+    speak('Starting over! Good luck Elisa!',300);
+  }
+}
   const grid=document.getElementById('topic-grid');
   grid.innerHTML='';
   TOPICS.forEach(t=>{
