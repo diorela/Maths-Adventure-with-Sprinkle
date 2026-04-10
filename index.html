@@ -8,9 +8,9 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --pink:#f472b6;--pink-dark:#be185d;--pink-pale:#fdf2f8;--pink-mid:#fbcfe8;
-  --purple:#7c3aed;--purple-pale:#f3e8ff;--purple-light:#c084fc;
-  --green:#16a34a;--red:#dc2626;--gold:#f59e0b;
+  --pink:#f472b6;--pink-dark:#be185d;--pink-pale:#fdf2f8;
+  --purple:#7c3aed;--purple-pale:#f3e8ff;--purple-light:#c084fc;--purple-dark:#4c1d95;
+  --green:#16a34a;--red:#dc2626;
   --bg:#fff7fd;--card:#fff;--text:#1e1b4b;--muted:#6b7280;
   --radius:20px;--shadow:0 4px 24px rgba(244,114,182,0.13);
 }
@@ -19,99 +19,78 @@ body::before{content:'';position:fixed;top:-100px;left:-100px;width:350px;height
 body::after{content:'';position:fixed;bottom:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(124,58,237,0.07);z-index:0;pointer-events:none;}
 #app{position:relative;z-index:1;width:100%;max-width:520px;}
 header{text-align:center;margin-bottom:16px;}
-header h1{font-size:24px;font-weight:900;color:var(--pink-dark);letter-spacing:-0.5px;}
+header h1{font-size:24px;font-weight:900;color:var(--pink-dark);}
 header .subtitle{font-size:12px;font-weight:700;color:var(--purple-light);letter-spacing:1.5px;text-transform:uppercase;}
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px;}
-
-/* HAMSTER */
 .hamster-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
-#hammy-wrap{flex-shrink:0;}
-#speech-bubble{background:var(--pink-pale);border:2px solid var(--pink);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:700;color:var(--pink-dark);line-height:1.4;flex:1;position:relative;}
-#speech-bubble::before{content:'';position:absolute;left:-12px;top:16px;border:6px solid transparent;border-right-color:var(--pink);}
-
-/* TOPIC GRID */
-.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.speech{background:var(--pink-pale);border:2px solid var(--pink);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:700;color:var(--pink-dark);line-height:1.4;flex:1;position:relative;}
+.speech::before{content:'';position:absolute;left:-12px;top:16px;border:6px solid transparent;border-right-color:var(--pink);}
+.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px;}
 .topic-btn{padding:14px 10px;border-radius:16px;border:2.5px solid transparent;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s;position:relative;}
 .topic-btn:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,0.12);}
-.topic-btn.done{opacity:0.6;cursor:default;}
+.topic-btn.done{opacity:0.55;}
 .topic-btn .tick{position:absolute;top:6px;right:8px;font-size:16px;}
-.t-add{background:#fef9c3;color:#78350f;border-color:#fde68a;}
-.t-sub{background:#fee2e2;color:#7f1d1d;border-color:#fca5a5;}
-.t-mul{background:#e0f2fe;color:#0c4a6e;border-color:#7dd3fc;}
-.t-div{background:#dcfce7;color:#14532d;border-color:#86efac;}
-.t-dbl{background:#ede9fe;color:#4c1d95;border-color:#c4b5fd;}
-.t-frc{background:#fff7ed;color:#7c2d12;border-color:#fdba74;}
-.t-plc{background:#f0fdf4;color:#14532d;border-color:#6ee7b7;}
-.t-cmp{background:#fdf4ff;color:#701a75;border-color:#e879f9;}
-
-/* QUESTION AREA */
-#question-text{font-size:34px;font-weight:900;color:var(--purple);text-align:center;margin:12px 0;}
+.t-add{background:#fef9c3;color:#78350f;} .t-sub{background:#fee2e2;color:#7f1d1d;}
+.t-mul{background:#e0f2fe;color:#0c4a6e;} .t-div{background:#dcfce7;color:#14532d;}
+.t-dbl{background:#ede9fe;color:#4c1d95;} .t-frc{background:#fff7ed;color:#7c2d12;}
+.t-plc{background:#f0fdf4;color:#14532d;} .t-cmp{background:#fdf4ff;color:#701a75;}
+.badge-shelf{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px 0 4px;}
+.badge{font-size:24px;opacity:0.2;filter:grayscale(1);transition:all .4s;}
+.badge.earned{opacity:1;filter:none;transform:scale(1.15);}
+.hearts-row{display:flex;justify-content:center;gap:6px;margin-bottom:8px;}
+.hearts-row span{font-size:26px;}
+.progress-wrap{height:10px;background:#ede9fe;border-radius:8px;overflow:hidden;margin-bottom:20px;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-light));border-radius:8px;width:0%;transition:width .4s;}
+.question-card{background:var(--purple-pale);border:2.5px solid var(--purple-light);border-radius:18px;padding:20px;text-align:center;margin-bottom:14px;}
+#question-text{font-size:34px;font-weight:900;color:var(--purple);margin-bottom:14px;}
 #answer-input{font-family:'Nunito',sans-serif;font-size:28px;font-weight:800;width:120px;text-align:center;border:2.5px solid var(--pink);border-radius:14px;padding:6px 10px;outline:none;color:var(--purple);background:#fff;display:block;margin:0 auto 12px;}
 #answer-input:focus{border-color:var(--purple);}
-.btn-check{display:block;width:100%;background:var(--pink-dark);color:#fff;border:none;border-radius:14px;padding:13px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;transition:background .15s,transform .1s;margin-bottom:10px;}
-.btn-check:hover{background:#9d174d;}
-.btn-check:active{transform:scale(0.97);}
-.btn-hint{display:block;width:100%;background:#fff;color:var(--purple);border:2px solid var(--purple-light);border-radius:14px;padding:10px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:background .15s;}
-.btn-hint:hover{background:var(--purple-pale);}
+.btn-check{display:block;width:100%;background:var(--pink-dark);color:#fff;border:none;border-radius:14px;padding:13px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-hint{display:block;width:100%;background:#fff;color:var(--purple);border:2px solid var(--purple-light);border-radius:14px;padding:10px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;}
 #feedback{text-align:center;font-size:19px;font-weight:800;min-height:28px;margin:8px 0;}
-#progress-info{text-align:center;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;}
-.progress-wrap{height:10px;background:#fce7f3;border-radius:8px;overflow:hidden;margin-bottom:14px;}
-.progress-bar{height:100%;background:linear-gradient(90deg,var(--pink-dark),var(--pink));border-radius:8px;width:0%;transition:width .4s;}
-
-/* HINT PANEL */
+#score-row{text-align:center;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.mute-btn{background:none;border:2px solid var(--purple-light);border-radius:20px;padding:5px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--purple);}
+.reset-btn{background:none;border:2px solid #fca5a5;border-radius:20px;padding:5px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:var(--red);}
 #hint-panel{display:none;background:var(--purple-pale);border:2px solid var(--purple-light);border-radius:16px;padding:16px;margin-top:10px;}
 #hint-panel h3{font-size:15px;font-weight:800;color:var(--purple);margin-bottom:8px;}
 #hint-text{font-size:14px;font-weight:600;color:var(--text);line-height:1.6;margin-bottom:10px;}
 #hint-visual{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:8px;}
 #hint-steps{font-size:13px;font-weight:700;color:var(--purple);line-height:1.8;}
-
-/* DOLL SECTION */
-#doll-section{text-align:center;}
-#doll-section h3{font-size:16px;font-weight:800;color:var(--pink-dark);margin-bottom:10px;}
-#doll-wrap{position:relative;display:inline-block;}
-#doll-svg{width:160px;}
-.unlock-flash{animation:flash .6s ease;}
-@keyframes flash{0%{filter:brightness(1);}50%{filter:brightness(1.8) saturate(2);}100%{filter:brightness(1);}}
-#outfit-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;}
-.outfit-item{font-size:22px;opacity:0.2;filter:grayscale(1);transition:all .5s;cursor:default;}
-.outfit-item.unlocked{opacity:1;filter:none;transform:scale(1.2);}
-
-/* VICTORY */
-#victory-overlay{display:none;position:fixed;inset:0;background:rgba(190,24,93,0.5);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
-#victory-box{background:#fff;border-radius:28px;padding:32px 28px;text-align:center;max-width:340px;width:90%;box-shadow:0 8px 40px rgba(244,114,182,0.3);}
+#victory-overlay{display:none;position:fixed;inset:0;background:rgba(76,29,149,0.55);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+#victory-box{background:#fff;border-radius:28px;padding:32px 28px;text-align:center;max-width:360px;width:90%;box-shadow:0 8px 40px rgba(244,114,182,0.25);}
+#dance-hammy{font-size:72px;margin-bottom:12px;}
 #victory-box h2{font-size:24px;font-weight:900;color:var(--pink-dark);margin-bottom:8px;}
 #victory-box p{font-size:14px;font-weight:600;color:#555;margin-bottom:18px;line-height:1.6;}
-#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:998;}
 .btn-primary{display:block;width:100%;background:var(--pink-dark);color:#fff;border:none;border-radius:14px;padding:13px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;}
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:998;}
 
-/* MUTE */
-.mute-btn{background:none;border:2px solid var(--pink);border-radius:20px;padding:4px 12px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--pink-dark);}
+/* DOLL MODAL */
+#doll-modal{display:none;position:fixed;inset:0;background:rgba(76,29,149,0.6);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.doll-modal-inner{background:#fff;border-radius:28px;padding:20px;text-align:center;max-width:400px;width:95%;box-shadow:0 8px 40px rgba(244,114,182,0.3);}
+#doll-stage{position:relative;display:inline-block;width:300px;height:520px;background:linear-gradient(180deg,#fdf2f8,#f3e8ff);border-radius:20px;border:2px dashed #c084fc;overflow:visible;}
+#acc-tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:50px;background:#fdf2f8;border-radius:14px;padding:10px;border:2px dashed #f9a8c9;}
 footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-align:center;}
 </style>
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
-<!-- DOLL MODAL — Dressing Room -->
-<div id="doll-modal" style="display:none;position:fixed;inset:0;background:rgba(76,29,149,0.6);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(6px);" onclick="closeDollModal()">
-  <div style="background:#fff;border-radius:28px;padding:20px;text-align:center;max-width:400px;width:95%;box-shadow:0 8px 40px rgba(244,114,182,0.3);position:relative;" onclick="event.stopPropagation()">
-    <div style="font-size:16px;font-weight:900;color:var(--pink-dark);margin-bottom:4px;">✨ Elisa's Dressing Room ✨</div>
-    <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:12px;">Drag accessories onto your doll!</div>
 
-    <!-- DOLL STAGE — drop zone -->
-    <div id="doll-stage" style="position:relative;display:inline-block;width:300px;height:520px;background:linear-gradient(180deg,#fdf2f8,#f3e8ff);border-radius:20px;border:2px dashed #c084fc;overflow:visible;">
+<!-- DOLL MODAL -->
+<div id="doll-modal" onclick="closeDollModal()">
+  <div class="doll-modal-inner" onclick="event.stopPropagation()">
+    <div style="font-size:16px;font-weight:900;color:var(--pink-dark);margin-bottom:4px;">✨ Elisa's Dressing Room ✨</div>
+    <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:12px;">Drag accessories onto your doll! Hover to resize.</div>
+    <div id="doll-stage">
       <img src="doll.svg" alt="Fashion doll" style="width:300px;height:520px;display:block;pointer-events:none;border-radius:18px;object-fit:contain;" onerror="this.style.display='none';document.getElementById('doll-fallback').style.display='flex'"/>
       <div id="doll-fallback" style="display:none;width:300px;height:520px;align-items:center;justify-content:center;flex-direction:column;gap:12px;border-radius:18px;background:#fdf2f8;">
         <div style="font-size:80px;">👗</div>
         <div style="font-size:14px;font-weight:700;color:#be185d;">Dress your doll!</div>
       </div>
     </div>
-
-    <!-- TRAY — unlocked items to drag -->
     <div style="margin-top:14px;">
       <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;">Your unlocked accessories:</div>
-      <div id="acc-tray" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:50px;background:#fdf2f8;border-radius:14px;padding:10px;border:2px dashed #f9a8c9;"></div>
+      <div id="acc-tray"></div>
     </div>
-
     <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
       <button onclick="clearDollPlacements()" style="background:#fff;color:var(--pink-dark);border:2px solid var(--pink-dark);border-radius:12px;padding:8px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">🔄 Reset</button>
       <button onclick="closeDollModal()" style="background:var(--pink-dark);color:#fff;border:none;border-radius:12px;padding:8px 24px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;">Done!</button>
@@ -119,12 +98,13 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
   </div>
 </div>
 
+<!-- VICTORY -->
 <div id="victory-overlay">
   <div id="victory-box">
-    <div id="dance-hammy" style="font-size:64px;">🐹</div>
-    <h2 id="victory-title">Amazing Elisa!</h2>
+    <div id="dance-hammy"></div>
+    <h2 id="victory-title"></h2>
     <p id="victory-msg"></p>
-    <button class="btn-primary" onclick="closeVictory()">Keep playing!</button>
+    <button class="btn-primary" onclick="closeVictory()">Play again!</button>
   </div>
 </div>
 
@@ -138,298 +118,50 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
     <div class="subtitle">Year 2 Maths · For Elisa</div>
   </header>
 
-  <!-- START -->
+  <!-- START SCREEN -->
   <div id="start-screen">
     <div class="card">
       <div class="hamster-row">
-        <div id="hammy-wrap">
-          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" id="hammy-svg-start">
-            <g id="hammy-g-start">
-              <!-- ears -->
-              <circle cx="22" cy="22" r="13" fill="#f0d0b0"/>
-              <circle cx="58" cy="22" r="13" fill="#f0d0b0"/>
-              <circle cx="22" cy="22" r="8" fill="#f9a8c9"/>
-              <circle cx="58" cy="22" r="8" fill="#f9a8c9"/>
-              <!-- head -->
-              <ellipse cx="40" cy="44" rx="28" ry="26" fill="#f5e6d3"/>
-              <!-- chubby cheeks -->
-              <ellipse cx="18" cy="50" rx="10" ry="8" fill="#fde8d8"/>
-              <ellipse cx="62" cy="50" rx="10" ry="8" fill="#fde8d8"/>
-              <!-- eyes -->
-              <circle cx="31" cy="40" r="5" fill="#fff"/>
-              <circle cx="49" cy="40" r="5" fill="#fff"/>
-              <circle cx="32" cy="40" r="3" fill="#1a0a00"/>
-              <circle cx="50" cy="40" r="3" fill="#1a0a00"/>
-              <circle cx="33" cy="39" r="1" fill="#fff"/>
-              <circle cx="51" cy="39" r="1" fill="#fff"/>
-              <!-- nose -->
-              <ellipse cx="40" cy="50" rx="4" ry="3" fill="#f9a8c9"/>
-              <!-- mouth -->
-              <path id="hammy-mouth-start" d="M34 55 Q40 61 46 55" fill="none" stroke="#c2853a" stroke-width="2" stroke-linecap="round"/>
-              <!-- whiskers -->
-              <line x1="10" y1="48" x2="28" y2="51" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <line x1="10" y1="53" x2="28" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <line x1="52" y1="51" x2="70" y2="48" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <line x1="52" y1="53" x2="70" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <!-- body -->
-              <ellipse cx="40" cy="72" rx="22" ry="14" fill="#f5e6d3"/>
-              <!-- tiny paws -->
-              <ellipse cx="24" cy="76" rx="6" ry="4" fill="#fde8d8"/>
-              <ellipse cx="56" cy="76" rx="6" ry="4" fill="#fde8d8"/>
-            </g>
-          </svg>
-        </div>
-        <div id="speech-bubble">Hello Elisa! 🐹 I'm Sprinkle! Let's do some maths together and dress up your doll! Pick a topic to start!</div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <button class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊 Sound on</button>
-        <button onclick="confirmReset()" style="background:none;border:2px solid #fca5a5;border-radius:20px;padding:5px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:#dc2626;">🔄 Start over</button>
-      </div>
-      <div style="font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:12px;text-align:center;">Choose a topic to start!</div>
-      <div class="topic-grid" id="topic-grid"></div>
-      <div class="topic-grid" id="topic-grid"></div>
-    </div>
-
-    <!-- DOLL -->
-    <div class="card" id="doll-section">
-      <h3>✨ Elisa's Fashion Doll</h3>
-      <p style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px;">👆 Tap doll to dress her up!</p>
-      <div id="doll-wrap" style="position:relative;display:inline-block;width:180px;cursor:pointer;" onclick="openDollModal()">
-        <img src="doll.svg" alt="Fashion doll" style="width:180px;height:320px;display:block;pointer-events:none;object-fit:contain;" onerror="this.style.display='none'"/>
-        <svg id="doll-svg" viewBox="0 0 1 1" style="display:none;">
-          <defs>
-            <radialGradient id="skinGrad" cx="50%" cy="40%" r="60%">
-              <stop offset="0%" stop-color="#FDEBD0"/>
-              <stop offset="100%" stop-color="#F5CBA7"/>
-            </radialGradient>
-            <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#FADADD" stop-opacity="0.8"/>
-              <stop offset="100%" stop-color="#FADADD" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-
-          <!-- LONG WAVY BLONDE HAIR BACK -->
-          <path d="M52 28 Q30 60 28 120 Q26 170 32 210" fill="none" stroke="#F4D03F" stroke-width="14" stroke-linecap="round" opacity=".85"/>
-          <path d="M108 28 Q130 60 132 120 Q134 170 128 210" fill="none" stroke="#F4D03F" stroke-width="14" stroke-linecap="round" opacity=".85"/>
-          <path d="M60 22 Q40 80 38 160 Q36 200 40 230" fill="none" stroke="#F9E04B" stroke-width="10" stroke-linecap="round" opacity=".7"/>
-          <path d="M100 22 Q120 80 122 160 Q124 200 120 230" fill="none" stroke="#F9E04B" stroke-width="10" stroke-linecap="round" opacity=".7"/>
-
-          <!-- NECK -->
-          <rect x="72" y="72" width="16" height="18" rx="6" fill="url(#skinGrad)"/>
-
-          <!-- BODY / TORSO -->
-          <!-- waist nip -->
-          <path d="M55 90 Q58 115 55 135 Q60 148 80 150 Q100 148 105 135 Q102 115 105 90 Q92 100 80 100 Q68 100 55 90Z" fill="url(#skinGrad)"/>
-
-          <!-- BRA (underwear — always visible) -->
-          <path d="M57 90 Q80 104 103 90 Q103 108 80 110 Q57 108 57 90Z" fill="#F1948A" opacity=".9"/>
-          <path d="M57 90 Q80 104 103 90" fill="none" stroke="#E74C8B" stroke-width="1.5"/>
-          <!-- bra straps -->
-          <path d="M68 90 Q66 82 70 76" fill="none" stroke="#E74C8B" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M92 90 Q94 82 90 76" fill="none" stroke="#E74C8B" stroke-width="1.5" stroke-linecap="round"/>
-
-          <!-- UNDERWEAR PANTS -->
-          <path d="M57 132 Q57 152 80 154 Q103 152 103 132 Q92 140 80 140 Q68 140 57 132Z" fill="#F1948A" opacity=".9"/>
-          <path d="M57 132 Q80 144 103 132" fill="none" stroke="#E74C8B" stroke-width="1.5"/>
-
-          <!-- ARMS — slender -->
-          <path d="M57 92 Q44 108 40 130 Q38 145 42 155" fill="none" stroke="#F5CBA7" stroke-width="11" stroke-linecap="round"/>
-          <path d="M103 92 Q116 108 120 130 Q122 145 118 155" fill="none" stroke="#F5CBA7" stroke-width="11" stroke-linecap="round"/>
-          <!-- forearms -->
-          <path d="M42 155 Q40 168 42 178" fill="none" stroke="#FDEBD0" stroke-width="9" stroke-linecap="round"/>
-          <path d="M118 155 Q120 168 118 178" fill="none" stroke="#FDEBD0" stroke-width="9" stroke-linecap="round"/>
-          <!-- hands -->
-          <ellipse cx="42" cy="182" rx="7" ry="5" fill="#FDEBD0"/>
-          <ellipse cx="118" cy="182" rx="7" ry="5" fill="#FDEBD0"/>
-
-          <!-- LEGS — long slender -->
-          <path d="M68 150 Q64 200 64 250 Q64 270 66 288" fill="none" stroke="#F5CBA7" stroke-width="16" stroke-linecap="round"/>
-          <path d="M92 150 Q96 200 96 250 Q96 270 94 288" fill="none" stroke="#F5CBA7" stroke-width="16" stroke-linecap="round"/>
-
-          <!-- FEET with elegant pointed shape -->
-          <ellipse cx="66" cy="291" rx="11" ry="6" fill="#F5CBA7" transform="rotate(-10,66,291)"/>
-          <ellipse cx="94" cy="291" rx="11" ry="6" fill="#F5CBA7" transform="rotate(10,94,291)"/>
-
-          <!-- HEAD -->
-          <ellipse cx="80" cy="46" rx="26" ry="30" fill="url(#skinGrad)"/>
-
-          <!-- HAIR FRONT -->
-          <ellipse cx="80" cy="22" rx="27" ry="16" fill="#F4D03F"/>
-          <path d="M54 28 Q50 42 53 55" fill="none" stroke="#F4D03F" stroke-width="10" stroke-linecap="round"/>
-          <path d="M106 28 Q110 42 107 55" fill="none" stroke="#F4D03F" stroke-width="10" stroke-linecap="round"/>
-          <!-- parting highlight -->
-          <path d="M68 16 Q80 12 92 16" fill="none" stroke="#F9E87F" stroke-width="3" stroke-linecap="round" opacity=".7"/>
-
-          <!-- FACE -->
-          <!-- eyebrows -->
-          <path d="M67 36 Q72 33 77 35" fill="none" stroke="#8B6914" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M83 35 Q88 33 93 36" fill="none" stroke="#8B6914" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- eyes whites -->
-          <ellipse cx="71" cy="43" rx="6" ry="5" fill="#fff"/>
-          <ellipse cx="89" cy="43" rx="6" ry="5" fill="#fff"/>
-          <!-- iris -->
-          <circle cx="71" cy="43" r="3.5" fill="#5B8DD9"/>
-          <circle cx="89" cy="43" r="3.5" fill="#5B8DD9"/>
-          <!-- pupil -->
-          <circle cx="71" cy="43" r="2" fill="#1a1a2e"/>
-          <circle cx="89" cy="43" r="2" fill="#1a1a2e"/>
-          <!-- eye shine -->
-          <circle cx="72" cy="42" r="1" fill="#fff"/>
-          <circle cx="90" cy="42" r="1" fill="#fff"/>
-          <!-- lashes top -->
-          <path d="M65 40 Q68 37 71 38" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
-          <path d="M71 38 Q74 36 77 38" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
-          <path d="M83 38 Q86 36 89 38" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
-          <path d="M89 38 Q92 37 95 40" fill="none" stroke="#1a1a2e" stroke-width="1" stroke-linecap="round"/>
-          <!-- nose -->
-          <path d="M78 52 Q80 55 82 52" fill="none" stroke="#E8A87C" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- cheeks blush -->
-          <ellipse cx="62" cy="52" rx="7" ry="5" fill="url(#cheekGrad)"/>
-          <ellipse cx="98" cy="52" rx="7" ry="5" fill="url(#cheekGrad)"/>
-          <!-- lips -->
-          <path d="M72 59 Q76 57 80 58 Q84 57 88 59" fill="none" stroke="#E74C8B" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M72 59 Q80 64 88 59" fill="none" stroke="#E74C8B" stroke-width="2" stroke-linecap="round"/>
-          <path d="M74 59 Q80 62 86 59" fill="#F1948A" opacity=".6"/>
-
-          <!-- OUTFIT LAYERS -->
-          <!-- 1: dress -->
-          <g id="outfit-dress" display="none">
-            <!-- bodice -->
-            <path d="M55 88 Q80 102 105 88 L108 145 Q80 155 52 145Z" fill="#f472b6"/>
-            <!-- sparkle detail -->
-            <path d="M55 88 Q80 102 105 88" fill="none" stroke="#fce7f3" stroke-width="1.5"/>
-            <circle cx="80" cy="98" r="2" fill="#fff" opacity=".8"/>
-            <circle cx="68" cy="94" r="1.5" fill="#fff" opacity=".6"/>
-            <circle cx="92" cy="94" r="1.5" fill="#fff" opacity=".6"/>
-            <!-- skirt flare -->
-            <path d="M52 145 Q40 175 38 220 Q60 235 80 236 Q100 235 122 220 Q120 175 108 145 Q80 158 52 145Z" fill="#f9a8c9"/>
-            <!-- skirt layers -->
-            <path d="M44 185 Q80 198 116 185" fill="none" stroke="#fce7f3" stroke-width="1.5" opacity=".8"/>
-            <path d="M40 205 Q80 220 120 205" fill="none" stroke="#fce7f3" stroke-width="1.5" opacity=".6"/>
-          </g>
-
-          <!-- 2: heels -->
-          <g id="outfit-shoes" display="none">
-            <!-- left heel -->
-            <path d="M58 286 Q55 295 58 300 Q64 304 72 300 Q76 295 74 286Z" fill="#be185d"/>
-            <rect x="62" y="270" width="10" height="18" rx="3" fill="#be185d"/>
-            <line x1="64" y1="270" x2="62" y2="258" stroke="#be185d" stroke-width="2.5" stroke-linecap="round"/>
-            <!-- right heel -->
-            <path d="M86 286 Q83 295 86 300 Q92 304 100 300 Q104 295 102 286Z" fill="#be185d"/>
-            <rect x="90" y="270" width="10" height="18" rx="3" fill="#be185d"/>
-            <line x1="96" y1="270" x2="98" y2="258" stroke="#be185d" stroke-width="2.5" stroke-linecap="round"/>
-            <!-- ankle straps -->
-            <path d="M58 274 Q66 270 74 274" fill="none" stroke="#be185d" stroke-width="1.5"/>
-            <path d="M86 274 Q94 270 102 274" fill="none" stroke="#be185d" stroke-width="1.5"/>
-          </g>
-
-          <!-- 3: handbag -->
-          <g id="outfit-bag" display="none">
-            <rect x="114" y="158" width="28" height="22" rx="6" fill="#a855f7"/>
-            <!-- clasp -->
-            <rect x="125" y="155" width="6" height="5" rx="2" fill="#c084fc"/>
-            <!-- chain strap -->
-            <path d="M114 163 Q108 155 112 148 Q116 142 120 148" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="3,2"/>
-            <!-- monogram -->
-            <text x="128" y="173" text-anchor="middle" font-size="10" fill="#fff" font-family="Georgia,serif" font-weight="bold" opacity=".9">E</text>
-            <!-- shine -->
-            <ellipse cx="120" cy="162" rx="3" ry="2" fill="#fff" opacity=".3"/>
-          </g>
-
-          <!-- 4: necklace -->
-          <g id="outfit-necklace" display="none">
-            <path d="M65 76 Q80 88 95 76" fill="none" stroke="#F4D03F" stroke-width="2" stroke-linecap="round"/>
-            <!-- pendant drop -->
-            <line x1="80" y1="86" x2="80" y2="93" stroke="#F4D03F" stroke-width="1.5"/>
-            <circle cx="80" cy="96" r="5" fill="#F4D03F"/>
-            <circle cx="80" cy="96" r="3" fill="#fff" opacity=".7"/>
-            <!-- chain gems -->
-            <circle cx="68" cy="79" r="2" fill="#F4D03F"/>
-            <circle cx="92" cy="79" r="2" fill="#F4D03F"/>
-            <circle cx="74" cy="84" r="1.5" fill="#F4D03F"/>
-            <circle cx="86" cy="84" r="1.5" fill="#F4D03F"/>
-          </g>
-
-          <!-- 5: scarf / pashmina -->
-          <g id="outfit-scarf" display="none">
-            <path d="M54 78 Q80 92 106 78 Q110 90 80 96 Q50 90 54 78Z" fill="#34d399" opacity=".9"/>
-            <!-- drape -->
-            <path d="M58 92 Q52 115 48 140 Q46 150 50 155" fill="none" stroke="#34d399" stroke-width="8" stroke-linecap="round" opacity=".85"/>
-            <!-- fringe -->
-            <line x1="46" y1="153" x2="44" y2="162" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="50" y1="155" x2="48" y2="164" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="54" y1="156" x2="52" y2="165" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
-          </g>
-
-          <!-- 6: elegant hat -->
-          <g id="outfit-hat" display="none">
-            <!-- wide brim -->
-            <ellipse cx="80" cy="12" rx="40" ry="9" fill="#ec4899"/>
-            <!-- crown -->
-            <path d="M52 12 Q54 -4 80 -6 Q106 -4 108 12Z" fill="#db2777"/>
-            <!-- ribbon band -->
-            <rect x="52" y="8" width="56" height="6" rx="2" fill="#f9a8c9" opacity=".9"/>
-            <!-- flower detail -->
-            <circle cx="98" cy="10" r="5" fill="#fff" opacity=".9"/>
-            <circle cx="98" cy="10" r="3" fill="#fbbf24"/>
-            <circle cx="93" cy="8" r="3" fill="#fff" opacity=".8"/>
-            <circle cx="103" cy="8" r="3" fill="#fff" opacity=".8"/>
-          </g>
-
-          <!-- 7: pet puppy -->
-          <g id="outfit-pet" display="none">
-            <!-- puppy body -->
-            <ellipse cx="28" cy="262" rx="15" ry="11" fill="#e9c97e"/>
-            <!-- puppy head -->
-            <circle cx="28" cy="246" r="12" fill="#f5e2a8"/>
-            <!-- ears floppy -->
-            <ellipse cx="18" cy="242" rx="6" ry="9" fill="#e9c97e" transform="rotate(-15,18,242)"/>
-            <ellipse cx="38" cy="242" rx="6" ry="9" fill="#e9c97e" transform="rotate(15,38,242)"/>
-            <!-- eyes -->
-            <circle cx="24" cy="244" r="3" fill="#2d1b00"/>
-            <circle cx="32" cy="244" r="3" fill="#2d1b00"/>
-            <circle cx="25" cy="243" r="1" fill="#fff"/>
-            <circle cx="33" cy="243" r="1" fill="#fff"/>
-            <!-- nose -->
-            <ellipse cx="28" cy="250" rx="3" ry="2" fill="#2d1b00"/>
-            <!-- mouth -->
-            <path d="M24 252 Q28 256 32 252" fill="none" stroke="#2d1b00" stroke-width="1.2" stroke-linecap="round"/>
-            <!-- tail wagging -->
-            <path d="M43 260 Q52 252 50 244" fill="none" stroke="#e9c97e" stroke-width="5" stroke-linecap="round"/>
-            <!-- legs -->
-            <ellipse cx="18" cy="271" rx="5" ry="7" fill="#e9c97e"/>
-            <ellipse cx="38" cy="271" rx="5" ry="7" fill="#e9c97e"/>
-            <!-- paw pads -->
-            <ellipse cx="18" cy="277" rx="4" ry="3" fill="#f9c8a0"/>
-            <ellipse cx="38" cy="277" rx="4" ry="3" fill="#f9c8a0"/>
-            <!-- pink bow on puppy -->
-            <path d="M22 238 Q28 234 34 238" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/>
-            <!-- lead -->
-            <path d="M40 250 Q55 244 66 250" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3,2"/>
-          </g>
-
-          <!-- 8: hair accessory — tiara + ribbons -->
-          <g id="outfit-hair" display="none">
-            <!-- tiara band -->
-            <path d="M56 18 Q80 10 104 18" fill="none" stroke="#F4D03F" stroke-width="3" stroke-linecap="round"/>
-            <!-- tiara points -->
-            <line x1="70" y1="17" x2="68" y2="8" stroke="#F4D03F" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="80" y1="15" x2="80" y2="4" stroke="#F4D03F" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="90" y1="17" x2="92" y2="8" stroke="#F4D03F" stroke-width="2.5" stroke-linecap="round"/>
-            <!-- gems on tiara -->
-            <circle cx="68" cy="8" r="3" fill="#60a5fa"/>
-            <circle cx="80" cy="4" r="4" fill="#f472b6"/>
-            <circle cx="92" cy="8" r="3" fill="#60a5fa"/>
-            <circle cx="74" cy="13" r="2" fill="#fbbf24"/>
-            <circle cx="86" cy="13" r="2" fill="#fbbf24"/>
-            <!-- ribbon in hair -->
-            <path d="M104 24 Q112 18 110 28 Q118 22 110 28" fill="#f472b6" opacity=".9"/>
+        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <g id="hammy-g-start">
+            <circle cx="22" cy="22" r="13" fill="#f0d0b0"/><circle cx="58" cy="22" r="13" fill="#f0d0b0"/>
+            <circle cx="22" cy="22" r="8" fill="#f9a8c9"/><circle cx="58" cy="22" r="8" fill="#f9a8c9"/>
+            <ellipse cx="40" cy="44" rx="28" ry="26" fill="#f5e6d3"/>
+            <ellipse cx="18" cy="50" rx="10" ry="8" fill="#fde8d8"/><ellipse cx="62" cy="50" rx="10" ry="8" fill="#fde8d8"/>
+            <circle cx="31" cy="40" r="5" fill="#fff"/><circle cx="49" cy="40" r="5" fill="#fff"/>
+            <circle cx="32" cy="40" r="3" fill="#1a0a00"/><circle cx="50" cy="40" r="3" fill="#1a0a00"/>
+            <circle cx="33" cy="39" r="1" fill="#fff"/><circle cx="51" cy="39" r="1" fill="#fff"/>
+            <ellipse cx="40" cy="50" rx="4" ry="3" fill="#f9a8c9"/>
+            <path d="M34 55 Q40 61 46 55" fill="none" stroke="#c2853a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="10" y1="48" x2="28" y2="51" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <line x1="10" y1="53" x2="28" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <line x1="52" y1="51" x2="70" y2="48" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <line x1="52" y1="53" x2="70" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <ellipse cx="40" cy="72" rx="22" ry="14" fill="#f5e6d3"/>
+            <ellipse cx="24" cy="76" rx="6" ry="4" fill="#fde8d8"/><ellipse cx="56" cy="76" rx="6" ry="4" fill="#fde8d8"/>
           </g>
         </svg>
+        <div class="speech" id="speech-bubble">Hello Elisa! 🐹 I'm Sprinkle! Let's do some maths together and dress up your doll! Pick a topic to start!</div>
       </div>
-      <div id="outfit-list"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <button class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊 Sound on</button>
+        <button class="reset-btn" onclick="confirmReset()">🔄 Start over</button>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--purple-dark);margin-bottom:10px;text-align:center;">Choose a topic to start!</div>
+      <div class="topic-grid" id="topic-grid"></div>
+      <div class="badge-shelf" id="badge-shelf-start"></div>
     </div>
-    <div style="display:flex;justify-content:center;"><button class="mute-btn" onclick="toggleMute()" id="mute-btn2" style="margin-top:4px;">🔊</button></div>
+
+    <!-- DOLL SECTION -->
+    <div class="card" style="text-align:center;">
+      <h3 style="font-size:16px;font-weight:800;color:var(--pink-dark);margin-bottom:6px;">✨ Elisa's Fashion Doll</h3>
+      <p style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px;cursor:pointer;" onclick="openDollModal()">👆 Tap doll to dress her up!</p>
+      <div style="position:relative;display:inline-block;width:180px;cursor:pointer;" onclick="openDollModal()">
+        <img src="doll.svg" alt="Fashion doll" style="width:180px;height:320px;display:block;pointer-events:none;object-fit:contain;" onerror="this.style.display='none'"/>
+      </div>
+      <div class="badge-shelf" id="outfit-shelf"></div>
+    </div>
+
     <footer>Made with ❤️ for Elisa · Maths Adventure with Sprinkle</footer>
   </div>
 
@@ -438,94 +170,99 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
         <div id="topic-label" style="font-size:15px;font-weight:800;color:var(--pink-dark);"></div>
-        <button class="mute-btn" onclick="toggleMute()" id="mute-btn3">🔊</button>
+        <button class="mute-btn" id="mute-btn2" onclick="toggleMute()">🔊</button>
       </div>
       <div class="hamster-row">
-        <div id="hammy-wrap2">
-          <svg width="70" height="70" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" id="hammy-svg">
-            <g id="hammy-g">
-              <circle cx="22" cy="22" r="13" fill="#f0d0b0"/>
-              <circle cx="58" cy="22" r="13" fill="#f0d0b0"/>
-              <circle cx="22" cy="22" r="8" fill="#f9a8c9"/>
-              <circle cx="58" cy="22" r="8" fill="#f9a8c9"/>
-              <ellipse cx="40" cy="44" rx="28" ry="26" fill="#f5e6d3"/>
-              <ellipse cx="18" cy="50" rx="10" ry="8" fill="#fde8d8"/>
-              <ellipse cx="62" cy="50" rx="10" ry="8" fill="#fde8d8"/>
-              <circle cx="31" cy="40" r="5" fill="#fff"/>
-              <circle cx="49" cy="40" r="5" fill="#fff"/>
-              <circle cx="32" cy="40" r="3" fill="#1a0a00"/>
-              <circle cx="50" cy="40" r="3" fill="#1a0a00"/>
-              <circle cx="33" cy="39" r="1" fill="#fff"/>
-              <circle cx="51" cy="39" r="1" fill="#fff"/>
-              <ellipse cx="40" cy="50" rx="4" ry="3" fill="#f9a8c9"/>
-              <path id="hammy-mouth" d="M34 55 Q40 61 46 55" fill="none" stroke="#c2853a" stroke-width="2" stroke-linecap="round"/>
-              <line x1="10" y1="48" x2="28" y2="51" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <line x1="10" y1="53" x2="28" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <line x1="52" y1="51" x2="70" y2="48" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <line x1="52" y1="53" x2="70" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
-              <ellipse cx="40" cy="72" rx="22" ry="14" fill="#f5e6d3"/>
-              <ellipse cx="24" cy="76" rx="6" ry="4" fill="#fde8d8"/>
-              <ellipse cx="56" cy="76" rx="6" ry="4" fill="#fde8d8"/>
-            </g>
-          </svg>
-        </div>
-        <div id="speech-bubble2" style="background:var(--pink-pale);border:2px solid var(--pink);border-radius:14px;padding:10px 14px;font-size:14px;font-weight:700;color:var(--pink-dark);line-height:1.4;flex:1;position:relative;">You can do it Elisa! 🐹</div>
+        <svg width="70" height="70" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <g id="hammy-g">
+            <circle cx="22" cy="22" r="13" fill="#f0d0b0"/><circle cx="58" cy="22" r="13" fill="#f0d0b0"/>
+            <circle cx="22" cy="22" r="8" fill="#f9a8c9"/><circle cx="58" cy="22" r="8" fill="#f9a8c9"/>
+            <ellipse cx="40" cy="44" rx="28" ry="26" fill="#f5e6d3"/>
+            <ellipse cx="18" cy="50" rx="10" ry="8" fill="#fde8d8"/><ellipse cx="62" cy="50" rx="10" ry="8" fill="#fde8d8"/>
+            <circle cx="31" cy="40" r="5" fill="#fff"/><circle cx="49" cy="40" r="5" fill="#fff"/>
+            <circle cx="32" cy="40" r="3" fill="#1a0a00"/><circle cx="50" cy="40" r="3" fill="#1a0a00"/>
+            <circle cx="33" cy="39" r="1" fill="#fff"/><circle cx="51" cy="39" r="1" fill="#fff"/>
+            <ellipse cx="40" cy="50" rx="4" ry="3" fill="#f9a8c9"/>
+            <path id="hammy-mouth" d="M34 55 Q40 61 46 55" fill="none" stroke="#c2853a" stroke-width="2" stroke-linecap="round"/>
+            <line x1="10" y1="48" x2="28" y2="51" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <line x1="10" y1="53" x2="28" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <line x1="52" y1="51" x2="70" y2="48" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <line x1="52" y1="53" x2="70" y2="53" stroke="#aaa" stroke-width="1" opacity=".6"/>
+            <ellipse cx="40" cy="72" rx="22" ry="14" fill="#f5e6d3"/>
+            <ellipse cx="24" cy="76" rx="6" ry="4" fill="#fde8d8"/><ellipse cx="56" cy="76" rx="6" ry="4" fill="#fde8d8"/>
+          </g>
+        </svg>
+        <div class="speech" id="speech-bubble2">You can do it Elisa! 🐹</div>
       </div>
-      <div id="progress-info">Question <span id="q-num">1</span> of 5</div>
+      <div id="progress-info" style="text-align:center;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;">Question <span id="q-num">1</span> of 5</div>
       <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
-      <div id="question-text">? + ? = ?</div>
-      <input id="answer-input" type="number" placeholder="?" autocomplete="off"/>
-      <button class="btn-check" onclick="checkAnswer()">Check my answer! ✓</button>
-      <button class="btn-hint" onclick="toggleHint()">💡 Get help from Hammy!</button>
+      <div id="question-text" class="question-card">? + ? = ?</div>
+      <div class="question-card" style="padding-top:0;border-top:none;margin-top:-14px;">
+        <input id="answer-input" type="number" placeholder="?" autocomplete="off"/>
+        <button class="btn-check" onclick="checkAnswer()">Check my answer! ✓</button>
+        <button class="btn-hint" onclick="toggleHint()">💡 Get help from Sprinkle!</button>
+      </div>
       <div id="feedback"></div>
+      <div id="score-row">Correct: <span id="correct-count">0</span> / <span id="total-count">0</span></div>
       <div id="hint-panel">
-        <h3 id="hint-title">💡 Hammy's hint</h3>
+        <h3 id="hint-title">💡 Sprinkle's hint</h3>
         <div id="hint-text"></div>
         <div id="hint-visual"></div>
         <div id="hint-steps"></div>
       </div>
     </div>
-    <button onclick="resetToStart()" style="background:none;border:2px solid var(--pink);border-radius:14px;padding:8px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--pink-dark);cursor:pointer;display:block;margin:0 auto;">← Back to topics</button>
+    <button onclick="resetToStart()" style="background:none;border:2px solid var(--pink);border-radius:14px;padding:8px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--pink-dark);cursor:pointer;display:block;margin:0 auto 14px;">← Back to topics</button>
   </div>
 </div>
 
 <script>
 const TOPICS=[
-  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',accId:'acc-sunglasses',outfitName:'Sunglasses',outfitEmoji:'🕶️',
+  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',accId:'acc-dog',outfitName:'Pet Dog',outfitEmoji:'🐕',
    desc:'Adding two numbers together',
    gen:()=>{const a=ri(1,50),b=ri(1,50-a);return{q:`${a} + ${b}`,ans:a+b,a,b,op:'add'};}},
-  {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',accId:'acc-sunglasses',outfitName:'Sunglasses',outfitEmoji:'🕶️',
+  {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',accId:'acc-capybara',outfitName:'Pet Capybara',outfitEmoji:'🦫',
    desc:'Taking one number away from another',
    gen:()=>{const a=ri(10,99),b=ri(1,a);return{q:`${a} − ${b}`,ans:a-b,a,b,op:'sub'};}},
-  {id:'mul',label:'✖️ Multiplication',cls:'t-mul',emoji:'✖️',accId:'acc-bag',outfitName:'Designer Bag',outfitEmoji:'👜',
-   desc:'Multiplying using ×2, ×5 and ×10 tables',
+  {id:'mul',label:'✖️ Multiplication',cls:'t-mul',emoji:'✖️',accId:'acc-purse',outfitName:'Purse',outfitEmoji:'👛',
+   desc:'×2, ×5 and ×10 tables',
    gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t} × ${n}`,ans:t*n,a:t,b:n,op:'mul'};}},
-  {id:'div',label:'➗ Division',cls:'t-div',emoji:'➗',accId:'acc-necklace',outfitName:'Necklace',outfitEmoji:'📿',
-   desc:'Sharing equally using ÷2, ÷5 and ÷10',
+  {id:'div',label:'➗ Division',cls:'t-div',emoji:'➗',accId:'acc-sunglasses',outfitName:'Sunglasses',outfitEmoji:'🕶️',
+   desc:'÷2, ÷5 and ÷10',
    gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t*n} ÷ ${t}`,ans:n,a:t*n,b:t,op:'div'};}},
-  {id:'dbl',label:'⚡ Doubles & Halves',cls:'t-dbl',emoji:'⚡',accId:'acc-scarf',outfitName:'Silk Scarf',outfitEmoji:'🧣',
+  {id:'dbl',label:'⚡ Doubles & Halves',cls:'t-dbl',emoji:'⚡',accId:'acc-bikini',outfitName:'Bikini Top',outfitEmoji:'👙',
    desc:'Doubling and halving numbers',
    gen:()=>{const type=pick(['double','half']);if(type==='double'){const n=ri(1,50);return{q:`Double ${n}`,ans:n*2,a:n,b:n,op:'double'};}else{const n=ri(1,50)*2;return{q:`Half of ${n}`,ans:n/2,a:n,b:2,op:'half'};}}},
-  {id:'frc',label:'🍕 Fractions',cls:'t-frc',emoji:'🍕',accId:'acc-hat',outfitName:'Glamour Hat',outfitEmoji:'🎩',
-   desc:'Finding halves and quarters of numbers',
+  {id:'frc',label:'🍕 Fractions',cls:'t-frc',emoji:'🍕',accId:'acc-heels',outfitName:'Pink High Heels',outfitEmoji:'👠',
+   desc:'Halves and quarters of numbers',
    gen:()=>{const type=pick(['half','quarter']);if(type==='half'){const n=ri(1,20)*2;return{q:`½ of ${n}`,ans:n/2,a:n,b:2,op:'half'};}else{const n=ri(1,10)*4;return{q:`¼ of ${n}`,ans:n/4,a:n,b:4,op:'quarter'};}}},
-  {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',accId:'acc-pet',outfitName:'Pet Puppy',outfitEmoji:'🐶',
+  {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',accId:'acc-dog',outfitName:'Pet Dog',outfitEmoji:'🐕',
    desc:'Understanding tens and units',
    gen:()=>{const tens=ri(1,9),units=ri(0,9);const type=pick(['tens','units','total']);if(type==='tens')return{q:`${tens*10+units} — how many tens?`,ans:tens,a:tens,b:units,op:'tens'};if(type==='units')return{q:`${tens*10+units} — how many units?`,ans:units,a:tens,b:units,op:'units'};return{q:`${tens} tens and ${units} units = ?`,ans:tens*10+units,a:tens,b:units,op:'makenum'};}},
-  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',accId:'acc-pet',outfitName:'Pet Kitten',outfitEmoji:'🐱',
-   desc:'Comparing numbers — bigger or smaller',
+  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',accId:'acc-capybara',outfitName:'Pet Capybara',outfitEmoji:'🦫',
+   desc:'Bigger or smaller numbers',
    gen:()=>{const a=ri(1,99),b=ri(1,99);const type=pick(['bigger','smaller','diff']);if(type==='bigger')return{q:`Which is bigger?\n${a} or ${b}`,ans:Math.max(a,b),a,b,op:'bigger'};if(type==='smaller')return{q:`Which is smaller?\n${a} or ${b}`,ans:Math.min(a,b),a,b,op:'smaller'};return{q:`${Math.max(a,b)} − ${Math.min(a,b)} = ?`,ans:Math.abs(a-b),a,b,op:'diff'};}}
 ];
 
-const SPOKEN_CORRECT=["Great job Elisa!","Well done, superstar!","You are absolutely brilliant!","Fantastic work Elisa!","Yes! You nailed it!","Incredible! Keep going!","You are a maths superstar!","Sprinkle thinks you're amazing!","Sprinkle is so proud of you!","Outstanding! You rock!","That was perfect Elisa!","Brilliant! You are on fire!"];
-const SPOKEN_WRONG=["Don't worry Elisa, try again!","You can do it, Sprinkle believes in you!","Almost there Elisa!","Keep trying, you are doing great!"];
+const ALL_ITEMS=[
+  {id:'acc-dog',emoji:'🐕',name:'Pet Dog'},
+  {id:'acc-capybara',emoji:'🦫',name:'Pet Capybara'},
+  {id:'acc-purse',emoji:'👛',name:'Purse'},
+  {id:'acc-sunglasses',emoji:'🕶️',name:'Sunglasses'},
+  {id:'acc-bikini',emoji:'👙',name:'Bikini Top'},
+  {id:'acc-heels',emoji:'👠',name:'Pink High Heels'}
+];
 
-let completed={};let outfitsUnlocked=[];
+const SPOKEN_CORRECT=["Great job Elisa!","Well done superstar!","You are absolutely brilliant!","Fantastic work Elisa!","Yes! You nailed it!","Incredible! Keep going!","You are a maths superstar!","Sprinkle thinks you're amazing!","Sprinkle is so proud of you!","Outstanding! You rock!","That was perfect Elisa!","Brilliant! You are on fire!"];
+const SPOKEN_WRONG=["Don't worry Elisa, try again!","You can do it, Sprinkle believes in you!","Almost there Elisa!","Keep trying, you are doing great!"];
+const VICTORY_MSGS=["Sprinkle is spinning in circles, tripped over her own paws AND is STILL dancing! You're unbelievable, Elisa! 🎉","Sprinkle is SO excited she ran into a wall — twice — and doesn't care! Elisa, you're a maths LEGEND! 🏆","Sprinkle has launched herself and is rolling across the floor in pure joy! Champion Elisa strikes again! 🎊"];
+
+let completed={};let outfitsUnlocked=[];let dollPlacements={};
 try{completed=JSON.parse(localStorage.getItem('elisa_hammy_completed')||'{}');}catch(e){}
 try{outfitsUnlocked=JSON.parse(localStorage.getItem('elisa_hammy_outfits')||'[]');}catch(e){}
+try{dollPlacements=JSON.parse(localStorage.getItem('elisa_doll_placements')||'{}');}catch(e){}
 
 let muted=false,speechVoice=null,audioCtx=null;
-let state={topic:null,q:null,qNum:0,correct:0,hintOpen:false};
+let state={topic:null,q:null,qNum:0,correct:0,total:0,hintOpen:false};
 let lastSpokenIdx=-1;
 
 function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
@@ -536,33 +273,11 @@ function tone(f,t,d,v,dl){try{if(muted)return;const c=ac(),o=c.createOscillator(
 function playCorrect(){tone(523,'sine',.1,.25,0);tone(659,'sine',.1,.25,.1);tone(784,'sine',.18,.25,.2);}
 function playWrong(){tone(300,'sawtooth',.12,.18,0);tone(240,'sawtooth',.18,.18,.13);}
 function playVictory(){[523,587,659,784,880,1047].forEach((n,i)=>tone(n,'sine',.18,.22,i*.1));}
-function toggleMute(){
-  muted=!muted;
-  ['mute-btn','mute-btn2','mute-btn3'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent=muted?'🔇 Muted':'🔊 Sound on';});
-}
+function toggleMute(){muted=!muted;const label=muted?'🔇 Muted':'🔊 Sound on';['mute-btn','mute-btn2'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent=muted?'🔇':'🔊 Sound on';});}
 
-function loadVoice(){
-  const voices=window.speechSynthesis.getVoices();
-  if(!voices.length)return;
-  const preferred=['Google UK English Female','Microsoft Hazel','Microsoft Susan'];
-  let v=voices.find(v=>preferred.some(p=>v.name.includes(p))&&v.lang.startsWith('en-GB'));
-  if(!v)v=voices.find(v=>v.lang.startsWith('en-GB'));
-  if(!v)v=voices.find(v=>v.lang.startsWith('en'));
-  if(v)speechVoice=v;
-}
-function speak(text,delay){
-  if(muted||!window.speechSynthesis)return;
-  setTimeout(()=>{
-    const msg=new SpeechSynthesisUtterance(text);
-    msg.lang='en-GB';msg.pitch=1.9;msg.rate=1.05;
-    if(speechVoice)msg.voice=speechVoice;
-    window.speechSynthesis.speak(msg);
-  },delay||300);
-}
-function speakCorrect(){
-  let idx;do{idx=Math.floor(Math.random()*SPOKEN_CORRECT.length);}while(idx===lastSpokenIdx);
-  lastSpokenIdx=idx;speak(SPOKEN_CORRECT[idx],200);
-}
+function loadVoice(){const voices=window.speechSynthesis.getVoices();if(!voices.length)return;const preferred=['Google UK English Female','Microsoft Hazel','Microsoft Susan'];let v=voices.find(v=>preferred.some(p=>v.name.includes(p))&&v.lang.startsWith('en-GB'));if(!v)v=voices.find(v=>v.lang.startsWith('en-GB'));if(!v)v=voices.find(v=>v.lang.startsWith('en'));if(v)speechVoice=v;}
+function speak(text,delay){if(muted||!window.speechSynthesis)return;setTimeout(()=>{const msg=new SpeechSynthesisUtterance(text);msg.lang='en-GB';msg.pitch=1.9;msg.rate=1.05;if(speechVoice)msg.voice=speechVoice;window.speechSynthesis.speak(msg);},delay||300);}
+function speakCorrect(){let idx;do{idx=Math.floor(Math.random()*SPOKEN_CORRECT.length);}while(idx===lastSpokenIdx);lastSpokenIdx=idx;speak(SPOKEN_CORRECT[idx],200);}
 function speakWrong(){speak(pick(SPOKEN_WRONG),200);}
 
 loadVoice();
@@ -573,308 +288,44 @@ document.addEventListener('click',tryGreeting,{once:true});
 document.addEventListener('keydown',tryGreeting,{once:true});
 document.addEventListener('touchstart',tryGreeting,{once:true});
 
-function confirmReset(){
-  if(confirm('Are you sure you want to start over? All your progress and badges will be cleared!')){
-    try{
-      localStorage.removeItem('elisa_hammy_completed');
-      localStorage.removeItem('elisa_hammy_outfits');
-      localStorage.removeItem('elisa_doll_placements');
-    }catch(e){}
-    completed={};outfitsUnlocked=[];dollPlacements={};
-    renderStart();
-    speak('Starting over! Good luck Elisa!',300);
-  }
-}
+function renderStart(){
   const grid=document.getElementById('topic-grid');
-  grid.innerHTML='';
+  const bs=document.getElementById('badge-shelf-start');
+  if(!grid||!bs)return;
+  grid.innerHTML='';bs.innerHTML='';
   TOPICS.forEach(t=>{
     const done=completed[t.id];
     const btn=document.createElement('button');
     btn.className='topic-btn '+t.cls+(done?' done':'');
-    btn.innerHTML=`${t.label}<br/><span style="font-size:12px;font-weight:600;opacity:.8;">${t.desc}</span>${done?'<span class="tick">✅</span>':''}`;
+    btn.innerHTML=`${t.emoji} ${t.label}<br/><span style="font-size:11px;font-weight:600;opacity:.8;">${t.desc}</span>${done?'<span class="tick">✅</span>':''}`;
     if(!done)btn.onclick=()=>startTopic(t);
+    else btn.onclick=()=>startTopic(t); // allow redo
     grid.appendChild(btn);
+    const bd=document.createElement('span');
+    bd.className='badge'+(done?' earned':'');
+    bd.title=t.label;bd.textContent=t.emoji;bs.appendChild(bd);
   });
-  renderOutfitList();
-  renderDoll();
+  renderOutfitShelf();
   startHammyWiggle('hammy-g-start');
 }
 
-function renderOutfitList(){
-  const ol=document.getElementById('outfit-list');
-  ol.innerHTML='';
-  TOPICS.forEach(t=>{
-    const span=document.createElement('span');
-    span.className='outfit-item'+(outfitsUnlocked.includes(t.id)?' unlocked':'');
-    span.title=t.outfitName;
-    span.textContent=t.outfitEmoji;
-    ol.appendChild(span);
+function renderOutfitShelf(){
+  const shelf=document.getElementById('outfit-shelf');
+  if(!shelf)return;
+  shelf.innerHTML='';
+  ALL_ITEMS.forEach(a=>{
+    const sp=document.createElement('span');
+    sp.className='badge'+(outfitsUnlocked.includes(a.id)?' earned':'');
+    sp.title=a.name;sp.textContent=a.emoji;shelf.appendChild(sp);
   });
-}
-
-function renderDoll(){
-  TOPICS.forEach(t=>{
-    const el=document.getElementById(t.accId);
-    if(el) el.style.display=outfitsUnlocked.includes(t.id)?'block':'none';
-  });
-}
-
-// ── DRAG & DROP DRESSING ROOM ──
-let dollPlacements={};
-try{dollPlacements=JSON.parse(localStorage.getItem('elisa_doll_placements')||'{}');}catch(e){}
-
-function openDollModal(){
-  document.getElementById('doll-modal').style.display='flex';
-  buildTray();
-  restorePlacements();
-}
-function closeDollModal(){
-  document.getElementById('doll-modal').style.display='none';
-}
-
-function buildTray(){
-  const tray=document.getElementById('acc-tray');
-  tray.innerHTML='';
-  TOPICS.forEach(t=>{
-    if(!outfitsUnlocked.includes(t.id)) return;
-    // if already placed on doll, show faded in tray
-    const placed=dollPlacements[t.id];
-    const div=document.createElement('div');
-    div.id='tray-'+t.id;
-    div.textContent=t.outfitEmoji;
-    div.title=t.outfitName;
-    div.style.cssText=`font-size:36px;cursor:grab;user-select:none;opacity:${placed?'0.3':'1'};transition:opacity .3s;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));`;
-    div.draggable=true;
-    div.addEventListener('dragstart',e=>{
-      e.dataTransfer.setData('text/plain',t.id);
-      div.style.opacity='0.4';
-    });
-    div.addEventListener('dragend',()=>{ div.style.cursor='grab'; });
-    // touch support
-    div.addEventListener('touchstart',onTouchStart,{passive:false});
-    tray.appendChild(div);
-  });
-}
-
-function restorePlacements(){
-  const stage=document.getElementById('doll-stage');
-  // remove old placed items
-  stage.querySelectorAll('.placed-acc').forEach(el=>el.remove());
-  Object.entries(dollPlacements).forEach(([id,pos])=>{
-    const t=TOPICS.find(t=>t.id===id);
-    if(!t) return;
-    addToDoll(t,pos.x,pos.y,false);
-  });
-}
-
-// Drop on doll stage
-const stage=document.getElementById('doll-stage');
-stage.addEventListener('dragover',e=>{e.preventDefault();stage.style.borderColor='#E91E8C';});
-stage.addEventListener('dragleave',()=>{stage.style.borderColor='#c084fc';});
-stage.addEventListener('drop',e=>{
-  e.preventDefault();
-  stage.style.borderColor='#c084fc';
-  const id=e.dataTransfer.getData('text/plain');
-  const t=TOPICS.find(t=>t.id===id);
-  if(!t) return;
-  const rect=stage.getBoundingClientRect();
-  const x=e.clientX-rect.left-20;
-  const y=e.clientY-rect.top-20;
-  addToDoll(t,x,y,28,true);
-});
-
-function addToDoll(t,x,y,size,save){
-  const stage=document.getElementById('doll-stage');
-  const existing=stage.querySelector('.placed-acc[data-id="'+t.id+'"]');
-  if(existing) existing.remove();
-
-  const sz=size||28;
-  const wrapper=document.createElement('div');
-  wrapper.className='placed-acc';
-  wrapper.dataset.id=t.id;
-  wrapper.style.cssText=`position:absolute;left:${x}px;top:${y}px;z-index:10;cursor:move;user-select:none;`;
-
-  const emoji=document.createElement('div');
-  emoji.textContent=t.outfitEmoji;
-  emoji.style.cssText=`font-size:${sz}px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25));line-height:1;transition:font-size .1s;`;
-
-  // size slider
-  const slider=document.createElement('input');
-  slider.type='range';
-  slider.min='16';slider.max='60';slider.value=sz;
-  slider.style.cssText=`width:60px;display:block;margin:2px auto 0;opacity:0;transition:opacity .2s;cursor:pointer;accent-color:#E91E8C;`;
-  slider.addEventListener('input',()=>{
-    emoji.style.fontSize=slider.value+'px';
-    savePlacement(t.id,parseInt(wrapper.style.left),parseInt(wrapper.style.top),parseInt(slider.value));
-  });
-
-  // show slider on hover / tap
-  wrapper.addEventListener('mouseenter',()=>slider.style.opacity='1');
-  wrapper.addEventListener('mouseleave',()=>slider.style.opacity='0');
-  wrapper.addEventListener('touchstart',()=>{
-    slider.style.opacity=slider.style.opacity==='1'?'0':'1';
-  },{passive:true});
-
-  wrapper.appendChild(emoji);
-  wrapper.appendChild(slider);
-  makeDraggableOnStage(wrapper,t.id,slider);
-  stage.appendChild(wrapper);
-
-  emoji.style.transform='scale(1.5)';
-  setTimeout(()=>emoji.style.transform='scale(1)',200);
-
-  const trayItem=document.getElementById('tray-'+t.id);
-  if(trayItem) trayItem.style.opacity='0.3';
-
-  if(save){
-    savePlacement(t.id,x,y,sz);
-  }
-}
-
-function makeDraggableOnStage(el,id,slider){
-  let startX,startY,startLeft,startTop;
-  let isDragging=false;
-
-  el.addEventListener('mousedown',e=>{
-    if(e.target===slider) return;
-    e.preventDefault();
-    isDragging=false;
-    startX=e.clientX; startY=e.clientY;
-    startLeft=parseInt(el.style.left)||0;
-    startTop=parseInt(el.style.top)||0;
-    function onMove(e){
-      isDragging=true;
-      const dx=e.clientX-startX,dy=e.clientY-startY;
-      el.style.left=(startLeft+dx)+'px';
-      el.style.top=(startTop+dy)+'px';
-    }
-    function onUp(){
-      document.removeEventListener('mousemove',onMove);
-      document.removeEventListener('mouseup',onUp);
-      if(isDragging) savePlacement(id,parseInt(el.style.left),parseInt(el.style.top),parseInt(slider.value));
-    }
-    document.addEventListener('mousemove',onMove);
-    document.addEventListener('mouseup',onUp);
-  });
-
-  el.addEventListener('touchstart',e=>{
-    if(e.target===slider) return;
-    e.preventDefault();
-    const touch=e.touches[0];
-    startX=touch.clientX; startY=touch.clientY;
-    startLeft=parseInt(el.style.left)||0;
-    startTop=parseInt(el.style.top)||0;
-  },{passive:false});
-
-  el.addEventListener('touchmove',e=>{
-    if(e.target===slider) return;
-    e.preventDefault();
-    const touch=e.touches[0];
-    el.style.left=(startLeft+(touch.clientX-startX))+'px';
-    el.style.top=(startTop+(touch.clientY-startY))+'px';
-  },{passive:false});
-
-  el.addEventListener('touchend',e=>{
-    if(e.target===slider) return;
-    savePlacement(id,parseInt(el.style.left),parseInt(el.style.top),parseInt(slider.value));
-  });
-
-  // double click to remove
-  let lastTap=0;
-  el.addEventListener('click',e=>{
-    if(e.target===slider||isDragging) return;
-    const now=Date.now();
-    if(now-lastTap<400){
-      el.remove();
-      delete dollPlacements[id];
-      try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}
-      const trayItem=document.getElementById('tray-'+id);
-      if(trayItem) trayItem.style.opacity='1';
-    }
-    lastTap=now;
-  });
-}
-
-function savePlacement(id,x,y){
-  dollPlacements[id]={x,y};
-  try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}
-}
-
-function clearDollPlacements(){
-  dollPlacements={};
-  try{localStorage.setItem('elisa_doll_placements','{}');}catch(e){}
-  document.getElementById('doll-stage').querySelectorAll('.placed-acc').forEach(el=>el.remove());
-  buildTray();
-}
-
-// touch drag from tray
-let touchDragItem=null,touchDragClone=null;
-function onTouchStartItem(e,a){
-  e.preventDefault();touchDragItem=a.id;
-  const touch=e.touches[0];touchDragClone=document.createElement('div');
-  touchDragClone.textContent=a.emoji;
-  touchDragClone.style.cssText=`position:fixed;font-size:44px;pointer-events:none;z-index:99999;left:${touch.clientX-22}px;top:${touch.clientY-22}px;opacity:.85;`;
-  document.body.appendChild(touchDragClone);
-  document.addEventListener('touchmove',onTouchMove,{passive:false});
-  document.addEventListener('touchend',onTouchEnd);
-}
-function onTouchStart(e){
-  const div=e.currentTarget;
-  const id=div.id.replace('tray-','');
-  const a=ALL_ITEMS.find(a=>a.id===id);
-  if(a) onTouchStartItem(e,a);
-}
-function onTouchMove(e){
-  e.preventDefault();
-  const touch=e.touches[0];
-  if(touchDragClone){
-    touchDragClone.style.left=(touch.clientX-22)+'px';
-    touchDragClone.style.top=(touch.clientY-22)+'px';
-  }
-}
-function onTouchEnd(e){
-  document.removeEventListener('touchmove',onTouchMove);
-  document.removeEventListener('touchend',onTouchEnd);
-  if(touchDragClone){ touchDragClone.remove(); touchDragClone=null; }
-  if(!touchDragItem) return;
-  const touch=e.changedTouches[0];
-  const stage=document.getElementById('doll-stage');
-  const rect=stage.getBoundingClientRect();
-  const x=touch.clientX-rect.left-22;
-  const y=touch.clientY-rect.top-22;
-  if(x>-40&&x<rect.width+40&&y>-40&&y<rect.height+40){
-    const t=TOPICS.find(t=>t.id===touchDragItem);
-    if(t) addToDoll(t,Math.max(0,x),Math.max(0,y),28,true);
-  }
-  touchDragItem=null;
-}
-
-function openDollModal(){
-  document.getElementById('doll-modal').style.display='flex';
-  buildTray();
-  restorePlacements();
-}
-function closeDollModal(){
-  document.getElementById('doll-modal').style.display='none';
-}
-function flashAccessory(accId){
-  const el=document.getElementById(accId);
-  if(!el) return;
-  el.style.display='block';
-  el.style.transform='translateX(-50%) scale(2)';
-  el.style.transition='transform 0.4s ease';
-  setTimeout(()=>{
-    el.style.transform=el.style.transform.includes('translateX')?'translateX(-50%) scale(1)':'scale(1)';
-  },400);
 }
 
 function startTopic(t){
-  state={topic:t,q:null,qNum:0,correct:0,hintOpen:false};
+  state={topic:t,q:null,qNum:0,correct:0,total:0,hintOpen:false};
   document.getElementById('start-screen').style.display='none';
   document.getElementById('play-screen').style.display='block';
   document.getElementById('topic-label').textContent=t.label;
-      setSpeech2("Let's go Elisa! "+t.desc+" — you've got this! 🐹");
-
+  setSpeech2("Let's go Elisa! "+t.desc+" — you've got this! 🐹");
   nextQuestion();
   startHammyWiggle('hammy-g');
   window.scrollTo({top:0,behavior:'smooth'});
@@ -889,28 +340,30 @@ function nextQuestion(){
   document.getElementById('hint-panel').style.display='none';
   document.getElementById('answer-input').focus();
   state.hintOpen=false;
-  const pct=(state.qNum-1)/5*100;
-  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('progress-bar').style.width=Math.min(100,(state.correct/5)*100)+'%';
   document.getElementById('q-num').textContent=state.qNum;
 }
 
 function checkAnswer(){
   const v=parseInt(document.getElementById('answer-input').value);
   if(isNaN(v))return;
+  state.total++;
+  document.getElementById('total-count').textContent=state.total;
+  document.getElementById('correct-count').textContent=state.correct;
   const fb=document.getElementById('feedback');
   if(v===state.q.ans){
+    state.correct++;
+    document.getElementById('correct-count').textContent=state.correct;
     fb.style.color='var(--green)';fb.textContent='✔ Correct! Well done!';
     playCorrect();speakCorrect();hammyHappy();
     setSpeech2(pick(["Woohoo! Correct! 🎉","Yes yes yes! 🐹","You're amazing Elisa! ⭐","Sprinkle is so happy! 🐹"]));
-    state.correct++;
     if(state.correct>=5){setTimeout(topicComplete,1000);return;}
-    setTimeout(nextQuestion,1200);
   }else{
-    fb.style.color='var(--red)';fb.textContent='✘ Not quite — the answer was '+state.q.ans+'. Try the next one!';
+    fb.style.color='var(--red)';fb.textContent='✘ The answer was '+state.q.ans;
     playWrong();speakWrong();hammySad();
-    setSpeech2(pick(["Don't worry Elisa! You can do it! 💪","Almost! Click get help if you need! 🐹","Keep going, Sprinkle believes in you! ⭐"]));
-    setTimeout(nextQuestion,2000);
+    setSpeech2(pick(["Don't worry! Click get help! 💡","Keep going, Sprinkle believes in you! 🐹","Almost! You've got this! ⭐"]));
   }
+  setTimeout(nextQuestion,900);
 }
 
 document.getElementById('answer-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer();});
@@ -918,35 +371,39 @@ document.getElementById('answer-input').addEventListener('keydown',e=>{if(e.key=
 function topicComplete(){
   const t=state.topic;
   playVictory();
-  // Unlock outfit
-  if(!outfitsUnlocked.includes(t.id)){
-    outfitsUnlocked.push(t.id);
-    try{localStorage.setItem('elisa_hammy_outfits',JSON.stringify(outfitsUnlocked));}catch(e){}
-  }
   completed[t.id]=true;
   try{localStorage.setItem('elisa_hammy_completed',JSON.stringify(completed));}catch(e){}
+  if(!outfitsUnlocked.includes(t.accId)){
+    outfitsUnlocked.push(t.accId);
+    try{localStorage.setItem('elisa_hammy_outfits',JSON.stringify(outfitsUnlocked));}catch(e){}
+  }
   launchConfetti();
   const dd=document.getElementById('dance-hammy');
-  const frames=['🐹','🕺','💃','🎉','✨','🌟','🎀','🐹','💖','🥳'];
-  let di=0;const dint=setInterval(()=>{dd.textContent=frames[di%frames.length];di++;},200);
+  const frames=['🐹','🕺','💃','🎉','🪩','🎊','🥳','🐾','😂','🤪'];
+  let di=0;const dint=setInterval(()=>{dd.textContent=frames[di%frames.length];di++;},180);
   setTimeout(()=>clearInterval(dint),6000);
   const acc=ALL_ITEMS.find(a=>a.id===t.accId)||{emoji:'⭐',name:'bonus item'};
   document.getElementById('victory-title').textContent='Amazing Elisa! '+t.outfitEmoji;
-  document.getElementById('victory-msg').textContent=`You completed ${t.label}! Sprinkle is doing a happy dance! Your doll just unlocked: ${acc.emoji} ${acc.name}! Keep going to unlock more! ✨`;
+  document.getElementById('victory-msg').textContent=pick(VICTORY_MSGS)+` Your doll just unlocked: ${acc.emoji} ${acc.name}!`;
   speak(`Amazing Elisa! You finished ${t.label}! Your doll just got a ${acc.name}!`,400);
-  flashAccessory(t.accId);
   document.getElementById('victory-overlay').style.display='flex';
 }
 
-function closeVictory(){
-  document.getElementById('victory-overlay').style.display='none';
-  stopConfetti();resetToStart();
-}
+function closeVictory(){document.getElementById('victory-overlay').style.display='none';stopConfetti();resetToStart();}
 
 function resetToStart(){
   document.getElementById('play-screen').style.display='none';
   document.getElementById('start-screen').style.display='block';
   renderStart();
+}
+
+function confirmReset(){
+  if(confirm('Are you sure you want to start over? All your progress will be cleared!')){
+    try{localStorage.removeItem('elisa_hammy_completed');localStorage.removeItem('elisa_hammy_outfits');localStorage.removeItem('elisa_doll_placements');}catch(e){}
+    completed={};outfitsUnlocked=[];dollPlacements={};
+    renderStart();
+    speak('Starting over! Good luck Elisa!',300);
+  }
 }
 
 function toggleHint(){
@@ -959,155 +416,182 @@ function toggleHint(){
 function buildHint(){
   const q=state.q;const op=q.op;
   let title='',text='',steps='',visual='';
-
-  if(op==='add'){
-    title='➕ How to add!';
-    text=`Adding means counting on. Start at ${q.a} and count on ${q.b} more steps.`;
-    steps=`Step 1: Start at ${q.a}\nStep 2: Count on ${q.b}\nStep 3: ${q.a} + ${q.b} = ${q.ans}`;
-    visual=numberLineHTML(q.a,q.ans,'#f472b6');
-  }else if(op==='sub'){
-    title='➖ How to subtract!';
-    text=`Subtracting means counting back. Start at ${q.a} and count back ${q.b} steps.`;
-    steps=`Step 1: Start at ${q.a}\nStep 2: Count back ${q.b}\nStep 3: ${q.a} − ${q.b} = ${q.ans}`;
-    visual=numberLineHTML(q.ans,q.a,'#f87171',true);
-  }else if(op==='mul'){
-    title='✖️ How to multiply!';
-    text=`${q.a} × ${q.b} means ${q.b} groups of ${q.a}. Count the dots!`;
-    steps=`${q.b} groups of ${q.a} = ${q.ans}`;
-    visual=dotsHTML(q.a,q.b,'#60a5fa');
-  }else if(op==='div'){
-    title='➗ How to divide!';
-    text=`${q.a} ÷ ${q.b} means share ${q.a} equally into ${q.b} groups. How many in each group?`;
-    steps=`${q.a} shared into ${q.b} groups = ${q.ans} in each group`;
-    visual=dotsHTML(q.ans,q.b,'#34d399');
-  }else if(op==='double'){
-    title='⚡ How to double!';
-    text=`Doubling means adding a number to itself. ${q.a} + ${q.a} = ${q.ans}`;
-    steps=`${q.a} + ${q.a} = ${q.ans}`;
-    visual=dotsHTML(q.a,2,'#a78bfa');
-  }else if(op==='half'){
-    title='⚡ How to halve!';
-    text=`Halving means splitting into 2 equal groups. ${q.a} split into 2 = ${q.ans} each.`;
-    steps=`${q.a} ÷ 2 = ${q.ans}`;
-    visual=dotsHTML(q.ans,2,'#a78bfa');
-  }else if(op==='quarter'){
-    title='🍕 How to find a quarter!';
-    text=`A quarter means splitting into 4 equal groups. ${q.a} ÷ 4 = ${q.ans}`;
-    steps=`${q.a} ÷ 4 = ${q.ans} in each part`;
-    visual=fractionHTML(4,q.ans,q.a);
-  }else if(op==='tens'||op==='units'||op==='makenum'){
-    title='🔢 Place Value!';
-    text=`Every number has tens and units. ${q.a*10+q.b||q.a} = ${q.a} tens and ${q.b} units.`;
-    steps=`Tens: ${q.a} × 10 = ${q.a*10}\nUnits: ${q.b}\nTotal: ${q.a*10+q.b}`;
-    visual=placeValueHTML(q.a,q.b);
-  }else if(op==='bigger'||op==='smaller'||op==='diff'){
-    title='⚖️ Comparing numbers!';
-    const big=Math.max(q.a,q.b),small=Math.min(q.a,q.b);
-    text=`To compare, look at the tens first. ${big} is bigger than ${small}.`;
-    steps=`${big} > ${small}\n${small} < ${big}\nDifference: ${big} − ${small} = ${big-small}`;
-    visual=compareHTML(q.a,q.b);
-  }
-
+  if(op==='add'){title='➕ How to add!';text=`Start at ${q.a} and count on ${q.b} more.`;steps=`Step 1: Start at ${q.a}\nStep 2: Count on ${q.b}\nStep 3: ${q.a} + ${q.b} = ${q.ans}`;visual=numberLineHTML(q.a,q.ans);}
+  else if(op==='sub'){title='➖ How to subtract!';text=`Start at ${q.a} and count back ${q.b}.`;steps=`Step 1: Start at ${q.a}\nStep 2: Count back ${q.b}\nStep 3: Answer = ${q.ans}`;visual=numberLineHTML(q.ans,q.a);}
+  else if(op==='mul'){title='✖️ How to multiply!';text=`${q.a} × ${q.b} means ${q.b} groups of ${q.a}.`;steps=`${q.b} groups of ${q.a} = ${q.ans}`;visual=dotsHTML(q.a,q.b,'#60a5fa');}
+  else if(op==='div'){title='➗ How to divide!';text=`Share ${q.a} equally into ${q.b} groups.`;steps=`${q.a} ÷ ${q.b} = ${q.ans} in each group`;visual=dotsHTML(q.ans,q.b,'#34d399');}
+  else if(op==='double'){title='⚡ How to double!';text=`Double means add to itself: ${q.a} + ${q.a}`;steps=`${q.a} + ${q.a} = ${q.ans}`;visual=dotsHTML(q.a,2,'#a78bfa');}
+  else if(op==='half'){title='⚡ How to halve!';text=`Split ${q.a} into 2 equal groups.`;steps=`${q.a} ÷ 2 = ${q.ans}`;visual=dotsHTML(q.ans,2,'#a78bfa');}
+  else if(op==='quarter'){title='🍕 Finding a quarter!';text=`Split ${q.a} into 4 equal parts.`;steps=`${q.a} ÷ 4 = ${q.ans}`;visual=fractionHTML(4,q.ans,q.a);}
+  else if(op==='tens'||op==='units'||op==='makenum'){title='🔢 Place Value!';const n=q.a*10+q.b;text=`${n} = ${q.a} tens and ${q.b} units.`;steps=`Tens: ${q.a} × 10 = ${q.a*10}\nUnits: ${q.b}\nTotal: ${n}`;visual=placeValueHTML(q.a,q.b);}
+  else if(op==='bigger'||op==='smaller'||op==='diff'){title='⚖️ Comparing!';const big=Math.max(q.a,q.b),small=Math.min(q.a,q.b);text=`${big} is bigger than ${small}.`;steps=`${big} > ${small}\nDifference: ${big} − ${small} = ${big-small}`;visual=compareHTML(q.a,q.b);}
   document.getElementById('hint-title').textContent=title;
   document.getElementById('hint-text').textContent=text;
   document.getElementById('hint-visual').innerHTML=visual;
   document.getElementById('hint-steps').innerHTML=steps.split('\n').map(s=>`<div>👉 ${s}</div>`).join('');
 }
 
-function numberLineHTML(start,end,color,reverse){
-  const range=end-start;const steps=Math.min(range,10);
-  let html=`<div style="display:flex;align-items:center;gap:2px;padding:8px;overflow-x:auto;width:100%;">`;
-  for(let i=start;i<=end;i++){
+function numberLineHTML(start,end){
+  let html='<div style="display:flex;align-items:center;gap:2px;padding:8px;overflow-x:auto;width:100%;">';
+  for(let i=start;i<=Math.min(end,start+10);i++){
     const isEnd=i===end,isStart=i===start;
-    html+=`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-      <div style="width:${isEnd||isStart?28:22}px;height:${isEnd||isStart?28:22}px;border-radius:50%;background:${isEnd?color:isStart?'#fde68a':'#e5e7eb'};display:flex;align-items:center;justify-content:center;font-size:${isEnd||isStart?12:10}px;font-weight:800;color:${isEnd||isStart?'#fff':'#374151'};">${i}</div>
-      ${i<end?`<div style="font-size:16px;">→</div>`:''}
-    </div>`;
+    html+=`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:${isEnd||isStart?28:22}px;height:${isEnd||isStart?28:22}px;border-radius:50%;background:${isEnd?'#f472b6':isStart?'#fde68a':'#e5e7eb'};display:flex;align-items:center;justify-content:center;font-size:${isEnd||isStart?12:10}px;font-weight:800;color:${isEnd||isStart?'#fff':'#374151'};">${i}</div>${i<end&&i<start+10?'<div style="font-size:14px;">→</div>':''}</div>`;
   }
-  html+='</div>';
-  return html;
+  html+='</div>';return html;
 }
-
 function dotsHTML(groupSize,groups,color){
-  let html=`<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">`;
-  for(let g=0;g<groups;g++){
-    html+=`<div style="background:#f3f4f6;border-radius:10px;padding:6px;display:flex;flex-wrap:wrap;gap:4px;max-width:${groupSize*22}px;">`;
-    for(let d=0;d<groupSize;d++){
-      html+=`<div style="width:18px;height:18px;border-radius:50%;background:${color};"></div>`;
-    }
-    html+=`</div>`;
-  }
-  html+='</div>';
-  return html;
+  let html='<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">';
+  for(let g=0;g<Math.min(groups,10);g++){html+=`<div style="background:#f3f4f6;border-radius:10px;padding:6px;display:flex;flex-wrap:wrap;gap:4px;max-width:${Math.min(groupSize,10)*22}px;">`;for(let d=0;d<Math.min(groupSize,10);d++)html+=`<div style="width:18px;height:18px;border-radius:50%;background:${color};"></div>`;html+='</div>';}
+  html+='</div>';return html;
 }
-
 function fractionHTML(parts,each,total){
-  let html=`<div style="display:flex;gap:4px;justify-content:center;">`;
-  for(let i=0;i<parts;i++){
-    html+=`<div style="width:44px;height:44px;background:${i===0?'#f472b6':'#fce7f3'};border:2px solid #f472b6;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#be185d;">${each}</div>`;
-  }
-  html+='</div>';
-  html+=`<div style="text-align:center;font-size:12px;font-weight:700;color:#be185d;margin-top:4px;">${parts} equal parts of ${total} = ${each} each</div>`;
-  return html;
+  let html='<div style="display:flex;gap:4px;justify-content:center;">';
+  for(let i=0;i<parts;i++)html+=`<div style="width:44px;height:44px;background:${i===0?'#f472b6':'#fce7f3'};border:2px solid #f472b6;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#be185d;">${each}</div>`;
+  html+=`</div><div style="text-align:center;font-size:12px;font-weight:700;color:#be185d;margin-top:4px;">${parts} equal parts of ${total} = ${each} each</div>`;return html;
 }
-
 function placeValueHTML(tens,units){
-  let html=`<div style="display:flex;gap:12px;justify-content:center;align-items:flex-end;">`;
-  html+=`<div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:4px;">TENS</div><div style="display:flex;gap:3px;flex-wrap:wrap;max-width:${tens*22}px;">`;
-  for(let i=0;i<tens;i++)html+=`<div style="width:18px;height:36px;background:#818cf8;border-radius:4px;"></div>`;
+  let html='<div style="display:flex;gap:12px;justify-content:center;align-items:flex-end;">';
+  html+=`<div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:4px;">TENS</div><div style="display:flex;gap:3px;flex-wrap:wrap;max-width:${Math.min(tens,9)*22}px;">`;
+  for(let i=0;i<Math.min(tens,9);i++)html+=`<div style="width:18px;height:36px;background:#818cf8;border-radius:4px;"></div>`;
   html+=`</div><div style="font-size:16px;font-weight:900;color:#7c3aed;">${tens}</div></div>`;
-  html+=`<div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:#f472b6;margin-bottom:4px;">UNITS</div><div style="display:flex;gap:3px;flex-wrap:wrap;max-width:${units*22}px;">`;
-  for(let i=0;i<units;i++)html+=`<div style="width:18px;height:18px;background:#f9a8d4;border-radius:50%;"></div>`;
-  html+=`</div><div style="font-size:16px;font-weight:900;color:#f472b6;">${units}</div></div>`;
-  html+='</div>';
-  return html;
+  html+=`<div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:#f472b6;margin-bottom:4px;">UNITS</div><div style="display:flex;gap:3px;flex-wrap:wrap;max-width:${Math.min(units,9)*22}px;">`;
+  for(let i=0;i<Math.min(units,9);i++)html+=`<div style="width:18px;height:18px;background:#f9a8d4;border-radius:50%;"></div>`;
+  html+=`</div><div style="font-size:16px;font-weight:900;color:#f472b6;">${units}</div></div></div>`;return html;
 }
-
 function compareHTML(a,b){
   const big=Math.max(a,b),small=Math.min(a,b);
-  return `<div style="display:flex;gap:12px;justify-content:center;align-items:center;">
-    <div style="text-align:center;background:${a===big?'#bbf7d0':'#fce7f3'};border-radius:12px;padding:10px 16px;">
-      <div style="font-size:28px;font-weight:900;color:${a===big?'#14532d':'#be185d'};">${a}</div>
-    </div>
-    <div style="font-size:24px;font-weight:900;color:#7c3aed;">${a>b?'>':'<'}</div>
-    <div style="text-align:center;background:${b===big?'#bbf7d0':'#fce7f3'};border-radius:12px;padding:10px 16px;">
-      <div style="font-size:28px;font-weight:900;color:${b===big?'#14532d':'#be185d'};">${b}</div>
-    </div>
-  </div>`;
+  return `<div style="display:flex;gap:12px;justify-content:center;align-items:center;"><div style="text-align:center;background:${a===big?'#bbf7d0':'#fce7f3'};border-radius:12px;padding:10px 16px;"><div style="font-size:28px;font-weight:900;color:${a===big?'#14532d':'#be185d'};">${a}</div></div><div style="font-size:24px;font-weight:900;color:#7c3aed;">${a>b?'>':'<'}</div><div style="text-align:center;background:${b===big?'#bbf7d0':'#fce7f3'};border-radius:12px;padding:10px 16px;"><div style="font-size:28px;font-weight:900;color:${b===big?'#14532d':'#be185d'};">${b}</div></div></div>`;
 }
 
-function setSpeech2(msg){
-  const sb=document.getElementById('speech-bubble2');
-  if(sb)sb.textContent=msg;
-}
+function setSpeech2(msg){const sb=document.getElementById('speech-bubble2');if(sb)sb.textContent=msg;}
 
+// HAMSTER ANIMATIONS
 let hammyIv=null;
-function startHammyWiggle(id){
-  clearInterval(hammyIv);let a=0;
-  hammyIv=setInterval(()=>{
-    a+=0.07;const g=document.getElementById(id);
-    if(g)g.setAttribute('transform',`translate(${Math.sin(a)*2},${Math.sin(a*1.3)*1.5})`);
-  },30);
-}
-function hammyHappy(){
-  const g=document.getElementById('hammy-g');if(!g)return;
-  setHammyMouth(true);
-  let t=0;const bi=setInterval(()=>{t++;g.setAttribute('transform',`translate(${Math.sin(t*.4)*4},${Math.sin(t*.5)*-5})`);if(t>18){clearInterval(bi);g.setAttribute('transform','');}},30);
-}
+function startHammyWiggle(id){clearInterval(hammyIv);let a=0;hammyIv=setInterval(()=>{a+=.07;const g=document.getElementById(id);if(g)g.setAttribute('transform',`translate(${Math.sin(a)*2},${Math.sin(a*1.3)*1.5})`);},30);}
+function hammyHappy(){const g=document.getElementById('hammy-g');if(!g)return;setHammyMouth(true);let t=0;const bi=setInterval(()=>{t++;g.setAttribute('transform',`translate(${Math.sin(t*.4)*4},${Math.sin(t*.5)*-5})`);if(t>18){clearInterval(bi);g.setAttribute('transform','');}},30);}
 function hammySad(){const m=document.getElementById('hammy-mouth');if(m)m.setAttribute('d','M34 59 Q40 54 46 59');setTimeout(()=>{if(m)m.setAttribute('d','M34 55 Q40 61 46 55');},2000);}
 function setHammyMouth(happy){const m=document.getElementById('hammy-mouth');if(m)m.setAttribute('d',happy?'M32 53 Q40 62 48 53':'M34 55 Q40 61 46 55');}
 
+// DRAG & DROP DRESSING ROOM
+function openDollModal(){document.getElementById('doll-modal').style.display='flex';buildTray();restorePlacements();}
+function closeDollModal(){document.getElementById('doll-modal').style.display='none';}
+
+function buildTray(){
+  const tray=document.getElementById('acc-tray');tray.innerHTML='';
+  const unlockedIds=[...new Set(TOPICS.filter(t=>outfitsUnlocked.includes(t.accId)).map(t=>t.accId))];
+  ALL_ITEMS.forEach(a=>{
+    if(!unlockedIds.includes(a.id))return;
+    const placed=dollPlacements[a.id];
+    const div=document.createElement('div');
+    div.id='tray-'+a.id;div.textContent=a.emoji;div.title=a.name;
+    div.style.cssText=`font-size:36px;cursor:grab;user-select:none;opacity:${placed?'0.3':'1'};transition:opacity .3s;`;
+    div.draggable=true;
+    div.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',a.id);});
+    div.addEventListener('touchstart',e=>onTouchStartItem(e,a),{passive:false});
+    tray.appendChild(div);
+  });
+}
+
+function restorePlacements(){
+  const stage=document.getElementById('doll-stage');
+  stage.querySelectorAll('.placed-acc').forEach(el=>el.remove());
+  Object.entries(dollPlacements).forEach(([id,pos])=>{
+    const a=ALL_ITEMS.find(a=>a.id===id);if(!a)return;
+    addToDoll(a,pos.x,pos.y,pos.size||28,false);
+  });
+}
+
+const dollStage=document.getElementById('doll-stage');
+dollStage.addEventListener('dragover',e=>{e.preventDefault();dollStage.style.borderColor='#E91E8C';});
+dollStage.addEventListener('dragleave',()=>{dollStage.style.borderColor='#c084fc';});
+dollStage.addEventListener('drop',e=>{
+  e.preventDefault();dollStage.style.borderColor='#c084fc';
+  const id=e.dataTransfer.getData('text/plain');
+  const a=ALL_ITEMS.find(a=>a.id===id);if(!a)return;
+  const rect=dollStage.getBoundingClientRect();
+  addToDoll(a,e.clientX-rect.left-20,e.clientY-rect.top-20,28,true);
+});
+
+function addToDoll(a,x,y,size,save){
+  const stage=document.getElementById('doll-stage');
+  const existing=stage.querySelector('.placed-acc[data-id="'+a.id+'"]');if(existing)existing.remove();
+  const sz=size||28;
+  const wrapper=document.createElement('div');
+  wrapper.className='placed-acc';wrapper.dataset.id=a.id;
+  wrapper.style.cssText=`position:absolute;left:${x}px;top:${y}px;z-index:10;cursor:move;user-select:none;`;
+  const emoji=document.createElement('div');
+  emoji.textContent=a.emoji;
+  emoji.style.cssText=`font-size:${sz}px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25));line-height:1;`;
+  const slider=document.createElement('input');
+  slider.type='range';slider.min='14';slider.max='60';slider.value=sz;
+  slider.style.cssText=`width:60px;display:block;margin:2px auto 0;opacity:0;transition:opacity .2s;cursor:pointer;accent-color:#E91E8C;`;
+  slider.addEventListener('input',()=>{emoji.style.fontSize=slider.value+'px';savePlacement(a.id,parseInt(wrapper.style.left),parseInt(wrapper.style.top),parseInt(slider.value));});
+  wrapper.addEventListener('mouseenter',()=>slider.style.opacity='1');
+  wrapper.addEventListener('mouseleave',()=>slider.style.opacity='0');
+  wrapper.appendChild(emoji);wrapper.appendChild(slider);
+  makeDraggableOnStage(wrapper,a.id,slider);
+  stage.appendChild(wrapper);
+  emoji.style.transform='scale(1.5)';setTimeout(()=>emoji.style.transform='scale(1)',200);
+  const trayItem=document.getElementById('tray-'+a.id);if(trayItem)trayItem.style.opacity='0.3';
+  if(save)savePlacement(a.id,x,y,sz);
+}
+
+function makeDraggableOnStage(el,id,slider){
+  let startX,startY,startLeft,startTop,isDragging=false;
+  el.addEventListener('mousedown',e=>{
+    if(e.target===slider)return;e.preventDefault();isDragging=false;
+    startX=e.clientX;startY=e.clientY;startLeft=parseInt(el.style.left)||0;startTop=parseInt(el.style.top)||0;
+    function onMove(e){isDragging=true;el.style.left=(startLeft+(e.clientX-startX))+'px';el.style.top=(startTop+(e.clientY-startY))+'px';}
+    function onUp(){document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);if(isDragging)savePlacement(id,parseInt(el.style.left),parseInt(el.style.top),parseInt(slider.value));}
+    document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);
+  });
+  el.addEventListener('touchstart',e=>{if(e.target===slider)return;e.preventDefault();const t=e.touches[0];startX=t.clientX;startY=t.clientY;startLeft=parseInt(el.style.left)||0;startTop=parseInt(el.style.top)||0;},{passive:false});
+  el.addEventListener('touchmove',e=>{if(e.target===slider)return;e.preventDefault();const t=e.touches[0];el.style.left=(startLeft+(t.clientX-startX))+'px';el.style.top=(startTop+(t.clientY-startY))+'px';},{passive:false});
+  el.addEventListener('touchend',e=>{if(e.target===slider)return;savePlacement(id,parseInt(el.style.left),parseInt(el.style.top),parseInt(slider.value));});
+  let lastTap=0;
+  el.addEventListener('click',e=>{
+    if(e.target===slider||isDragging)return;
+    const now=Date.now();
+    if(now-lastTap<400){el.remove();delete dollPlacements[id];try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}const ti=document.getElementById('tray-'+id);if(ti)ti.style.opacity='1';}
+    lastTap=now;
+  });
+}
+
+function savePlacement(id,x,y,size){dollPlacements[id]={x,y,size:size||28};try{localStorage.setItem('elisa_doll_placements',JSON.stringify(dollPlacements));}catch(e){}}
+function clearDollPlacements(){dollPlacements={};try{localStorage.setItem('elisa_doll_placements','{}');}catch(e){}document.getElementById('doll-stage').querySelectorAll('.placed-acc').forEach(el=>el.remove());buildTray();}
+
+let touchDragItem=null,touchDragClone=null;
+function onTouchStartItem(e,a){
+  e.preventDefault();touchDragItem=a.id;
+  const touch=e.touches[0];touchDragClone=document.createElement('div');
+  touchDragClone.textContent=a.emoji;
+  touchDragClone.style.cssText=`position:fixed;font-size:44px;pointer-events:none;z-index:99999;left:${touch.clientX-22}px;top:${touch.clientY-22}px;opacity:.85;`;
+  document.body.appendChild(touchDragClone);
+  document.addEventListener('touchmove',onTouchMove,{passive:false});
+  document.addEventListener('touchend',onTouchEnd);
+}
+function onTouchMove(e){e.preventDefault();const t=e.touches[0];if(touchDragClone){touchDragClone.style.left=(t.clientX-22)+'px';touchDragClone.style.top=(t.clientY-22)+'px';}}
+function onTouchEnd(e){
+  document.removeEventListener('touchmove',onTouchMove);document.removeEventListener('touchend',onTouchEnd);
+  if(touchDragClone){touchDragClone.remove();touchDragClone=null;}
+  if(!touchDragItem)return;
+  const touch=e.changedTouches[0];
+  const stage=document.getElementById('doll-stage');const rect=stage.getBoundingClientRect();
+  const x=touch.clientX-rect.left-22,y=touch.clientY-rect.top-22;
+  if(x>-40&&x<rect.width+40&&y>-40&&y<rect.height+40){
+    const a=ALL_ITEMS.find(a=>a.id===touchDragItem);
+    if(a)addToDoll(a,Math.max(0,x),Math.max(0,y),28,true);
+  }
+  touchDragItem=null;
+}
+
+// CONFETTI
 let cAF=null,cStop=false;
 function launchConfetti(){
   cStop=false;const cv=document.getElementById('confetti-canvas'),ctx=cv.getContext('2d');
   cv.width=window.innerWidth;cv.height=window.innerHeight;
-  const ps=Array.from({length:150},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height,r:ri(5,13),c:`hsl(${ri(0,360)},90%,65%)`,vx:(Math.random()-.5)*3,vy:ri(2,5)+Math.random()*3,rot:Math.random()*360,rv:(Math.random()-.5)*8}));
-  function draw(){
-    if(cStop){ctx.clearRect(0,0,cv.width,cv.height);return;}
-    ctx.clearRect(0,0,cv.width,cv.height);
-    ps.forEach(p=>{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;if(p.y>cv.height){p.y=-20;p.x=Math.random()*cv.width;}});
-    cAF=requestAnimationFrame(draw);
-  }draw();
+  const ps=Array.from({length:150},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height,r:ri(5,13),c:`hsl(${ri(0,360)},90%,60%)`,vx:(Math.random()-.5)*3,vy:ri(2,5)+Math.random()*3,rot:Math.random()*360,rv:(Math.random()-.5)*8}));
+  function draw(){if(cStop){ctx.clearRect(0,0,cv.width,cv.height);return;}ctx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;if(p.y>cv.height){p.y=-20;p.x=Math.random()*cv.width;}});cAF=requestAnimationFrame(draw);}draw();
 }
 function stopConfetti(){cStop=true;cancelAnimationFrame(cAF);}
 
