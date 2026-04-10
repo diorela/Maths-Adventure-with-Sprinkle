@@ -795,18 +795,20 @@ function clearDollPlacements(){
 
 // touch drag from tray
 let touchDragItem=null,touchDragClone=null;
-function onTouchStart(e){
-  e.preventDefault();
-  const div=e.currentTarget;
-  const id=div.id.replace('tray-','');
-  touchDragItem=id;
-  const touch=e.touches[0];
-  touchDragClone=document.createElement('div');
-  touchDragClone.textContent=div.textContent;
+function onTouchStartItem(e,a){
+  e.preventDefault();touchDragItem=a.id;
+  const touch=e.touches[0];touchDragClone=document.createElement('div');
+  touchDragClone.textContent=a.emoji;
   touchDragClone.style.cssText=`position:fixed;font-size:44px;pointer-events:none;z-index:99999;left:${touch.clientX-22}px;top:${touch.clientY-22}px;opacity:.85;`;
   document.body.appendChild(touchDragClone);
   document.addEventListener('touchmove',onTouchMove,{passive:false});
   document.addEventListener('touchend',onTouchEnd);
+}
+function onTouchStart(e){
+  const div=e.currentTarget;
+  const id=div.id.replace('tray-','');
+  const a=ALL_ITEMS.find(a=>a.id===id);
+  if(a) onTouchStartItem(e,a);
 }
 function onTouchMove(e){
   e.preventDefault();
@@ -914,9 +916,10 @@ function topicComplete(){
   const frames=['🐹','🕺','💃','🎉','✨','🌟','🎀','🐹','💖','🥳'];
   let di=0;const dint=setInterval(()=>{dd.textContent=frames[di%frames.length];di++;},200);
   setTimeout(()=>clearInterval(dint),6000);
+  const acc=ALL_ITEMS.find(a=>a.id===t.accId)||{emoji:'⭐',name:'bonus item'};
   document.getElementById('victory-title').textContent='Amazing Elisa! '+t.outfitEmoji;
-  document.getElementById('victory-msg').textContent=`You completed ${t.label}! Sprinkle is doing a happy dance! Your doll just got her ${t.outfitName}! Keep going to unlock more! ✨`;
-  speak(`Amazing Elisa! You finished ${t.label}! Your doll just got her ${t.outfitName}!`,400);
+  document.getElementById('victory-msg').textContent=`You completed ${t.label}! Sprinkle is doing a happy dance! Your doll just unlocked: ${acc.emoji} ${acc.name}! Keep going to unlock more! ✨`;
+  speak(`Amazing Elisa! You finished ${t.label}! Your doll just got a ${acc.name}!`,400);
   flashAccessory(t.accId);
   document.getElementById('victory-overlay').style.display='flex';
 }
