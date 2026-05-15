@@ -81,7 +81,7 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
     <div style="font-size:16px;font-weight:900;color:var(--pink-dark);margin-bottom:4px;">✨ Elisa's Dressing Room ✨</div>
     <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:12px;">Drag accessories onto your doll! Hover to resize.</div>
     <div id="doll-stage">
-      <img src="doll.svg" alt="Fashion doll" style="width:300px;height:520px;display:block;pointer-events:none;border-radius:18px;object-fit:contain;" onerror="this.style.display='none';document.getElementById('doll-fallback').style.display='flex'"/>
+      <img src="elisa.png" alt="Elisa" style="width:300px;height:520px;display:block;pointer-events:none;border-radius:18px;object-fit:cover;" onerror="this.style.display='none';document.getElementById('doll-fallback').style.display='flex'"/>
       <div id="doll-fallback" style="display:none;width:300px;height:520px;align-items:center;justify-content:center;flex-direction:column;gap:12px;border-radius:18px;background:#fdf2f8;">
         <div style="font-size:80px;">👗</div>
         <div style="font-size:14px;font-weight:700;color:#be185d;">Dress your doll!</div>
@@ -157,7 +157,7 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
       <h3 style="font-size:16px;font-weight:800;color:var(--pink-dark);margin-bottom:6px;">✨ Elisa's Fashion Doll</h3>
       <p style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px;cursor:pointer;" onclick="openDollModal()">👆 Tap doll to dress her up!</p>
       <div style="position:relative;display:inline-block;width:180px;cursor:pointer;" onclick="openDollModal()">
-        <img src="doll.svg" alt="Fashion doll" style="width:180px;height:320px;display:block;pointer-events:none;object-fit:contain;" onerror="this.style.display='none'"/>
+        <img src="elisa.png" alt="Elisa" style="width:180px;height:320px;display:block;pointer-events:none;object-fit:cover;" onerror="this.style.display='none'"/>
       </div>
       <div class="badge-shelf" id="outfit-shelf"></div>
     </div>
@@ -217,39 +217,41 @@ footer{margin-top:8px;font-size:12px;font-weight:600;color:var(--pink);text-alig
 
 <script>
 const TOPICS=[
-  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',accId:'acc-dog',outfitName:'Pet Dog',outfitEmoji:'🐕',
+  {id:'add',label:'➕ Addition',cls:'t-add',emoji:'➕',accId:'item1',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'Adding two numbers together',
    gen:()=>{const a=ri(1,50),b=ri(1,50-a);return{q:`${a} + ${b}`,ans:a+b,a,b,op:'add'};}},
-  {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',accId:'acc-capybara',outfitName:'Pet Capybara',outfitEmoji:'🦫',
+  {id:'sub',label:'➖ Subtraction',cls:'t-sub',emoji:'➖',accId:'item2',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'Taking one number away from another',
    gen:()=>{const a=ri(10,99),b=ri(1,a);return{q:`${a} − ${b}`,ans:a-b,a,b,op:'sub'};}},
-  {id:'mul',label:'✖️ Multiplication',cls:'t-mul',emoji:'✖️',accId:'acc-purse',outfitName:'Purse',outfitEmoji:'👛',
+  {id:'mul',label:'✖️ Multiplication',cls:'t-mul',emoji:'✖️',accId:'item3',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'×2, ×5 and ×10 tables',
    gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t} × ${n}`,ans:t*n,a:t,b:n,op:'mul'};}},
-  {id:'div',label:'➗ Division',cls:'t-div',emoji:'➗',accId:'acc-sunglasses',outfitName:'Sunglasses',outfitEmoji:'🕶️',
+  {id:'div',label:'➗ Division',cls:'t-div',emoji:'➗',accId:'item4',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'÷2, ÷5 and ÷10',
    gen:()=>{const t=pick([2,5,10]),n=ri(1,12);return{q:`${t*n} ÷ ${t}`,ans:n,a:t*n,b:t,op:'div'};}},
-  {id:'dbl',label:'⚡ Doubles & Halves',cls:'t-dbl',emoji:'⚡',accId:'acc-bikini',outfitName:'Bikini Top',outfitEmoji:'👙',
+  {id:'dbl',label:'⚡ Doubles & Halves',cls:'t-dbl',emoji:'⚡',accId:'item5',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'Doubling and halving numbers',
    gen:()=>{const type=pick(['double','half']);if(type==='double'){const n=ri(1,50);return{q:`Double ${n}`,ans:n*2,a:n,b:n,op:'double'};}else{const n=ri(1,50)*2;return{q:`Half of ${n}`,ans:n/2,a:n,b:2,op:'half'};}}},
-  {id:'frc',label:'🍕 Fractions',cls:'t-frc',emoji:'🍕',accId:'acc-heels',outfitName:'Pink High Heels',outfitEmoji:'👠',
+  {id:'frc',label:'🍕 Fractions',cls:'t-frc',emoji:'🍕',accId:'item6',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'Halves and quarters of numbers',
    gen:()=>{const type=pick(['half','quarter']);if(type==='half'){const n=ri(1,20)*2;return{q:`½ of ${n}`,ans:n/2,a:n,b:2,op:'half'};}else{const n=ri(1,10)*4;return{q:`¼ of ${n}`,ans:n/4,a:n,b:4,op:'quarter'};}}},
-  {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',accId:'acc-dog',outfitName:'Pet Dog',outfitEmoji:'🐕',
+  {id:'plc',label:'🔢 Place Value',cls:'t-plc',emoji:'🔢',accId:'item7',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'Understanding tens and units',
    gen:()=>{const tens=ri(1,9),units=ri(0,9);const type=pick(['tens','units','total']);if(type==='tens')return{q:`${tens*10+units} — how many tens?`,ans:tens,a:tens,b:units,op:'tens'};if(type==='units')return{q:`${tens*10+units} — how many units?`,ans:units,a:tens,b:units,op:'units'};return{q:`${tens} tens and ${units} units = ?`,ans:tens*10+units,a:tens,b:units,op:'makenum'};}},
-  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',accId:'acc-capybara',outfitName:'Pet Capybara',outfitEmoji:'🦫',
+  {id:'cmp',label:'⚖️ Comparing',cls:'t-cmp',emoji:'⚖️',accId:'item8',outfitName:'Special Gift',outfitEmoji:'🎁',
    desc:'Bigger or smaller numbers',
    gen:()=>{const a=ri(1,99),b=ri(1,99);const type=pick(['bigger','smaller','diff']);if(type==='bigger')return{q:`Which is bigger?\n${a} or ${b}`,ans:Math.max(a,b),a,b,op:'bigger'};if(type==='smaller')return{q:`Which is smaller?\n${a} or ${b}`,ans:Math.min(a,b),a,b,op:'smaller'};return{q:`${Math.max(a,b)} − ${Math.min(a,b)} = ?`,ans:Math.abs(a-b),a,b,op:'diff'};}}
 ];
 
 const ALL_ITEMS=[
-  {id:'acc-dog',emoji:'🐕',name:'Pet Dog'},
-  {id:'acc-capybara',emoji:'🦫',name:'Pet Capybara'},
-  {id:'acc-purse',emoji:'👛',name:'Purse'},
-  {id:'acc-sunglasses',emoji:'🕶️',name:'Sunglasses'},
-  {id:'acc-bikini',emoji:'👙',name:'Bikini Top'},
-  {id:'acc-heels',emoji:'👠',name:'Pink High Heels'}
+  {id:'item1',img:'IMG_2115-removebg-preview.png',name:'Special Gift'},
+  {id:'item2',img:'IMG_2115-removebg-preview.png',name:'Special Gift'},
+  {id:'item3',img:'IMG_2115-removebg-preview.png',name:'Special Gift'},
+  {id:'item4',img:'IMG_2115-removebg-preview.png',name:'Special Gift'},
+  {id:'item5',img:'IMG_2115-removebg-preview.png',name:'Special Gift'},
+  {id:'item6',img:'IMG_2115-removebg-preview.png',name:'Special Gift'},
+  {id:'item7',img:'IMG_2115-removebg-preview.png',name:'Special Gift'},
+  {id:'item8',img:'IMG_2115-removebg-preview.png',name:'Special Gift'}
 ];
 
 const SPOKEN_CORRECT=["Great job Elisa!","Well done superstar!","You are absolutely brilliant!","Fantastic work Elisa!","Yes! You nailed it!","Incredible! Keep going!","You are a maths superstar!","Sprinkle thinks you're amazing!","Sprinkle is so proud of you!","Outstanding! You rock!","That was perfect Elisa!","Brilliant! You are on fire!"];
@@ -311,12 +313,12 @@ function renderStart(){
 
 function renderOutfitShelf(){
   const shelf=document.getElementById('outfit-shelf');
-  if(!shelf)return;
-  shelf.innerHTML='';
+  if(!shelf)return;shelf.innerHTML='';
   ALL_ITEMS.forEach(a=>{
-    const sp=document.createElement('span');
-    sp.className='badge'+(outfitsUnlocked.includes(a.id)?' earned':'');
-    sp.title=a.name;sp.textContent=a.emoji;shelf.appendChild(sp);
+    const sp=document.createElement('img');
+    sp.src=a.img;sp.alt=a.name;sp.title=a.name;
+    sp.style.cssText=`width:36px;height:36px;object-fit:contain;opacity:${outfitsUnlocked.includes(a.id)?'1':'0.2'};filter:${outfitsUnlocked.includes(a.id)?'none':'grayscale(1)'};transition:all .4s;`;
+    shelf.appendChild(sp);
   });
 }
 
@@ -483,8 +485,12 @@ function buildTray(){
     if(!unlockedIds.includes(a.id))return;
     const placed=dollPlacements[a.id];
     const div=document.createElement('div');
-    div.id='tray-'+a.id;div.textContent=a.emoji;div.title=a.name;
-    div.style.cssText=`font-size:36px;cursor:grab;user-select:none;opacity:${placed?'0.3':'1'};transition:opacity .3s;`;
+    div.id='tray-'+a.id;div.title=a.name;
+    div.style.cssText=`width:60px;height:60px;cursor:grab;user-select:none;opacity:${placed?'0.3':'1'};transition:opacity .3s;`;
+    const img=document.createElement('img');
+    img.src=a.img;img.alt=a.name;
+    img.style.cssText='width:60px;height:60px;object-fit:contain;pointer-events:none;';
+    div.appendChild(img);
     div.draggable=true;
     div.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',a.id);});
     div.addEventListener('touchstart',e=>onTouchStartItem(e,a),{passive:false});
@@ -515,20 +521,20 @@ dollStage.addEventListener('drop',e=>{
 function addToDoll(a,x,y,size,save){
   const stage=document.getElementById('doll-stage');
   const existing=stage.querySelector('.placed-acc[data-id="'+a.id+'"]');if(existing)existing.remove();
-  const sz=size||28;
+  const sz=size||80;
   const wrapper=document.createElement('div');
   wrapper.className='placed-acc';wrapper.dataset.id=a.id;
   wrapper.style.cssText=`position:absolute;left:${x}px;top:${y}px;z-index:10;cursor:move;user-select:none;`;
-  const emoji=document.createElement('div');
-  emoji.textContent=a.emoji;
-  emoji.style.cssText=`font-size:${sz}px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25));line-height:1;`;
+  const imgEl=document.createElement('img');
+  imgEl.src=a.img;imgEl.alt=a.name;
+  imgEl.style.cssText=`width:${sz}px;height:${sz}px;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25));`;
   const slider=document.createElement('input');
-  slider.type='range';slider.min='14';slider.max='60';slider.value=sz;
-  slider.style.cssText=`width:60px;display:block;margin:2px auto 0;opacity:0;transition:opacity .2s;cursor:pointer;accent-color:#E91E8C;`;
-  slider.addEventListener('input',()=>{emoji.style.fontSize=slider.value+'px';savePlacement(a.id,parseInt(wrapper.style.left),parseInt(wrapper.style.top),parseInt(slider.value));});
+  slider.type='range';slider.min='40';slider.max='160';slider.value=sz;
+  slider.style.cssText=`width:80px;display:block;margin:2px auto 0;opacity:0;transition:opacity .2s;cursor:pointer;accent-color:#E91E8C;`;
+  slider.addEventListener('input',()=>{imgEl.style.width=slider.value+'px';imgEl.style.height=slider.value+'px';savePlacement(a.id,parseInt(wrapper.style.left),parseInt(wrapper.style.top),parseInt(slider.value));});
   wrapper.addEventListener('mouseenter',()=>slider.style.opacity='1');
   wrapper.addEventListener('mouseleave',()=>slider.style.opacity='0');
-  wrapper.appendChild(emoji);wrapper.appendChild(slider);
+  wrapper.appendChild(imgEl);wrapper.appendChild(slider);
   makeDraggableOnStage(wrapper,a.id,slider);
   stage.appendChild(wrapper);
   emoji.style.transform='scale(1.5)';setTimeout(()=>emoji.style.transform='scale(1)',200);
@@ -563,9 +569,9 @@ function clearDollPlacements(){dollPlacements={};try{localStorage.setItem('elisa
 let touchDragItem=null,touchDragClone=null;
 function onTouchStartItem(e,a){
   e.preventDefault();touchDragItem=a.id;
-  const touch=e.touches[0];touchDragClone=document.createElement('div');
-  touchDragClone.textContent=a.emoji;
-  touchDragClone.style.cssText=`position:fixed;font-size:44px;pointer-events:none;z-index:99999;left:${touch.clientX-22}px;top:${touch.clientY-22}px;opacity:.85;`;
+  const touch=e.touches[0];touchDragClone=document.createElement('img');
+  touchDragClone.src=a.img;
+  touchDragClone.style.cssText=`position:fixed;width:80px;height:80px;object-fit:contain;pointer-events:none;z-index:99999;left:${touch.clientX-40}px;top:${touch.clientY-40}px;opacity:.85;`;
   document.body.appendChild(touchDragClone);
   document.addEventListener('touchmove',onTouchMove,{passive:false});
   document.addEventListener('touchend',onTouchEnd);
